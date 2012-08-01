@@ -33,6 +33,8 @@
 				$.js.notify();
 				$.js.dialog();
 				
+				$('.columns').columnize({ gap: 20 });
+				
                 $('#MetroVersion').html($.js.version);
 				
 				/* Header Links */
@@ -495,6 +497,21 @@ $('.collapsible-wrapper').collapsible({
 });
 </pre>
                 </div>
+				
+				<h2><a role="anchor" name="collapsible">Columnize</a></h2>
+				<h3>Code</h3>
+<pre>$('.columns').columnize({ gap: 20, separator: 'h1, h2, h3, h4, h5, h6, .header' });</pre>
+				<h3>Sample</h3>
+				<div class="columns" style="margin:0;">
+					<h1>Lorem ipsum dolor sit amet</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rutrum consequat felis, non lobortis augue dignissim vel. Phasellus placerat libero et augue adipiscing non laoreet sem suscipit. Proin rutrum placerat massa ac posuere. Ut at felis at urna luctus laoreet. Phasellus augue sapien, tempor tristique pharetra nec, molestie id lorem. Nullam fermentum tempus gravida. Nunc scelerisque, est vitae vulputate porttitor, dolor risus consectetur tortor, fringilla sagittis neque orci a neque. Donec non turpis non dui varius vehicula. Proin massa urna, ornare at blandit ut, pharetra in dolor. Nam vehicula ultrices metus vel pellentesque.</p>
+
+					<h1>Phasellus vestibulum ipsum</h1>
+					<p>Phasellus vestibulum ipsum id arcu laoreet tempor. Nam urna velit, tempor vel dictum quis, adipiscing non justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus ac urna nec lorem facilisis commodo. Maecenas aliquet, augue imperdiet vestibulum accumsan, diam purus consectetur ante, ut ornare lectus erat ac dui. Mauris tristique enim vel quam malesuada id rhoncus urna aliquam. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque mauris ligula, pretium non aliquam ac, dictum at libero. Donec fringilla, eros ut scelerisque aliquet, lorem diam facilisis felis, at fermentum odio nisi eget mauris. Fusce viverra, orci et tempor cursus, augue metus posuere leo, et porta erat est quis tellus. Sed mi libero, placerat non ultrices ultricies, rhoncus eu sapien. Nam mollis, purus at dapibus feugiat, nunc lectus blandit risus, sed bibendum lacus ligula non nunc. Phasellus nulla mi, eleifend nec tempus sed, gravida vitae sem. Cras tincidunt lacinia massa et varius.</p>
+
+					<h1>Phasellus porttitor interdum orci</h1>
+					<p>Morbi felis arcu, mollis eu lobortis id, fringilla vel sem. Donec at dolor est, id porttitor lectus. Donec magna tortor, tristique vitae hendrerit eu, molestie sit amet orci. Aenean congue risus ultricies tellus vulputate adipiscing. Sed ac arcu ante, at imperdiet nisl. Nulla hendrerit vehicula nunc a varius. Phasellus porttitor interdum orci, et consequat dui euismod id. Aenean porta, erat et sodales pretium, justo massa lacinia metus, ut malesuada neque purus quis quam. Donec id ante lacus, bibendum tincidunt purus. Suspendisse potenti. Morbi quis purus augue, vitae bibendum orci. Fusce imperdiet lacus sit amet magna malesuada blandit. Nulla scelerisque volutpat lectus nec adipiscing. Aenean ut lacus libero, vel malesuada mi.</p>
+				</div>
             </article>
             <footer>
                 <p>&copy;2012 <a href="http://johnsedlak.com">John Sedlak</a>.</p>
