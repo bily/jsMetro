@@ -28,45 +28,51 @@
         </style>
         
         <script>
-            $(document).ready(function(event){
-				/* Pre/Initialization */
-				$.js.notify();
-				$.js.dialog();
-				
-				$('.columns').columnize({ gap: 20 });
-				
+            $(document).ready(function (event) {
+                /* Pre/Initialization */
+                $.js.notify();
+                $.js.dialog();
+
+                $('#PopNotifySample').click(function (event) {
+                    event.preventDefault();
+
+                    $.js.popNotify('Ut leo velit, vestibulum et bibendum non, interdum hendrerit diam. Nam blandit interdum nulla vitae eleifend. Proin et justo vitae orci posuere malesuada non a sapien.');
+                });
+
+                $('.columns').columnize({ gap: 20 });
+
                 $('#MetroVersion').html($.js.version);
-				
-				/* Header Links */
-				$('#Page>header ul a').click(function(event) {
-					var that = $(this);
-					
-					/* Linking to another page, or a hashtag? */
-					if (that.attr('href')[0] != '#') {
-						return;
-					}
-					
-					event.preventDefault();
-					
-					var scrollDestination = $('a[name="' + that.attr('href').substr(1) + '"]');
-					
-					if (window.history && window.history.pushState) {
-						window.history.pushState('', scrollDestination.html() + ' - jsMetro Demos', that.attr('href'))
-					}
-					
-					scrollDestination.scrollTo();
-				});
-                
+
+                /* Header Links */
+                $('#Page>header ul a').click(function (event) {
+                    var that = $(this);
+
+                    /* Linking to another page, or a hashtag? */
+                    if (that.attr('href')[0] != '#') {
+                        return;
+                    }
+
+                    event.preventDefault();
+
+                    var scrollDestination = $('a[name="' + that.attr('href').substr(1) + '"]');
+
+                    if (window.history && window.history.pushState) {
+                        window.history.pushState('', scrollDestination.html() + ' - jsMetro Demos', that.attr('href'))
+                    }
+
+                    scrollDestination.scrollTo();
+                });
+
                 $('.collapsible-wrapper').collapsible({
                     toggleSelector: 'a.toggle',
-                    hidden: function(parent, toggle) {
+                    hidden: function (parent, toggle) {
                         if (toggle.data('hidden-text')) {
                             toggle.html(toggle.data('hidden-text'));
                         } else {
                             toggle.html('[+] View Demo');
                         }
                     },
-                    visible: function(parent, toggle) { 
+                    visible: function (parent, toggle) {
                         if (toggle.data('visible-text')) {
                             toggle.html(toggle.data('visible-text'));
                         } else {
@@ -74,71 +80,71 @@
                         }
                     }
                 });
-               
-                
-                $('#TestNotify').click(function(event){
+
+
+                $('#TestNotify').click(function (event) {
                     event.preventDefault();
-                    
+
                     $.js.notify('hello, world!');
                 });
-                
-                $('#TestNotifyTimeout').click(function(event){
+
+                $('#TestNotifyTimeout').click(function (event) {
                     event.preventDefault();
-                    
+
                     $.js.notify(
                         'hello, world!',
-                        { timeout: 1000 }                        
+                        { timeout: 1000 }
                     );
                 });
-                
-                $('#TestNotifyTimeoutColor').click(function(event){
+
+                $('#TestNotifyTimeoutColor').click(function (event) {
                     event.preventDefault();
-                    
+
                     $.js.notify(
                         'hello, world!',
-                        { timeout: 1000, cssClass: 'red' }                        
+                        { timeout: 1000, cssClass: 'red' }
                     );
                 });
-				
-				$('#HelloWorldDialog').click(function(event) {
-					event.preventDefault();
-					
-					$.js.dialog('<h3>The Dialog Title</h3><p>Hello, world!</p>');
-				});
-				
-				$('#QueueDialog').click(function(event) {
-					event.preventDefault();
-					
-					$.js.dialog('<h3>The Dialog Title</h3><p>Hello, world!</p>');
-					$.js.dialog('<h3>The Dialog Title</h3><p>Hello, world! The sequel!</p>');
-				});
-				
-				var cancelCallback = function(controller, button, event) {
-					$.js.dialog('Cancel was clicked!');
-				};
 
-				var continueCallback = function(c, b, e) {
-					$.js.dialog('Continue was clicked!');
-				};
+                $('#HelloWorldDialog').click(function (event) {
+                    event.preventDefault();
 
-				$('#BasicDialog').click(function(event) {
-					event.preventDefault();
-					
-					$.js.dialog(
+                    $.js.dialog('<h3>The Dialog Title</h3><p>Hello, world!</p>');
+                });
+
+                $('#QueueDialog').click(function (event) {
+                    event.preventDefault();
+
+                    $.js.dialog('<h3>The Dialog Title</h3><p>Hello, world!</p>');
+                    $.js.dialog('<h3>The Dialog Title</h3><p>Hello, world! The sequel!</p>');
+                });
+
+                var cancelCallback = function (controller, button, event) {
+                    $.js.dialog('Cancel was clicked!');
+                };
+
+                var continueCallback = function (c, b, e) {
+                    $.js.dialog('Continue was clicked!');
+                };
+
+                $('#BasicDialog').click(function (event) {
+                    event.preventDefault();
+
+                    $.js.dialog(
 						'<h3>Callbacks Sample</h3><p>Would you like to continue?</p>',
 						{
-							buttons: [ 'Cancel', 'Continue' ],
-							buttonClasses: [ 'previous icon button', 'next icon button' ],
-							callbacks: [ cancelCallback, continueCallback ]
+						    buttons: ['Cancel', 'Continue'],
+						    buttonClasses: ['previous icon button', 'next icon button'],
+						    callbacks: [cancelCallback, continueCallback]
 						}
 					);
-				});
-				
-				$('#ThemeButtons>a').click(function(event) {
-					event.preventDefault();
-					
-					$.js.theme($(this).data('theme'));
-				});
+                });
+
+                $('#ThemeButtons>a').click(function (event) {
+                    event.preventDefault();
+
+                    $.js.theme($(this).data('theme'));
+                });
             });
         </script>
     </head>
@@ -153,11 +159,15 @@
                     <li><a href="#scrollto">ScrollTo</a></li>
                     <li><a href="#forms">Forms</a></li>
 					<li><a href="#themes">Theming</a></li>
+					<li><a href="#columnize">Columnize</a></li>
 					<li><a href="mapper.htm">Mapper</a></li>
                 </ul>
             </header>
             <article>
                 <h1>jsMetro v<span id="MetroVersion">...</span> Demos</h1>
+
+                <h2><a role="anchor" name="popNotify">Pop Notifications</a></h2>
+                <p><a href="#" id="PopNotifySample">Notify Me!</a></p>
                 
                 <h2><a role="anchor" name="notify">Notifications</a></h2>
                 <p>The Notify API displays a notification akin to the Windows Phone 7 (WP7) notification bar (displayed after recieving a text message). It requires a direct call and makes use of an element automatically added to the DOM (<code>#JSNotification</code>).</p>
@@ -498,13 +508,14 @@ $('.collapsible-wrapper').collapsible({
 </pre>
                 </div>
 				
-				<h2><a role="anchor" name="collapsible">Columnize</a></h2>
+				<h2><a role="anchor" name="columnize">Columnize</a></h2>
 				<h3>Code</h3>
 <pre>$('.columns').columnize({ gap: 20, separator: 'h1, h2, h3, h4, h5, h6, .header' });</pre>
 				<h3>Sample</h3>
 				<div class="columns" style="margin:0;">
 					<h1>Lorem ipsum dolor sit amet</h1>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rutrum consequat felis, non lobortis augue dignissim vel. Phasellus placerat libero et augue adipiscing non laoreet sem suscipit. Proin rutrum placerat massa ac posuere. Ut at felis at urna luctus laoreet. Phasellus augue sapien, tempor tristique pharetra nec, molestie id lorem. Nullam fermentum tempus gravida. Nunc scelerisque, est vitae vulputate porttitor, dolor risus consectetur tortor, fringilla sagittis neque orci a neque. Donec non turpis non dui varius vehicula. Proin massa urna, ornare at blandit ut, pharetra in dolor. Nam vehicula ultrices metus vel pellentesque.</p>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rutrum consequat felis, non lobortis augue dignissim vel. Phasellus placerat libero et augue adipiscing non laoreet sem suscipit. Proin rutrum placerat massa ac posuere. Ut at felis at urna luctus laoreet. Phasellus augue sapien, tempor tristique pharetra nec, molestie id lorem. Nullam fermentum tempus gravida.</p>
+					<p>Nunc scelerisque, est vitae vulputate porttitor, dolor risus consectetur tortor, fringilla sagittis neque orci a neque. Donec non turpis non dui varius vehicula. Proin massa urna, ornare at blandit ut, pharetra in dolor. Nam vehicula ultrices metus vel pellentesque.</p>
 
 					<h1>Phasellus vestibulum ipsum</h1>
 					<p>Phasellus vestibulum ipsum id arcu laoreet tempor. Nam urna velit, tempor vel dictum quis, adipiscing non justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus ac urna nec lorem facilisis commodo. Maecenas aliquet, augue imperdiet vestibulum accumsan, diam purus consectetur ante, ut ornare lectus erat ac dui. Mauris tristique enim vel quam malesuada id rhoncus urna aliquam. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque mauris ligula, pretium non aliquam ac, dictum at libero. Donec fringilla, eros ut scelerisque aliquet, lorem diam facilisis felis, at fermentum odio nisi eget mauris. Fusce viverra, orci et tempor cursus, augue metus posuere leo, et porta erat est quis tellus. Sed mi libero, placerat non ultrices ultricies, rhoncus eu sapien. Nam mollis, purus at dapibus feugiat, nunc lectus blandit risus, sed bibendum lacus ligula non nunc. Phasellus nulla mi, eleifend nec tempus sed, gravida vitae sem. Cras tincidunt lacinia massa et varius.</p>

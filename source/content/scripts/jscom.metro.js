@@ -43,6 +43,138 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         htmlElement.addClass(themeName);
     };
 
+    /*
+    * POPNOTIFY
+    * Author: John Sedlak
+    * Created: 2012-08-02
+    * Use: $.js.popNotify(message, options)
+    */
+    $.js.popNotify = function (message, options) {
+        var bodyElement = $('body');
+
+        var controller = bodyElement.data('jscom.PopNotifyController');
+        if (controller == null) {
+            controller = new PopNotifyController();
+            bodyElement.data('jscom.PopNotifyController', controller);
+        }
+
+        if (message != null && message.length > 0) {
+            controller.enqueue(message, options);
+        }
+
+        return controller;
+    };
+
+    function PopNotifyController() {
+        var that = this;
+
+        var internalUpdate = function () {
+            if (that.timerId != null) {
+                clearTimeout(that.timerId);
+                that.timerId = setTimeout(internalUpdate, 100);
+            }
+
+            that.update();
+        };
+
+        this.messageQueue = new Array();
+        this.activeQueue = new Array();
+        this.timerId = setTimeout(internalUpdate, 100);
+        this.counter = 0;
+
+        // Make sure we close the notifications
+        $('.notification .close').live(
+            'click',
+            function (event) {
+                event.preventDefault();
+                that.close_clicked(event, $(this), that);
+            }
+        );
+    };
+
+    PopNotifyController.prototype = {
+        enqueue: function (message, options) {
+            var that = this,
+                currentCount = that.counter;
+
+            that.counter += 1;
+
+            // Setup the default settings & options
+            var defaults = {
+                message: message,
+                cssClass: '',
+                duration: 5000,
+                target: $('<div class="notification" data-uid="' + currentCount + '"><a href="#" class="close cancel lonely white icon"><!--close--></a><p>' + message + '</p></div>')
+            };
+
+            // Load the option values ontop of the defaults
+            var settings = $.extend(
+                {},
+                defaults,
+                options
+            );
+
+            this.messageQueue.push(settings);
+
+            if (this.activeQueue.length < 5) {
+                this.dequeue();
+            }
+        },
+
+        dequeue: function () {
+            // Are there no messages to pop?
+            if (this.messageQueue.length == 0) {
+                return;
+            }
+
+            var msg = this.messageQueue.shift();
+
+            this.activeQueue.push(msg);
+
+            var index = this.activeQueue.length - 1;
+
+            msg.target.css('top', 130 * index + 20 * this.activeQueue.length + 'px');
+            $('body').append(msg.target);
+        },
+
+        update: function () {
+            var that = this;
+
+            for (var i = that.activeQueue.length - 1; i >= 0; i--) {
+                var msg = that.activeQueue[i];
+                msg.duration = msg.duration - 100;
+
+                if (msg.duration < 0) {
+                    that.removeAt(i);
+                }
+            }
+        },
+
+        removeAt: function (i) {
+            var that = this,
+                msg = that.activeQueue[i];
+
+            that.activeQueue.splice(i, 1);
+
+            msg.target.fadeOut(250, function () { msg.target.remove(); });
+            for (var k = i; k < that.activeQueue.length; k++) {
+                that.activeQueue[k].target.animate({ top: '-=150' });
+            }
+        },
+
+        close_clicked: function (event, anchor, controller) {
+            event.preventDefault();
+
+            var parent = anchor.parents('.notification');
+
+            controller.removeAt(
+                controller.activeQueue.first(function (obj) {
+                    return obj.target.data('uid') == parent.data('uid');
+                })
+            );
+        }
+    };
+
 
     /*
     * DIALOG
@@ -632,6 +764,43 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 				this.pauseInterval
 			);
         }
+    };
+
+    /*
+    * ARRAY FUNCTIONS
+    * Author: John Sedlak
+    * Created: 2012-08-02
+    */
+    Array.prototype.first = function (comparer, start) {
+        if (start == null) {
+            start = 0;
+        }
+
+        for (var i = start; i < this.length; i++) {
+            if (comparer(this[i])) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
+
+    Array.prototype.indexOf = function (obj, start) {
+        if (obj == null) {
+            return -1;
+        }
+
+        if (start == null) {
+            start = 0;
+        }
+
+        for (var i = start; i < this.length; i++) {
+            if (this[i] == obj) {
+                return i;
+            }
+        }
+
+        return -1;
     };
 
 })(jQuery);
