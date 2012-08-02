@@ -160,6 +160,10 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             for (var k = i; k < that.activeQueue.length; k++) {
                 that.activeQueue[k].target.animate({ top: '-=150' });
             }
+
+            if (that.activeQueue.length < 5) {
+                that.dequeue();
+            }
         },
 
         close_clicked: function (event, anchor, controller) {
