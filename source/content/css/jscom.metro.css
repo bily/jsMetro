@@ -467,15 +467,23 @@ input.button {
 	
 	
 .notification {
-    position: fixed;
-    right: 20px;
-    top: 10px;
-    width: 300px;
-    height: 100px;
     background-color: #1ba1e2;
     color: #fff !important;
-    padding: 10px;
+    height: 100px;
     overflow: hidden;
+    padding: 10px;
+    position: fixed;
+    right: -320px;
+    top: 10px;
+    transition:         all ease-in 0.5s;
+    -webkit-transition: all ease-in 0.5s;
+    -o-transition:      all ease-in 0.5s;
+    -moz-transition:    all ease-in 0.5s;
+    width: 300px;    
+}
+
+.notification.active {
+    right: 20px;
 }
 
 .notification p {

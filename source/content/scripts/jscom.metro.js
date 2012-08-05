@@ -134,7 +134,11 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             var index = this.activeQueue.length - 1;
 
             msg.target.css('top', 130 * index + 20 * this.activeQueue.length + 'px');
+
             $('body').append(msg.target);
+            
+            //msg.target.delay(1250).addClass('active');
+            setTimeout(function() { msg.target.addClass('active'); }, 1);
         },
 
         update: function () {
@@ -158,7 +162,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 
             msg.target.fadeOut(250, function () { msg.target.remove(); });
             for (var k = i; k < that.activeQueue.length; k++) {
-                that.activeQueue[k].target.animate({ top: '-=150' });
+                that.activeQueue[k].target.css('top', (that.activeQueue[k].target.offset().top - 150) + 'px'); //animate({ top: '-=150' });
             }
 
             if (that.activeQueue.length < 5) {
