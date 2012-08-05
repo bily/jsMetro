@@ -497,3 +497,55 @@ input.button {
     right: 0px;
     top: -5px;
 }
+
+/* THEME SUPPORT FOR popNotify */
+.magenta .notification,
+.notification.purple {
+    background: #ff0097;
+}
+
+.purple .notification,
+.notification.purple {
+    background: #a200ff;
+}
+
+.teal .notification,
+.notification.teal {
+    background: #00aba9;
+}
+
+.lime .notification,
+.notification.lime {
+    background: #8cbf26;
+}
+
+.brown .notification,
+.notification.brown {
+    background: #996600;
+}
+
+.pink .notification,
+.notification.pink {
+    background: #ff0097;
+}
+
+
+.orange .notification,
+.notification.orange{
+    background: #f09609;
+}
+
+.blue .notification,
+.notification.blue {
+    background: #1ba1e2;
+}
+
+.red .notification,
+.notification.red {
+    background: #e51400;
+}
+
+.green .notification,
+.notification.green {
+    color: #339933;
+}
