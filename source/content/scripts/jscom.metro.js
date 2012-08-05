@@ -8,13 +8,13 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 
     if (!$.js) {
         $.js = {
-            version: '1.2.7',
+            version: '1.2.8',
             author: 'John Sedlak (kriscsc@msn.com)',
             authorWebsite: 'http://johnsedlak.com',
             website: 'https://github.com/jsedlak/jsMetro'
         };
     } else {
-        $.js.version = '1.2.7';
+        $.js.version = '1.2.8';
     }
 
     $.js.themes = ['magenta', 'purple', 'teal', 'lime', 'brown', 'pink', 'orange', 'blue', 'red', 'green'];
