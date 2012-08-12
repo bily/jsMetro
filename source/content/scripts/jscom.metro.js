@@ -1,20 +1,20 @@
 /*
-jscom.metro-tools.js
-Copyright (C)2012 John Sedlak
-http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
+    jscom.metro.js
+    Copyright (C)2012 John Sedlak
+    http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 */
 (function ($) {
     "use strict";
 
     if (!$.js) {
         $.js = {
-            version: '1.2.8',
+            version: '1.2.9',
             author: 'John Sedlak (kriscsc@msn.com)',
             authorWebsite: 'http://johnsedlak.com',
             website: 'https://github.com/jsedlak/jsMetro'
         };
     } else {
-        $.js.version = '1.2.8';
+        $.js.version = '1.2.9';
     }
 
     $.js.themes = ['magenta', 'purple', 'teal', 'lime', 'brown', 'pink', 'orange', 'blue', 'red', 'green'];
@@ -136,9 +136,9 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             msg.target.css('top', 130 * index + 20 * this.activeQueue.length + 'px');
 
             $('body').append(msg.target);
-            
+
             //msg.target.delay(1250).addClass('active');
-            setTimeout(function() { msg.target.addClass('active'); }, 1);
+            setTimeout(function () { msg.target.addClass('active'); }, 1);
         },
 
         update: function () {
@@ -237,6 +237,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             // Check for escape key
             if (event.keyCode == 27) {
                 that.dialogElement.removeClass('visible');
+                that.dialogElement.css('height', '100%');
             }
         });
     };
@@ -250,7 +251,10 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
                 buttonClasses: [''],
                 callbacks: [null],
                 html: '',
-                message: message
+                message: message,
+                autoFocus: true,
+                cssClass: '',
+                validateCallback: null
             };
 
             // Extend with the provided options
@@ -290,23 +294,32 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             this.contentElement.html(settings.message);
             this.buttonsElement.html(settings.html);
 
-            this.dialogElement.addClass('visible');
+            this.dialogElement.css('height', $(document).height() + 'px');
+            this.dialogElement.attr('class', 'visible');
+            this.dialogElement.addClass(settings.cssClass);
 
             // Try to focus on the first input element
-            var inputElement = this.dialogElement.find('input:eq(0)');
-            if (inputElement != null && inputElement.length > 0) {
-                inputElement.first().focus();
+            if (settings.autoFocus) {
+                var inputElement = this.dialogElement.find('input:eq(0)');
+                if (inputElement != null && inputElement.length > 0) {
+                    inputElement.first().focus();
+                }
             }
         },
 
         buttonClicked: function (button, event) {
-            var that = this;
+            var that = this,
+                msg = that.activeMessage;
+
+            var isValidCallback = msg.validateCallback;
+            if (isValidCallback != null && !isValidCallback(button)) {
+                return;
+            }
 
             this.dialogElement.removeClass('visible');
+            this.dialogElement.css('height', '100%');
 
             this.timerId = setTimeout(function () { that.dequeue(); }, 1000);
-
-            var msg = this.activeMessage;
 
             // TODO: Find a better way to do this.
             // Finds the index of the button and calls the appropriate callback if it exists
