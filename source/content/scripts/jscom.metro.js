@@ -1,7 +1,7 @@
 /*
-    jscom.metro.js
-    Copyright (C)2012 John Sedlak
-    http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
+jscom.metro.js
+Copyright (C)2012 John Sedlak
+http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 */
 (function ($) {
     "use strict";
@@ -450,7 +450,7 @@
     };
 
     $.fn.columnize = function (options) {
-        $(this).each(function () {
+        $(this).each(function (index) {
             var that = $(this);
 
             var defaults = {
@@ -464,17 +464,17 @@
 			    options
 		    );
 
-            var count = that.find(settings.separator).length;
-            var gapCount = count - 1;
-            var width = (that.width() - gapCount * settings.gap) * 1.0 / count;
-
-            var newWrap = $('<div/>');
+            var count = that.find(settings.separator).length,
+                gapCount = count - 1,
+                width = (that.width() - gapCount * settings.gap) * 1.0 / count,
+                className = 'column-' + index,
+                newWrap = $('<div/>');
 
             that.find(settings.separator).each(function () {
                 var sep = $(this),
 				all = sep.nextUntil(settings.separator);
 
-                var newCol = $('<div class="column"></div>');
+                var newCol = $('<div class="' + className + '"></div>');
                 newCol.append(sep.clone());
                 newCol.append(all.clone());
 
@@ -485,10 +485,10 @@
             });
 
             that.append(newWrap.html());
-            $('head').append('<style>.column { float: left; width: ' + width + 'px; margin-right: ' + settings.gap + 'px; } .column.last { margin-right: 0px; }</style>');
+            $('head').append('<style>.' + className + ' { float: left; width: ' + width + 'px; margin-right: ' + settings.gap + 'px; } .' + className + '.last { margin-right: 0px; }</style>');
             that.append('<div class="clear"><!--clear--></div>');
 
-            that.find('.column:last').addClass('last');
+            that.find('.' + className + ':last').addClass('last');
         });
     };
 

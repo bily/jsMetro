@@ -59,7 +59,7 @@
 body.light #JSDialog>.dialog-panel { background: #fff; color: inherit; }
 
 #JSDialog.visible>.dialog-panel {
-	top: 20%;
+	top: 100px; 
 }
 
 #JSDialog>.dialog-panel>.dialog-content {
@@ -196,7 +196,7 @@ textarea:hover {
 	
 	border: 0;
 	
-	padding: 7px 15px 8px;
+	padding: 7px 15px 8px !important;
 	margin: 0 5px 5px 0;
 	
 	background-color: #1ba1e2;
@@ -210,17 +210,18 @@ textarea:hover {
 	transition: 		all 0.25s ease-in-out !important;
 }
 
-input.button { 
-	padding: 9px 15px 9px;
+input.button,
+button.button { 
+	padding: 9px 15px 9px !important;
 	
 	/* IE 8 Hack */
-	//padding: 9px 15px 8px; 
+	//padding: 9px 15px 8px !important; 
 	
 	vertical-align: top; 
 }
 
 @-moz-document url-prefix() {
-  input.button { padding: 9px 15px 9px; }
+  input.button { padding: 9px 15px 9px !important; }
 }
 
 .button:hover { 
@@ -238,9 +239,14 @@ input.button {
 
 /* THEMING SUPPORT */
 	/* GREEN */
-	body.green .button { background-color: #339933; color: #fff; }
-	body.green .button:hover { color: #fff; background-color: #4ab64a; }
-	body.green .button:active { color: #fff; background-color: #339933; }
+	body.green .button,
+    .button.green { background-color: #339933; color: #fff; }
+
+	body.green .button:hover,
+    .button.green:hover { color: #fff; background-color: #4ab64a; }
+
+	body.green .button:active,
+    .button.green:active { color: #fff; background-color: #339933; }
 	
 	/* RED */
 	body.red .button { background-color: #e51400; color: #fff; }
@@ -291,10 +297,15 @@ input.button {
 	
 }
 
+a.icon {
+    padding: 9px 0px 9px 25px;
+    display: inline-block;
+}
+
 .icon.button,
 .icon.white { 
-	padding-left: 35px;
-	padding-right: 12px;	
+	padding-left: 35px !important;
+	padding-right: 12px !important;	
 	background-image: url('images/metro-white.png');
 	background-repeat: no-repeat; 
 	background-position: 11px center; 
@@ -308,6 +319,9 @@ input.button {
     text-indent: -99999px;
     width: 22px;
 }
+
+
+    
 
 .base.icon {			background-position: 0px -3px; }
 .overflow.icon { 		background-position: 0px -33px; }
