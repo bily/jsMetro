@@ -722,6 +722,141 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         }
     };
 
+    /* Swizzle - a slider implementation */
+    $.fn.swizzle = function (options) {
+        var $that = $(this),
+            controllerKey = 'SwizzleController';
+
+        if ($that.data(controllerKey) != null) {
+            return $that.data(controllerKey);
+        }
+
+        var defaults = {
+            secondsPerScreen: 5,
+            secondsPerAnimation: 1,
+            cssUnviewedClassName: '',
+            cssViewingClassName: 'active',
+            cssViewedClassName: 'viewed',
+            addButtons: true
+        };
+
+        var settings = $.extend({}, defaults, options);
+
+        $that.each(function (index) {
+            var $individual = $(this),
+                controller = new SwizzleController('swizzle' + index, $individual, settings);
+
+            controller.init();
+
+            $individual.data(controllerKey, controller);
+        });
+    }
+
+    function SwizzleController(key, target, options) {
+        this.key = key;
+        this.target = target;
+        this.$steps = target.find('*[data-role="swizzle-step"]');
+        this.options = options;
+        this.intervalTimer = null;
+        this.changed = new Event('SwizzleController-' + key + '-Changed');
+    };
+
+    SwizzleController.prototype = {
+        init: function () {
+            var that = this;
+
+            that.resetTimer();
+        },
+
+        resetTimer: function () {
+            var that = this;
+
+            clearInterval(that.intervalTimer);
+            that.intervalTimer = setInterval(
+                function () {
+                    that.interval_tick();
+                },
+                (that.options.secondsPerScreen + that.options.secondsPerAnimation) * 1000
+            );
+        },
+
+        interval_tick: function () {
+            this.move(1);
+        },
+
+        move: function (amount) {
+            var that = this,
+                $current = that.$steps.filter(that.options.cssViewingClassName),
+                currentIndex = that.indexOfActive(),
+                newActiveIndex = currentIndex + amount;
+
+            // Loop around if less than 0
+            while (newActiveIndex < 0) {
+                newActiveIndex = that.$steps.length + newActiveIndex;
+            }
+
+            // Loop around if greater than the max
+            while (newActiveIndex >= that.$steps.length) {
+                newActiveIndex = newActiveIndex - that.$steps.length;
+            }
+
+            var $newActive = that.$steps.eq(newActiveIndex);
+
+            // We are going down!
+            if (currentIndex > newActiveIndex) {
+                for (var i = currentIndex; i > newActiveIndex; i--) {
+                    that.$steps.eq(i)
+                        .removeClass(that.options.cssViewingClassName)
+                        .removeClass(that.options.cssViewedClassName)
+                        .addClass(that.options.cssUnviewedClassName);
+                }
+
+                $newActive
+                    .removeClass(that.options.cssViewedClassName)
+                    .addClass(that.options.cssViewingClassName);
+            }
+            // We are going up!
+            else if (currentIndex < newActiveIndex) {
+                for (var i = currentIndex; i < newActiveIndex; i++) {
+                    that.$steps.eq(i)
+                        .removeClass(that.options.cssViewingClassName)
+                        .removeClass(that.options.cssUnviewedClassName)
+                        .addClass(that.options.cssViewedClassName);
+                }
+
+                $newActive
+                    .removeClass(that.options.cssUnviewedClassName)
+                    .addClass(that.options.cssViewingClassName);
+            }
+
+            that.changed.invoke({
+                from: $current,
+                to: $newActive,
+                parent: that.target
+            });
+        },
+
+        indexOfActive: function () {
+            var that = this,
+                activeIndex = 0;
+
+            this.$steps.each(function (index) {
+                var $this = $(this);
+
+                if ($this.hasClass(that.options.cssViewingClassName)) {
+                    activeIndex = index;
+                    return false;
+                }
+            });
+
+            return activeIndex;
+        },
+
+        onChanged: function (handler) {
+            this.changed.addHandler(handler);
+        }
+    };
+
     /* EVERY
     * Author: John Sedlak
     * Created: 2012-02-06
@@ -786,6 +921,29 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 			);
         }
     };
+    
+    /* Event Class - supports event based programming models */
+    function Event(name) {
+        this.name = name;
+        this.handlers = [];
+    };
+
+    Event.prototype = {
+        /* Adds a callback function as a handler for the event. */
+        addHandler: function (method) {
+            this.handlers.push(method);
+        },
+
+        /* Invokes the handlers sequentially */
+        invoke: function (data) {
+            var that = this,
+                    index = 0;
+
+            for (index = 0; index < that.handlers.length; index++) {
+                that.handlers[index](data);
+            }
+        }
+    };
 
     /*
     * ARRAY FUNCTIONS
@@ -822,6 +980,26 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         }
 
         return -1;
+    };
+
+    /* Math Functions - transported from another project */
+
+    /* Clamps an input value between two values */
+    Math.clamp = function (input, min, max) {
+        if (input < min) return min;
+        if (input > max) return max;
+
+        return input;
+    };
+
+    /* Returns the resulting amount fraction of a number between two values: derp(5, 0, 10) = 0.5. */
+    Math.derp = function (input, min, max) {
+        return (1.0 * input - min) / (1.0 * max - min);
+    };
+
+    /* Interpolates a fraction between two numbers. TODO: Is interpolate correct here? */
+    Math.lerp = function (min, max, amount) {
+        return (max - min) * amount + min;
     };
 
 })(jQuery);
