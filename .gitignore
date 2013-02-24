@@ -3,3 +3,7 @@
 *.cache
 DS_STORE
 .DS_STORE
+obj
+bin
+*-v1.*
+*-1.0.*

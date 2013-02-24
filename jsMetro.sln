@@ -1,33 +1,18 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "source", "source\", "{2715ADB9-4121-4FF7-A380-91C581448A3A}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/source"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\Code\Websites\jsMetro\source\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\source\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/source"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\Code\Websites\jsMetro\source\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\source\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "34520"
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jsMetro", "source\jsMetro.csproj", "{75FE1D9A-C942-40F2-899F-4399211BD1FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2715ADB9-4121-4FF7-A380-91C581448A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2715ADB9-4121-4FF7-A380-91C581448A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75FE1D9A-C942-40F2-899F-4399211BD1FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75FE1D9A-C942-40F2-899F-4399211BD1FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75FE1D9A-C942-40F2-899F-4399211BD1FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75FE1D9A-C942-40F2-899F-4399211BD1FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
