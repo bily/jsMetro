@@ -11,10 +11,10 @@ body {
     padding: 0 0 100px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-weight: normal;
-    font-size: 2.25em;
-    margin: 0.5em 0;
+hr {
+    border: none;
+    border-bottom: dotted 1px #ccc;
+    margin: 25px 0;
 }
 
 p,
@@ -27,16 +27,22 @@ pre {
     margin: 0.5em 0 1em;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-size: 2.25em;
+    margin: 0.5em 0 0.25em;
+}
+
 h2 {
     font-size: 2em;
 }
 
 h3 {
-    font-size: 1.75em;
+    font-size: 1.5em;
 }
 
 h4 {
-    font-size: 1.5em;
+    font-size: 1.25em;
 }
 
 h5, h6 {

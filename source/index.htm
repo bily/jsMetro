@@ -15,22 +15,6 @@
             $(document).ready(function () {
                 $.js.theme(THEMES.JSCOM);
 
-                var jsq = new JSQueue();
-
-                jsq.push(function (qe) {
-                    log('just wait 5 seconds!');
-                    setTimeout(function () {
-                        log('this is my first event!');
-
-                        qe.close();
-                    }, 5000);
-                });
-
-                jsq.push(function (qe) {
-                    log('no wait.');
-                    qe.close();
-                });
-
                 //$.js.dialog('<h3>Hello, world</h3><p>This is NOT lorem ipsum.</p><p class="pull-right"><a href="#" data-role="button" class="large">Close</a>');
             });
         </script>
@@ -44,6 +28,31 @@
         </header>
 
         <article data-role="content">
+            <section id="JSQueue">
+                <h2>JSQueue</h2>
+                <p>The <code>JSQueue</code> class supports First-In-Last-Out (FILO, Stack) based event processing. The goal is to support simultaneous use of the $.js.overlay method and other general purpose, single instance UI elements.</p>
+
+                <h3>Use</h3>
+                <p>In the below example, the second event should not fire until the first one has cleared (5000ms+).</p>
+                <pre>var jsq = new JSQueue();
+
+jsq.push(function (qe) {
+    log('just wait 5 seconds!');
+    setTimeout(function () {
+        log('this is my first event!');
+
+        qe.close();
+    }, 5000);
+});
+
+jsq.push(function (qe) {
+    log('no wait.');
+    qe.close();
+});</pre>
+            </section>
+
+            <hr />
+
             <section id="Events">
                 <h2>Events</h2>
                 <p>To provide simple access to the implementation of an Event Model, the <code>Event</code> class allows for quick, sequential invocation of methods.</p>
@@ -71,6 +80,8 @@ ev.invoke();
 ev.removeHandler(function foo() { });
 ev.invoke();</pre>
             </section>
+
+            <hr />
             
             <section>
                 <h2>Some Heading</h2>
