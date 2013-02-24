@@ -15,6 +15,22 @@
             $(document).ready(function () {
                 $.js.theme(THEMES.JSCOM);
 
+                var jsq = new JSQueue();
+
+                jsq.push(function (qe) {
+                    log('just wait 5 seconds!');
+                    setTimeout(function () {
+                        log('this is my first event!');
+
+                        qe.close();
+                    }, 5000);
+                });
+
+                jsq.push(function (qe) {
+                    log('no wait.');
+                    qe.close();
+                });
+
                 //$.js.dialog('<h3>Hello, world</h3><p>This is NOT lorem ipsum.</p><p class="pull-right"><a href="#" data-role="button" class="large">Close</a>');
             });
         </script>

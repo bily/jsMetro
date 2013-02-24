@@ -7,6 +7,10 @@ body {
     background: rgba(245, 245, 245, 1);
 }
 
+body {
+    padding: 0 0 100px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
     font-size: 2.25em;
@@ -61,16 +65,20 @@ article p {
     text-align: justify;
 }
 
-header[data-role="content"] {
-    margin-top: 50px;
-}
-
 [data-role="content"] {
     background: #fff;
     box-sizing: border-box;
     margin: 0 auto;
     padding: 1px 100px;
     width: 85%;
+}
+
+header[data-role="content"] {
+    margin-top: 50px;
+}
+
+header[data-role="content"] hgroup {
+    border-bottom: solid 2px #efefef;
 }
 
 header[data-role="content"] {

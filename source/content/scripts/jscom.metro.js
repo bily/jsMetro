@@ -154,6 +154,70 @@ var THEMES = {
     JSCOM: 'jscom'
 };
 
+/* JS QUEUE CLASS */
+function JSQueue() {
+    this.internalQueue = new Array();
+    this.activeItem = null;
+};
+
+JSQueue.prototype = {
+    push: function (openCallback) {
+        var that = this,
+            qe = new JSQueuedEvent(openCallback);
+
+        // Add the event handler for qhen the event has been finished
+        qe.closed.addHandler(function (data) { that.onClosed(qe); });
+
+        // Put it on the queue
+        this.internalQueue.push(qe);
+
+        // See if we can open it...
+        this.checkQueue();
+    },
+
+    checkQueue: function () {
+        var that = this;
+
+        if (that.activeItem != null) {
+            return;
+        }
+
+        that.activeItem = that.internalQueue.pop();
+
+        // Let's see if there is an item to open...
+        if (that.activeItem) {
+            that.activeItem.open();
+        }
+    },
+
+    onClosed: function (queuedEvent) {
+        this.activeItem = null;
+        this.checkQueue();
+    }
+};
+
+function JSQueuedEvent(openCallback) {
+    this.openCallback = openCallback;
+    this.closed = new Event('JSQueuedEvent-closed');
+}
+
+JSQueuedEvent.prototype = {
+    open: function () {
+        var that = this,
+            cb = that.openCallback;
+
+        if (!cb) {
+            that.close();
+        } else {
+            cb(that);
+        }
+    },
+
+    close: function () {
+        this.closed.invoke(this);
+    }
+}
+
 /* EVENT CLASS */
 function Event(name) {
     this.name = name;
