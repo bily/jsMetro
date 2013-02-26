@@ -9,11 +9,25 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             version: '2.0',
             author: 'John Sedlak (kriscsc@msn.com)',
             authorWebsite: 'http://johnsedlak.com',
-            website: 'https://github.com/jsedlak/jsMetro'
+            website: 'https://github.com/jsedlak/jsMetro',
+            $body: null
         };
     } else {
         $.js.version = '2.0';
     }
+
+    // Gets the general purpose stack
+    $.js.getStack = function () {
+        var $body = $('body'),
+            stack = $body.data('actionstack');
+
+        if (!stack) {
+            stack = new ActionStack();
+            $body.data('actionstack', stack);
+        }
+
+        return stack;
+    };
 
     /*
     * Provides theme support for the entire DOM or a single jQuery context
@@ -55,18 +69,31 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         var $overlay = $.js.ensureOverlay();
 
         // Get the duration from CSS if we can... default to 1000ms.
-        var duration = parseDuration($overlay.css('transition-duration'));
+        var duration = parseDuration($overlay.css('transition-duration')),
+            stackCount = $overlay.data('stack');
+
+        if(stackCount == null){
+            stackCount = 0;
+        }
+
         log('[jscom.metro.js] overlay duration: ' + duration + 'ms');
 
         if (show) {
             $overlay
                 .fadeIn(0)
-                .removeClass('hidden');
+                .delay(100)
+                .removeClass('hidden')
+                .data('stack', stackCount + 1);
         } else {
-            $overlay
-                .addClass('hidden')
-                .delay(duration)
-                .fadeOut(0);
+            stackCount--;
+
+            if(stackCount == 0){
+                $overlay
+                    .addClass('hidden')
+                    .delay(duration)
+                    .fadeOut(0)
+                    .data('stack', 0);
+            }
         }
 
         setTimeout(function () {
@@ -74,48 +101,81 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         }, duration);
     };
 
-    $.js.dialog = function (msg) {
-        var $overlay = $.js.ensureOverlay(),
-            $dialog = $.js.ensureElement(
-                '[data-role="overlay"] [data-role="dialog"]',
-                function () {
-                    var $dialog = $('<div data-role="dialog" class="hidden" style="display:none;" />');
+    $.js.dialog = function (msg, callback) {
+        // Get the stack, we'll have to use it here
+        var stack = $.js.getStack();
 
-                    $overlay.append($dialog);
+        // Push an action onto the stack
+        stack.push(function (action) {
+            // Get the overlay and dialog elements
+            var $overlay = $.js.ensureOverlay(),
+                $dialog = $.js.ensureElement(
+                    '[data-role="overlay"] [data-role="dialog"]',
+                    function () { var $dlg = $.js.dialogCreate(); $overlay.append($dlg); return $dlg; }
+                );
 
-                    $(document).on(
-                        'click',
-                        '[data-role="dialog"] a',
-                        function (event) {
-                            event.preventDefault();
+            // Setup the HTML of the dialog
+            $dialog.html('<section>' + msg + '</section>');
 
-                            var duration = parseDuration($dialog.css('transition-duration'));
-
-                            $dialog
-                                .addClass('hidden')
-                                .delay(duration)
-                                .fadeOut(0);
-
-                            setTimeout(function () { $.js.overlay(false); }, duration);
-                        }
-                    );
-
-                    return $dialog;
+            // Add our custom callback - we want to close off the event
+            // and then call the user's callback.
+            $dialog.data(
+                'dcallback',
+                function (dlg, event) {
+                    action.close();
+                    if (callback) { callback(dlg, event); }
                 }
             );
 
-        $dialog.html('<section>' + msg + '</section>');
+            // Start the overlay!
+            $.js.overlay(
+                true,
+                function (overlay) {
+                    $dialog.fadeIn(0).delay(100).removeClass('hidden');
+                }
+            );
+        });
+    };
 
-        $.js.overlay(
-            true,
-            function (overlay) {
-                $dialog.fadeIn(0).removeClass('hidden');
+    $.js.dialogCreate = function () {
+        // DEBUG LOG
+        log('[jscom.metro.js] creating dialog');
+
+        // Create the jquery element
+        var $dialog = $('<div data-role="dialog" class="hidden" style="display:none;" />');
+
+        // Bind the event model
+        $(document).on(
+            'click',
+            '[data-role="dialog"] a',
+            function (event) {
+                event.preventDefault();
+
+                var duration = parseDuration($dialog.css('transition-duration'));
+
+                $dialog.addClass('hidden').delay(duration).fadeOut(0);
+
+                setTimeout(
+                    function () {
+                        // Unstack the overlay once
+                        $.js.overlay(false);
+
+                        // Call the callback if it exists
+                        var callback = $dialog.data('dcallback');
+                        if (callback) {
+                            callback($dialog, $(this));
+                        }
+                    },
+                    duration
+                );
             }
         );
-    }
+
+        return $dialog;
+    };
 }(jQuery));
 
-function QueuedAction() {
+function StackedAction() {
     this.closedEvent = new Event();
 };
 
@@ -150,39 +210,39 @@ var THEMES = {
     RED: 'red',
     GREEN: 'green',
     GOOGLE: 'google',
-    FACEBOOK: 'facebook',
+    FACEBOOK: 'facebook', 
     JSCOM: 'jscom'
 };
 
 /* JS QUEUE CLASS */
-function JSQueue() {
-    this.internalQueue = new Array();
+function ActionStack() {
+    this.internalStack = new Array();
     this.activeItem = null;
 };
 
-JSQueue.prototype = {
+ActionStack.prototype = {
     push: function (openCallback) {
         var that = this,
-            qe = new JSQueuedEvent(openCallback);
+            qe = new Action(openCallback);
 
         // Add the event handler for qhen the event has been finished
         qe.closed.addHandler(function (data) { that.onClosed(qe); });
 
-        // Put it on the queue
-        this.internalQueue.push(qe);
+        // Put it on the stack
+        this.internalStack.push(qe);
 
         // See if we can open it...
-        this.checkQueue();
+        this.checkStack();
     },
 
-    checkQueue: function () {
+    checkStack: function () {
         var that = this;
 
         if (that.activeItem != null) {
             return;
         }
 
-        that.activeItem = that.internalQueue.pop();
+        that.activeItem = that.internalStack.pop();
 
         // Let's see if there is an item to open...
         if (that.activeItem) {
@@ -190,18 +250,18 @@ JSQueue.prototype = {
         }
     },
 
-    onClosed: function (queuedEvent) {
+    onClosed: function (stackedEvent) {
         this.activeItem = null;
-        this.checkQueue();
+        this.checkStack();
     }
 };
 
-function JSQueuedEvent(openCallback) {
+function Action(openCallback) {
     this.openCallback = openCallback;
-    this.closed = new Event('JSQueuedEvent-closed');
+    this.closed = new Event('Action-closed');
 }
 
-JSQueuedEvent.prototype = {
+Action.prototype = {
     open: function () {
         var that = this,
             cb = that.openCallback;
