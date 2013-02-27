@@ -210,7 +210,7 @@ var THEMES = {
     RED: 'red',
     GREEN: 'green',
     GOOGLE: 'google',
-    FACEBOOK: 'facebook', 
+    FACEBOOK: 'facebook',
     JSCOM: 'jscom'
 };
 

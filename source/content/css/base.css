@@ -85,16 +85,29 @@ article p {
 
 header[data-role="content"] {
     margin-top: 50px;
+    padding-top: 25px;
+    position: relative;
 }
 
-header[data-role="content"] hgroup {
+header[data-role="content"] nav {
+    bottom: 20px;
+    position: absolute;
+    right: 100px;
+}
+
+header[data-role="content"] > section {
     border-bottom: solid 2px #efefef;
 }
 
-header[data-role="content"] {
-    padding-top: 25px;
-}
+
 
 footer[data-role="content"] {
     padding-bottom: 25px;
+}
+
+#IconGrid span {
+    display: inline-block;
+    margin: 5px;
+    width: 20%;
+    min-width: 125px;
 }

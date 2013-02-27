@@ -52,6 +52,23 @@
 }
 
 /*  ######################################################################################################
+    ELEMENTS
+    ###################################################################################################### */
+[data-role="navigation"] ul,
+[data-role="navigation"] li {
+    list-style: none;
+}
+
+[data-role="navigation"][data-horizontal="true"] li {
+    float: left;
+}
+
+[data-role="navigation"][data-horizontal="true"] li a {
+    display: inline-block;
+}
+
+
+/*  ######################################################################################################
     BUTTONS
     ###################################################################################################### */
 [data-role="button"] {
@@ -59,7 +76,7 @@
     color: #2d2d2d;
     cursor: pointer;
     display: inline-block;
-    padding: 9px 15px;
+    padding: 7px 12px 8px;
     margin: 5px 1px;
     text-decoration: none;
     transition: all ease-in-out 1s;
@@ -240,11 +257,67 @@
     background-color: #ff0097;
 }
 
+/* GOOGLE f1f1f1[primary:4787ed] */
+[data-theme="google"] [data-role="button"],
+[data-role="button"][data-theme="google"] {
+    background-color: #f1f1f1; 
+    color: #2d2d2d;
+}
+
+[data-theme="google"] [data-role="button"]:hover,
+[data-role="button"][data-theme="google"]:hover {
+    color: #2d2d2d;
+    background-color: #d9d9d9;
+}
+
+[data-theme="google"] [data-role="button"]:active,
+[data-role="button"][data-theme="google"]:active {
+    color: #2d2d2d;
+    background-color: #f1f1f1;
+}
+
+[data-theme="google"] [data-role="button"].primary,
+[data-role="button"][data-theme="google"].primary {
+    background-color: #4787ed; 
+    color: #fff;
+}
+
+[data-theme="google"] [data-role="button"].primary:hover,
+[data-role="button"][data-theme="google"].primary:hover {
+    color: #fff;
+    background-color: #4c91ff;
+}
+
+[data-theme="google"] [data-role="button"].primary:active,
+[data-role="button"][data-theme="google"].primary:active {
+    color: #fff;
+    background-color: #4787ed;
+}
+
+/* FACEBOOK: 3b5998 */
+[data-theme="facebook"] [data-role="button"],
+[data-role="button"][data-theme="facebook"] {
+    background-color: #3b5998; 
+    color: #fff;
+}
+
+[data-theme="facebook"] [data-role="button"]:hover,
+[data-role="button"][data-theme="facebook"]:hover {
+    color: #fff;
+    background-color: #4668b3;
+}
+
+[data-theme="facebook"] [data-role="button"]:active,
+[data-role="button"][data-theme="facebook"]:active {
+    color: #fff;
+    background-color: #3b5998;
+}
+
 i[data-icon] {
     background-image: url('images/metro-black.png');
     background-repeat: no-repeat; 
     display: inline-block;
-    height: 21px;
+    height: 22px;
     width: 25px;
     padding: 0;
     margin: 1px 0 0;
@@ -257,7 +330,54 @@ i[data-icon].white {
 
 }
 
+[data-icon="add"] { background-position: 0px -549px; }
+[data-icon="add-to-favs"] { background-position: 0px -639px; }
+[data-icon="back"] { background-position: 0px -129px; }
+[data-icon="camera"] { background-position: 0px -999px; }
+[data-icon="cancel"] { background-position: 0px -279px; }
+[data-icon="check"],	
+[data-icon="checkmark"] { background-position: 0px -309px; }
+[data-icon="comment"] { background-position: 1px -1059px; }
+[data-icon="delete"] { background-position: 0px -399px; }
+[data-icon="down"] { background-position: 0px -189px; }
+[data-icon="download"] { background-position: 0px -219px; }
+[data-icon="edit"] { background-position: 0px -369px; }
+[data-icon="fast-forward"] { background-position: 0px -819px; }
+[data-icon="favs"],
+[data-icon="favorites"] { background-position: 0px -609px; }
+[data-icon="flag"] { background-position: 0px -1089px; }
+[data-icon="folder"] { background-position: 0px -429px; }
+[data-icon="heart"] { background-position: 0px -669px; }
+[data-icon="info"] { background-position: 0px -459px; }
+[data-icon="mail"] { background-position: 0px -939px; }
+[data-icon="minus"] { background-position: 0px -519px; }
 [data-icon="next"] { background-position: 0px -99px; }
+[data-icon="overflow"] { background-position: 0px -39px; }
+[data-icon="pause"] { background-position: 0px -789px; }
+[data-icon="parent"] { background-position: 0px -69px; }
+[data-icon="phone"] { background-position: 0px -909px; }
+[data-icon="play"] { background-position: 0px -759px; }
+[data-icon="previous"] { background-position: 1px -129px; }
+[data-icon="question"],
+[data-icon="question-mark"] { background-position: 0px -489px; }
+[data-icon="refresh"] { background-position: 0px -579px; }
+[data-icon="rewind"] { background-position: 0px -849px; }
+[data-icon="save"] { background-position: 0px -339px; }
+[data-icon="search"] { background-position: 0px -699px; }
+[data-icon="settings"] { background-position: 0px -879px; }
+[data-icon="share"] { background-position: 0px -729px; }
+[data-icon="twitter"] { background-position: 1px -1119px; }
+[data-icon="up"] { background-position: 0px -159px; }
+[data-icon="upload"] { background-position: 0px -249px; }
+[data-icon="video"] { background-position: 0px -969px; }
+[data-icon="windows"] { background-position: 0px -1029px; }
+
+/*  ######################################################################################################
+    COLUMNS
+    ###################################################################################################### */
+[data-columns] {
+    columns: auto auto;
+}
 
 /*  ######################################################################################################
     HELPER CLASSES
@@ -270,31 +390,14 @@ i[data-icon].white {
     float: left;
 }
 
-.pull-right:after,
-.pull-left:after,
+.clear {
+    clear: both;
+}
+
 .clearfix:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
-}
- 
-.pull-right,
-.pull-left,
-.clearfix {
-	display: inline-block;
-}
- 
-html[xmlns] .pull-right,
-html[xmlns] .pull-left,
-html[xmlns] .clearfix {
-	display: block;
-}
- 
-* html .pull-right,
-* html .pull-left,
-* html .clearfix {
-	height: 1%;
+     content: ".";
+     clear: both;
+     height: 0;
+     visibility: hidden;
+     display: block;
 }

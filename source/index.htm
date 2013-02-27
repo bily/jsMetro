@@ -10,6 +10,7 @@
 
         <script src="content/scripts/date-format.js"></script>
         <script src="content/scripts/jscom.metro.js"></script>
+        <script src="content/scripts/showcase.js"></script>
 
         <script>
             $(document).ready(function () {
@@ -55,10 +56,20 @@
     </head>
 
     <body>
-        <header data-role="content">
-            <hgroup>
-                <h1>jsMetro</h1>
-            </hgroup>
+        <header data-role="content" >
+            <section>
+                <hgroup class="pull-left">
+                    <h1>jsMetro</h1>
+                </hgroup>
+                <nav class="pull-right">
+                    <ul data-role="navigation" data-horizontal="true" data-theme="purple">
+                        <li><a href="#About" data-role="button">About</a></li>
+                        <li><a href="#JavaScript" data-role="button">JavaScript</a></li>
+                        <li><a href="#FormElements" data-role="button">Forms</a></li>
+                    </ul>
+                </nav>
+                <div class="clear"><!--clear--></div>
+            </section>
         </header>
 
         <article data-role="content">
@@ -78,28 +89,27 @@
                 <p>In the below example, the second event should not fire until the third one has cleared (7000ms+).</p>
                 <pre>var as = new ActionStack();
 
-as.push(function (se) {
-    log('just wait 5 seconds!');
+as.push(function (action) {
+    log('first action to be entered will fire right away.');
+
     setTimeout(function () {
-        log('this is my first event!');
+        log('timeout finished! time to close the action!');
 
-        se.close();
+        action.close();
     }, 5000);
+
+    log('now we\'ll wait 5000ms.');
 });
 
-as.push(function (se) {
-    log('no wait.');
-    se.close();
-});
+as.push(function (action) {
+    log('second action - this shouldn\'t fire until the first one has closed.');
 
-as.push(function (se) {
-    $.js.dialog(
-        '&lt;h3&gt;Hello, world&lt;/h3&gt;',
-        function () {
-            se.close();
-        }
-    );
+    action.close();
 });</pre>
+                <div class="pull-right">
+                    <a href="#" onclick="javascript:$.showcase.actionStack_simpleSample();return false;" data-role="button" data-theme="red"><i data-icon="refresh"></i> Run this Sample</a>
+                </div>
+                <div class="clear"><!--clear--></div>
             </section>
 
             <hr />
@@ -174,8 +184,56 @@ ev.invoke();</pre>
                 </div>
 
                 <h3>Icons</h3>
+                <p>Use the attribute, <code>data-icon</code> to add an icon.</p>
+                <pre>&lt;i data-icon="next"&gt;&lt;/i&gt;</pre>
                 <div>
                     <a href="#" data-role="button" data-theme="green"><i data-icon="next"></i>Next Icon / Button</a>
+                </div>
+
+                <p>You can also apply them to big buttons</p>
+                <div>
+                    <a href="#" data-role="button" data-theme="google" class="primary large"><i data-icon="download"></i>Download!</a>
+                </div>
+
+                <h4>Available Icons</h4>
+                <div id="IconGrid">
+                    <span><i data-icon="add"></i> add</span>
+                    <span><i data-icon="add-to-favs"></i> add-to-favs</span>
+                    <span><i data-icon="back"></i> back</span>
+                    <span><i data-icon="cancel"></i> cancel</span>
+                    <span><i data-icon="checkmark"></i> check[mark]</span>
+                    <span><i data-icon="comment"></i> comment</span>
+                    <span><i data-icon="delete"></i> delete</span>
+                    <span><i data-icon="down"></i> down</span>
+                    <span><i data-icon="download"></i> download</span>
+                    <span><i data-icon="edit"></i> edit</span>
+                    <span><i data-icon="fast-forward"></i> fast-forward</span>
+                    <span><i data-icon="favs"></i> fav[orite]s</span>
+                    <span><i data-icon="flag"></i> flag</span>
+                    <span><i data-icon="folder"></i> folder</span>
+                    <span><i data-icon="heart"></i> heart</span>
+                    <span><i data-icon="info"></i> info</span>
+                    <span><i data-icon="mail"></i> mail</span>
+                    <span><i data-icon="minus"></i> minus</span>
+                    <span><i data-icon="next"></i> next</span>
+                    <span><i data-icon="overflow"></i> overflow</span>
+                    <span><i data-icon="pause"></i> pause</span>
+                    <span><i data-icon="parent"></i> parent</span>
+                    <span><i data-icon="phone"></i> phone</span>
+                    <span><i data-icon="play"></i> play</span>
+                    <span><i data-icon="previous"></i> previous</span>
+                    <span><i data-icon="question-mark"></i> question[-mark]</span>
+                    <span><i data-icon="refresh"></i> refresh</span>
+                    <span><i data-icon="rewind"></i> rewind</span>
+                    <span><i data-icon="save"></i> save</span>
+                    <span><i data-icon="search"></i> search</span>
+                    <span><i data-icon="settings"></i> settings</span>
+                    <span><i data-icon="share"></i> share</span>
+                    <span><i data-icon="twitter"></i> twitter</span>
+                    <span><i data-icon="up"></i> up</span>
+                    <span><i data-icon="upload"></i> upload</span>
+                    <span><i data-icon="video"></i> video</span>
+                    <span><i data-icon="windows"></i> windows</span>
                 </div>
             </section>
 
