@@ -1,6 +1,11 @@
-# jsMetro ReadMe
+# jsMetro ReadMe [v2]
 
-jsMetro ([jsmetro.johnsedlak.com](http://jsmetro.johnsedlak.com)) is a set of jQuery/js functions created with a goal of bringing Metro design elements to the web. The secondary goal is to learn about jQuery plugin and general javascript development.
+jsMetro ([jsmetro.johnsedlak.com](http://jsmetro.johnsedlak.com)) is a set of jQuery/js functions created with a goal of bringing Metro design elements to the web. The secondary goal is to learn about jQuery plugin and general javascript development. What does this really mean?
+
+* Make Metro design on the web easier - implement "themes" that can be dropped on a blank slate to make the web "prettier"
+* Bring Metro-like interfaces to the web - create user experiences that follow the Metro design and interaction methodologies, putting data first
+* KISS - Keep It Simple, Stupid - No bloating of the DOM through JavaScript, simple markup that just works.
+* Learn more about JavaScript/jQuery
 
 ## Releases
 
