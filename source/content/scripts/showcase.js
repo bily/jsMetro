@@ -5,6 +5,18 @@
     $.showcase = {
     };
 
+    $.showcase.dialog_jQuerySample = function () {
+        var $holder = $('#DialogHolder'),
+            $form = $holder.find('form:eq(0)');
+
+        $.js.dialog(
+            $form,
+            function (dlg, element, event) {
+                $form.appendTo($holder);
+            }
+        );
+    };
+
     $.showcase.dialog_simpleSample = function () {
         $.js.dialog(
             '<h3>Confirm Your Eyes Exist</h3><p>Can you read this?</p>' +

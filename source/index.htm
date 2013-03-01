@@ -65,7 +65,7 @@
                 <p>Opens a full-screen dialog for entering information or confirming changes.</p>
 
                 <h3>Format</h3>
-                <pre>$.js.dialog([msg:string], [callback:function]);</pre>
+                <pre>$.js.dialog([msg:string/$element], [callback:function]);</pre>
 
                 <h3>Samples</h3>
                 <h4>Dialog w/ Callback</h4>
@@ -107,6 +107,48 @@
         dlg.find('form').submit();
     }
 );</pre>
+
+                <h4>Dialog w/ jQuery Element</h4>
+                <p>The <code>$.js.dialog</code> method will also accept a jQuery element in the <code>msg</code> parameter. Consider the following simple HTML layout:</p>
+                <pre>&lt;div id="DialogHolder" style="display:none;"&gt;
+    &lt;form&gt;
+        &lt;h3&gt;This is a form.&lt;/h3&gt;
+        &lt;p&gt;This is a form from a hidden element on the page. &lt;/p&gt;
+        &lt;div class="pull-right"&gt;
+            &lt;a href="#" data-role="button" data-theme="google"&gt;Cancel&lt;/a&gt;
+            &lt;a href="#" data-role="button" data-theme="green"&gt;Continue&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/form&gt;
+&lt;/div&gt;</pre>
+
+                <p>When <code>$.js.dialog</code> notices a jQuery element being passed in, it uses <code>appendTo</code> to move that element into the dialog's DOM. During the callback, we simply move the element back.</p>
+                <pre>$.showcase.dialog_jQuerySample = function () {
+    var $holder = $('#DialogHolder'),
+        $form = $holder.find('form:eq(0)');
+
+    $.js.dialog(
+        $form,
+        function (dlg, element, event) {
+            $form.appendTo($holder);
+        }
+    );
+};</pre>
+                <div class="clearfix">
+                    <div class="pull-right">
+                        <a href="#" data-role="button" onclick="javascript:$.showcase.dialog_jQuerySample();return false;"><i data-icon="refresh"></i> Run this Sample</a>
+                    </div>
+                </div>
+
+                <div id="DialogHolder" style="display:none;">
+                    <form>
+                        <h3>This is a form.</h3>
+                        <p>This is a form from a hidden element on the page. </p>
+                        <div class="pull-right">
+                            <a href="#" data-role="button" data-theme="google">Cancel</a>
+                            <a href="#" data-role="button" data-theme="green">Continue</a>
+                        </div>
+                    </form>
+                </div>
             </section>
 
             <hr />

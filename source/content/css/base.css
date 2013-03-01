@@ -22,35 +22,11 @@ hr {
 p,
 ul, 
 ol {
-    margin: 0.25em 0;
+    margin: 0.5em 0;
 }
 
 pre {
     margin: 0.5em 0 1em;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-weight: normal;
-    font-size: 2.75em;
-    font-family: 'Segoe UI Light', 'Segoe WP Semilight', 'Segoe UI', 'Segoe WP', Helvetica, Arial, Tahoma, sans-serif;
-    margin: 0.5em 0 0.25em;
-}
-
-h2 {
-    font-size: 2em;
-}
-
-h3 {
-    font-size: 1.5em;
-}
-
-h4 {
-    font-size: 1.25em;
-}
-
-h5, h6 {
-    font-size: 1em;
-    font-style: italic;
 }
 
 pre, code {
@@ -70,7 +46,7 @@ code {
 }
 
 article p {
-    line-height: 1.75em;
+    line-height: 1.5em;
     text-align: justify;
 }
 
