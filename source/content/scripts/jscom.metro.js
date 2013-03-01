@@ -31,8 +31,8 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 
     /*
     * Provides theme support for the entire DOM or a single jQuery context
-    * Use: $.js.theme(themeName)
-    * Use: $.js.theme(themeName, jQuery)
+    * Use: $.js.theme([themeName:string])
+    * Use: $.js.theme([themeName:string], [context:jQuery Element])
     */
     $.js.theme = function (themeName, context) {
         var theme = '',
@@ -41,6 +41,10 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         elements.attr('data-theme', themeName);
     };
 
+    /*
+     * Ensures that an element exists, is selectable and returns a length > 0. If it doesn't, the function provides the ability to create it on the fly.
+     * Use: $.js.ensureElement([selector:string], [templateCallback:method])
+     */
     $.js.ensureElement = function (selector, templateCallback) {
         var $element = $(selector);
 
@@ -48,11 +52,19 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             return $element;
         }
 
-        $element = templateCallback();
+        // Attempt to call the callback
+        var cb = templateCallback;
+        if (cb) {
+            $element = cb();
+        }
 
         return $element;
     };
 
+    /*
+     * Ensures that the overlay element exists, if not it is created and added to the DOM
+     * Use: $.js.ensureOverlay();
+     */
     $.js.ensureOverlay = function () {
         return $.js.ensureElement(
             '[data-role="overlay"]',
@@ -65,6 +77,10 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         );
     };
 
+    /*
+     * Displays or Hides the overlay, calling a method after the transition has completed.
+     * Use: $.js.overlay([show:bool], [callback:method])
+     */
     $.js.overlay = function (show, callback) {
         var $overlay = $.js.ensureOverlay();
 
@@ -101,6 +117,10 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         }, duration);
     };
 
+    /*
+     * Displays a dialog with some HTML. Calls a method (param: callback) when an anchor element is clicked.
+     * Use: $.js.dialog([msg:string/jQuery Element], [callback:method])
+     */
     $.js.dialog = function (msg, callback) {
         // Get the stack, we'll have to use it here
         var stack = $.js.getStack();
