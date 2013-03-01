@@ -68,6 +68,7 @@
     <Content Include="content\scripts\jscom.metro-1.0.js" />
     <Content Include="content\scripts\jscom.metro.js" />
     <Content Include="content\scripts\jscom.showcase-1.0.js" />
+    <Content Include="content\scripts\showcase.js" />
     <Content Include="index-v1.htm" />
     <Content Include="index.htm" />
     <Content Include="mapper-v1.htm" />

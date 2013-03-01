@@ -1,4 +1,25 @@
-﻿/*  ######################################################################################################
+﻿html,
+body {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-family: 'Segoe UI', 'Segoe WP', Helvetica, Arial, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #2d2d2d;
+}
+
+a img {
+    border: 0;
+}
+
+/*  ######################################################################################################
     OVERLAY
     ###################################################################################################### */
 [data-role="overlay"] {
@@ -26,7 +47,7 @@
 [data-role="dialog"] {
     background: #fff;
     display: block;
-    height: 40%;
+    height: 50%;
     margin: 0;
     overflow: hidden;
     padding: 0;
@@ -67,23 +88,97 @@
     display: inline-block;
 }
 
+/* TABLES */
+table[data-role="data-table"] {
+    border-collapse: collapse;
+    margin: 10px 0;
+    width: 100%;
+}
+
+table[data-role="data-table"] thead,
+table[data-role="data-table"] th {
+    background-color: #2d2d2d;
+    color: #fff;
+    font-weight: normal;
+    text-align: left;
+}
+
+table[data-role="data-table"] td,
+table[data-role="data-table"] th {
+    padding: 5px;
+}
+
+table[data-role="data-table"] td {
+    font-size: 0.9em;
+    vertical-align: top;
+}
+
+table[data-role="data-table"] tbody tr:nth-child(even) {
+    background-color: #f2fbff;
+}
+
+table[data-role="data-table"] tbody tr:hover {
+    background-color: #e5f7ff;
+}
+
+table[data-role="data-table"] p {
+    margin: 0;
+}
+
+/*  ######################################################################################################
+    FORM ELEMENTS
+    ###################################################################################################### */
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+    padding: 10px 5px 9px;
+    min-width: 200px;
+    margin: 0;
+}
+
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):hover {
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.editor-label,
+.display-label {
+    margin: 15px 0 5px;
+}
+
+.editor-field,
+.display-field {
+    margin: 5px 0 15px;
+}
 
 /*  ######################################################################################################
     BUTTONS
     ###################################################################################################### */
 [data-role="button"] {
-    background: #efefef;
-    color: #2d2d2d;
+    background: #1ba1e2;
+    border: 0;
+    color: #fff;
     cursor: pointer;
     display: inline-block;
-    padding: 7px 12px 8px;
-    margin: 5px 1px;
+    padding: 6px 10px 7px;
+    font-size: 16px;
+    line-height: 22px;
+    box-sizing: border-box;
+    margin: 0 5px 5px 0;
     text-decoration: none;
-    transition: all ease-in-out 1s;
+    -webkit-transition: background-color ease-in-out 0.5s;
+    -moz-transition: background-color ease-in-out 0.5s;
+    transition: background-color ease-in-out 0.5s;
+}
+
+[data-role="button"]:hover {
+    background: #1fb4ff;
+    color: #fff;
+}
+
+[data-role="button"]:active {
+    background: #1ba1e2;
 }
 
 [data-role="button"].large {
-    padding: 20px 30px;
+    padding: 18px 30px 22px;
 }
 
 /* GREEN */
@@ -315,19 +410,22 @@
 
 i[data-icon] {
     background-image: url('images/metro-black.png');
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
     display: inline-block;
     height: 22px;
     width: 25px;
     padding: 0;
-    margin: 1px 0 0;
+    margin: 0;
     vertical-align: text-top;
+}
+
+i[data-icon].lonely {
+    width: 20px;
 }
 
 [data-role="button"] [data-icon],
 i[data-icon].white {
     background-image: url('images/metro-white.png');
-
 }
 
 [data-icon="add"] { background-position: 0px -549px; }
@@ -372,6 +470,21 @@ i[data-icon].white {
 [data-icon="video"] { background-position: 0px -969px; }
 [data-icon="windows"] { background-position: 0px -1029px; }
 
+[data-contain] {
+    border: solid 1px #666;
+    padding: 0;
+    margin: 5px 0;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+[data-contain] > * {
+    margin: 0;
+    border: 0;
+    display: block;
+    float: left;
+}
+
 /*  ######################################################################################################
     COLUMNS
     ###################################################################################################### */
@@ -390,14 +503,50 @@ i[data-icon].white {
     float: left;
 }
 
+.no-margin {
+    margin: 0;
+}
+
 .clear {
     clear: both;
 }
 
-.clearfix:after {
-     content: ".";
-     clear: both;
-     height: 0;
-     visibility: hidden;
-     display: block;
+.clearfix:after { 
+ content: ".";  
+ display: block; 
+ height: 0; 
+ clear: both; 
+ visibility: hidden; 
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+/* Hides from IE-mac */
+* html .clearfix {
+    height: 1%;
+}
+
+.clearfix {
+    display: block;
+}
+/* End hide from IE-mac */
+
+
+/*  ######################################################################################################
+    RESPONSIVENESS
+    ###################################################################################################### */
+@media all and (max-height: 700px) {
+    [data-role="dialog"] {
+        height: 60%;       
+    }
+}
+
+@media all and (max-height: 540px) {
+    [data-role="dialog"] {
+        height: 100%;       
+        margin-top: 0;
+        top: 0%;
+    }
 }

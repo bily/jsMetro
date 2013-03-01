@@ -56,7 +56,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     $.js.ensureOverlay = function () {
         return $.js.ensureElement(
             '[data-role="overlay"]',
-            function(){
+            function () {
                 var $overlay = $('<div data-role="overlay" class="hidden" style="display:none;" />');
                 $('body').append($overlay);
 
@@ -72,7 +72,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         var duration = parseDuration($overlay.css('transition-duration')),
             stackCount = $overlay.data('stack');
 
-        if(stackCount == null){
+        if (stackCount == null) {
             stackCount = 0;
         }
 
@@ -87,7 +87,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         } else {
             stackCount--;
 
-            if(stackCount == 0){
+            if (stackCount == 0) {
                 $overlay
                     .addClass('hidden')
                     .delay(duration)
@@ -115,15 +115,22 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
                 );
 
             // Setup the HTML of the dialog
-            $dialog.html('<section>' + msg + '</section>');
+            var $section = $('<section class="clearfix" />');
+            if (typeof msg == 'string') {
+                $section.html(msg);
+            } else {
+                $(msg).appendTo($section);
+            }
+
+            $dialog.html('').append($section);
 
             // Add our custom callback - we want to close off the event
             // and then call the user's callback.
             $dialog.data(
                 'dcallback',
-                function (dlg, event) {
+                function (dlg, element, event) {
                     action.close();
-                    if (callback) { callback(dlg, event); }
+                    if (callback) { callback(dlg, element, event); }
                 }
             );
 
@@ -149,6 +156,8 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             'click',
             '[data-role="dialog"] a',
             function (event) {
+                var $this = $(this);
+
                 event.preventDefault();
 
                 var duration = parseDuration($dialog.css('transition-duration'));
@@ -163,7 +172,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
                         // Call the callback if it exists
                         var callback = $dialog.data('dcallback');
                         if (callback) {
-                            callback($dialog, $(this));
+                            callback($dialog, $this, event);
                         }
                     },
                     duration
@@ -172,6 +181,37 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         );
 
         return $dialog;
+    };
+
+    $.fn.resetForm = function () {
+        var $this = $(this);
+
+        $this.find('input:not([type="submit"]):not([type="button"])').val('');
+
+        return $this;
+    };
+
+    $.fn.bindFormToHtml = function ($parent) {
+        var $form = $(this),
+            $dataProps = $parent.find('[data-prop]'),
+            id = $parent.data('uid');
+
+        if (id) {
+            $form.append('<input type="hidden" name="Id" value="' + id + '" />');
+        }
+
+        $dataProps.each(function () {
+            var $prop = $(this),
+                name = $prop.data('prop'),
+                value = $prop.is('input') ? $prop.val() : $prop.html();
+
+            var $element = $form.find('input[name="' + name + '"]');
+
+            if ($element.is('input')) { $element.val(value); }
+            else { $element.html(value); }
+        });
+
+        return $form;
     };
 }(jQuery));
 
@@ -183,6 +223,34 @@ function log(msg) {
     if (console && console.log) {
         console.log(msg);
     }
+
+    GlobalLog.log(msg);
+};
+
+GlobalLog = {
+    callbacks: new Array()
+};
+
+GlobalLog.log = function (msg) {
+    for (var i = 0; i < GlobalLog.callbacks.length; i++) {
+        var cb = GlobalLog.callbacks[i];
+
+        if (cb) {
+            cb(msg);
+        }
+    }
+};
+
+GlobalLog.add = function (logHandler) {
+    GlobalLog.callbacks.push(logHandler);
+};
+
+GlobalLog.remove = function (logHandler) {
+    var cbData = GlobalLog.callbacks;
+
+    cbData.splice(cbData.indexOf(logHandler), 1)
+
+    GlobalLog.callbacks = cbData;
 };
 
 function parseDuration(cssDuration) {
@@ -191,10 +259,10 @@ function parseDuration(cssDuration) {
     }
 
     if (cssDuration.indexOf('ms') > 0) {
-        return parseInt(cssDuration.replace('ms'), 10);
+        return parseFloat(cssDuration.replace('ms'), 10);
     }
 
-    return parseInt(cssDuration.replace('s'), 10) * 1000;
+    return parseFloat(cssDuration.replace('s'), 10) * 1000;
 }
 
 // Theme constants for easy access

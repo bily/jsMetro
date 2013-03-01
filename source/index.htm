@@ -14,43 +14,11 @@
 
         <script>
             $(document).ready(function () {
-                $.js.theme(THEMES.JSCOM);
-                /*
-                var as = new ActionStack();
-
-                as.push(function (se) {
-                    log('just wait 5 seconds!');
-                    setTimeout(function () {
-                        log('this is my first event!');
-
-                        se.close();
-                    }, 1000);
+                GlobalLog.add(function (msg) {
+                    $('#LogOutput').append(msg + '\r\n');
                 });
 
-                as.push(function (se) {
-                    log('no wait.');
-                    se.close();
-                });
-
-                as.push(function (se) {
-                    $.js.dialog(
-                        '<h3>Hello, world</h3><p>This is NOT lorem ipsum.</p><p class="pull-right"><a href="#" data-role="button" class="large">Close</a>',
-                        function () {
-                            se.close();
-                        }
-                    );
-                });
-
-                as.push(function (se) {
-                    $.js.dialog(
-                        '<h3>Colorful Buttons</h3>' +
-                        '<p>In hac habitasse platea dictumst. Proin adipiscing bibendum est, ut tincidunt nunc blandit eget. Phasellus congue ante ligula. Aenean quis lacus eu orci aliquam sagittis. Maecenas nec lectus vel urna venenatis tincidunt. Phasellus ut diam urna, euismod dignissim quam. Aenean leo turpis, fringilla et tristique non, rhoncus vel ligula.</p>' +
-                        '<p class="pull-right"><a href="#" data-role="button" data-theme="green" class="large">Close</a>',
-                        function () {
-                            se.close();
-                        }
-                    );
-                });*/
+                //$.js.theme(THEMES.JSCOM);
             });
         </script>
     </head>
@@ -62,7 +30,7 @@
                     <h1>jsMetro</h1>
                 </hgroup>
                 <nav class="pull-right">
-                    <ul data-role="navigation" data-horizontal="true" data-theme="purple">
+                    <ul data-role="navigation" data-horizontal="true">
                         <li><a href="#About" data-role="button">About</a></li>
                         <li><a href="#JavaScript" data-role="button">JavaScript</a></li>
                         <li><a href="#FormElements" data-role="button">Forms</a></li>
@@ -81,11 +49,76 @@
 
             <hr />
 
+            <section id="DebugLog" class="clearfix">
+                <h2>Debug Log</h2>
+                <p>The following <code>pre</code> element will capture and display log output from the samples included below.</p>
+                <pre id="LogOutput"></pre>
+                <div class="pull-right">
+                    <a href="#" onclick="javascript:$('#LogOutput').html('');return false;" data-role="button"><i data-icon="delete"></i> Clear Log</a>
+                </div>
+            </section>
+
+            <hr />
+
+            <section id="Dialog">
+                <h2>Dialog</h2>
+                <p>Opens a full-screen dialog for entering information or confirming changes.</p>
+
+                <h3>Format</h3>
+                <pre>$.js.dialog([msg:string], [callback:function]);</pre>
+
+                <h3>Samples</h3>
+                <h4>Dialog w/ Callback</h4>
+                <p>The below sample shows a dialog with two buttons and a callback that displays the chosen option.</p>
+                <pre>$.js.dialog(
+    '&lt;h3&gt;Confirm Your Eyes Exist&lt;/h3&gt;&lt;p&gt;Can you read this?&lt;/p&gt;' +
+    '&lt;div class="pull-right"&gt;' +
+    '   &lt;a href="#" data-role="button" data-theme="google"&gt;No&lt;/a&gt;' +
+    '   &lt;a href="#" data-role="button" data-theme="green"&gt;Yes&lt;/a&gt;' +
+    '&lt;/div&gt;',
+    function (dialog, element, event) {
+        log('dialog closed: ' + element.html());
+    }
+);</pre>
+
+                <div class="clearfix">
+                    <div class="pull-right">
+                        <a href="#" data-role="button" onclick="javascript:$.showcase.dialog_simpleSample();return false;"><i data-icon="refresh"></i> Run this Sample</a>
+                    </div>
+                </div>
+
+                <h4>Dialog w/ Form Submit</h4>
+                <p>The Dialog method is built to support any HTML you would otherwise find in the page itself. Here we are submitting an HTML Form to an MVC controller. On the controller side we do work with a Model (object). Note that nothing special is done between the two.</p>
+                <pre>$.js.dialog(
+    '&lt;h3&gt;Create Promoter&lt;/h3&gt;&lt;form method="post" action="/promoters/create"&gt;' +
+    '   &lt;div class="editor-label"&gt;&lt;label for="Name"&gt;Name:&lt;/label&gt;&lt;/div&gt;' +
+    '   &lt;div class="editor-field"&gt;&lt;input type="text" id="Name" name="Name" /&gt;&lt;/div&gt;' +
+    '   &lt;div class="editor-label"&gt;&lt;label for="Website"&gt;Website:&lt;/label&gt;&lt;/div&gt;' +
+    '   &lt;div class="editor-field"&gt;&lt;input type="text" id="Website" name="Website" /&gt;&lt;/div&gt;' +
+    '&lt;/form&gt;&lt;div class="pull-right"&gt;' +
+    '   &lt;a href="#" data-role="button"&gt;Cancel&lt;/a&gt;' +
+    '   &lt;a href="#" data-role="button" data-theme="green"&gt;Create&lt;/a&gt;' +
+    '&lt;/div&gt;',
+    function (dlg, element, event) {
+        if (element.html() != 'Create') {
+            return;
+        }
+
+        dlg.find('form').submit();
+    }
+);</pre>
+            </section>
+
+            <hr />
+
             <section id="ActionStack">
                 <h2>ActionStack</h2>
                 <p>The <code>ActionStack</code> class supports First-In-Last-Out (FILO, Stack) based event processing. The goal is to support simultaneous use of the $.js.overlay method and other general purpose, single instance UI elements.</p>
 
-                <h3>Use</h3>
+                <h3>Format</h3>
+                <pre>var as = new ActionStack();</pre>
+
+                <h3>Samples</h3>
                 <p>In the below example, the second event should not fire until the third one has cleared (7000ms+).</p>
                 <pre>var as = new ActionStack();
 
@@ -106,10 +139,13 @@ as.push(function (action) {
 
     action.close();
 });</pre>
-                <div class="pull-right">
-                    <a href="#" onclick="javascript:$.showcase.actionStack_simpleSample();return false;" data-role="button" data-theme="red"><i data-icon="refresh"></i> Run this Sample</a>
+
+                <div class="clearfix">
+                    <div class="pull-right">
+                        <a href="#DebugLog" data-role="button"><i data-icon="up"></i> Jump to Log</a>
+                        <a href="#" onclick="javascript:$.showcase.actionStack_simpleSample();return false;" data-role="button"><i data-icon="refresh"></i> Run this Sample</a>
+                    </div>
                 </div>
-                <div class="clear"><!--clear--></div>
             </section>
 
             <hr />
@@ -118,7 +154,10 @@ as.push(function (action) {
                 <h2>Events</h2>
                 <p>To provide simple access to the implementation of an Event Model, the <code>Event</code> class allows for quick, sequential invocation of methods.</p>
                 
-                <h3>Use</h3>
+                <h3>Format</h3>
+                <pre>var ev = new Event([name:string]);</pre>
+
+                <h3>Samples</h3>
                 <pre>var ev = new Event('test-event'),
     fun = function () { log('hello, world'); };
                 
@@ -234,6 +273,34 @@ ev.invoke();</pre>
                     <span><i data-icon="upload"></i> upload</span>
                     <span><i data-icon="video"></i> video</span>
                     <span><i data-icon="windows"></i> windows</span>
+                </div>
+                 
+                <h3>Combining</h3>
+                <p>Without merging the elements, you'll get the following:</p>
+                <p class="clearfix">
+                    <input type="text" class="pull-left" placeholder="[type=text]" />
+                    <a data-role="button">Click Me!</a>
+                </p>
+
+                <p class="clearfix">
+                    <input type="text" class="pull-left" placeholder="[type=text]" />
+                    <a  data-role="button"><i data-icon="refresh"></i> Refresh</a>
+                </p>
+
+                <p>Use <code>data-contain="true"</code> to bump two elements together.</p>
+
+                <div class="clearfix">
+                    <div data-contain="true">
+                        <input type="text" placeholder="[type=text]" />
+                        <a data-role="button">Click Me!</a>
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                    <div data-contain="true">
+                        <input type="text" placeholder="[type=text]" />
+                        <a data-role="button"><i data-icon="refresh"></i> Refresh</a>
+                    </div>
                 </div>
             </section>
 

@@ -5,6 +5,19 @@
     $.showcase = {
     };
 
+    $.showcase.dialog_simpleSample = function () {
+        $.js.dialog(
+            '<h3>Confirm Your Eyes Exist</h3><p>Can you read this?</p>' +
+            '<div class="pull-right">' +
+            '   <a href="#" data-role="button" data-theme="google">No</a>' +
+            '   <a href="#" data-role="button" data-theme="green">Yes</a>' +
+            '</div>',
+            function (dialog, element, event) {
+                log('dialog closed: ' + element.html());
+            }
+        );
+    };
+
     $.showcase.actionStack_simpleSample = function () {
         var as = new ActionStack();
 
@@ -26,4 +39,4 @@
             action.close();
         });
     };
-}(jQuery));
+}(jQuery)); 

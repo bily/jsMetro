@@ -111,3 +111,13 @@ footer[data-role="content"] {
     width: 20%;
     min-width: 125px;
 }
+
+#LogOutput {
+    height: 300px;
+    overflow: auto;
+    background: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: solid 2px #ccc;
+}
