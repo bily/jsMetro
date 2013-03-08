@@ -216,6 +216,71 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         return $dialog;
     };
 
+    /*
+     * Moves elements relative to background images / sizes
+     */
+    $.fn.respond = function () {
+        var $that = $(this);
+
+        var original_width = $that.data('width'),
+            original_height = $that.data('height'),
+            original_aspect = original_width / original_height;
+
+        var page_width = $that.width(),
+            page_height = $that.height(),
+            page_aspect = page_width / page_height;
+
+        var current_width = 0.0,
+            current_height = 0.0;
+
+        if (original_aspect >= 1) {
+            if (page_aspect < original_aspect) {
+                current_width = page_width;
+                current_height = current_width * original_height / original_width;
+            }
+            else {
+                current_height = page_height;
+                current_width = current_height * original_width / original_height;
+            }
+        }
+        else {
+            if (page_aspect < original_aspect) {
+                current_height = page_height;
+                current_width = current_height * original_width / original_height;
+            }
+            else {
+                current_width = page_width;
+                current_height = current_width * original_height / original_width;
+            }
+        }
+
+        var percent_width = current_width / original_width,
+            percent_height = current_height / original_height;
+
+        $that.find('[data-position="responsive"]').each(function () {
+            var $element = $(this),
+                element_left = $element.data('left'),
+                element_top = $element.data('top'),
+                leftOffset = 0.0,
+                topOffset = 0.0;
+
+            if (original_aspect > 1 && current_width < page_width) {
+                leftOffset = (page_width - current_width) / 2.0;
+            }
+
+            if (original_aspect < 1 && current_height < page_height) {
+                topOffset = (page_height - current_height) / 2.0;
+            }
+
+            $element
+                .css('top', ((percent_height * element_top) + topOffset) + 'px')
+                .css('left', ((percent_width * element_left) + leftOffset) + 'px');
+        });
+
+
+        return $that;
+    };
+
     $.fn.resetForm = function () {
         var $this = $(this);
 

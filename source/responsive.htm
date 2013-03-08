@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    
+    <link href="content/css/jscom.metro.css" rel="stylesheet" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        [data-role="page"] {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background: #efefef;
+
+        }
+
+        [data-role="page"]:nth-child(even) {
+            background: #fff;
+        }
+
+        .content {
+            background-color: #fff;
+            background-image: url('content/images/wallpaper.jpg');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center top;
+            height: 100%;
+            width: 80%;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        [data-position="responsive"] {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+        }
+
+        h1 {
+            background: #fff;
+        }
+
+    </style>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="content/scripts/jscom.metro.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var $pages = $('[data-role="page"]');
+
+            $(window).resize(function () {
+                $pages.each(function (i) {
+                    var $page = $(this);
+
+                    $page.css('top', (i * window.innerHeight) + 'px');
+
+                    $page.find('[data-position="anchor"]').each(function () {
+                        $(this).respond();
+                    });
+                });
+            });
+
+            $(window).trigger('resize');
+        });
+    </script>
+</head>
+<body>
+    <article data-role="page">
+        <section data-position="anchor" class="content" data-width="1920" data-height="1200">
+            <h1 data-left="100" data-top="100" data-position="responsive">Responsive Playground</h1>
+        </section>
+    </article>
+
+    <article data-role="page">
+        <section data-position="anchor" class="content" data-width="1920" data-height="1200">
+            <h1 data-left="200" data-top="0" data-position="responsive">Responsive Playground</h1>
+        </section>
+    </article>
+</body>
+</html>

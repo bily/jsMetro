@@ -64,6 +64,7 @@
     <Content Include="content\css\images\metro-white.png" />
     <Content Include="content\css\jscom.metro-1.0.css" />
     <Content Include="content\css\jscom.metro.css" />
+    <Content Include="content\images\wallpaper.jpg" />
     <Content Include="content\scripts\date-format.js" />
     <Content Include="content\scripts\jscom.mapper-1.0.js" />
     <Content Include="content\scripts\jscom.metro-1.0.js" />
@@ -73,6 +74,7 @@
     <Content Include="index-v1.htm" />
     <Content Include="index.htm" />
     <Content Include="mapper-v1.htm" />
+    <Content Include="responsive.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
