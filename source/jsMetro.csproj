@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="content\css\base-1.0.css" />
     <Content Include="content\css\base.css" />
+    <Content Include="content\css\jscom.metro-google.css" />
     <Content Include="content\css\images\metro-black.png" />
     <Content Include="content\css\images\metro-white.png" />
     <Content Include="content\css\jscom.metro-1.0.css" />

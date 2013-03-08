@@ -30,15 +30,28 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     };
 
     /*
-    * Provides theme support for the entire DOM or a single jQuery context
+    * Provides theme support for the entire DOM
     * Use: $.js.theme([themeName:string])
-    * Use: $.js.theme([themeName:string], [context:jQuery Element])
     */
-    $.js.theme = function (themeName, context) {
-        var theme = '',
+    $.js.theme = function (themeName) {
+        /*var theme = '',
 			elements = context ? context : $('html, body');
 
-        elements.attr('data-theme', themeName);
+        elements.attr('data-theme', themeName);*/
+
+        var $head = $('head'),
+            $metroLink = $head.find('link[href*="jscom.metro.css"]');
+        
+        var $themeLink = $.js.ensureElement(
+            'link[data-role="theme"]',
+            function () {
+                var $element = $('<link data-role="theme" rel="stylesheet" href="' + $metroLink.attr('href').replace('jscom.metro.css', 'jscom.metro-' + themeName + '.css') + '" />');
+                $head.append($element);
+                return $element;
+            }
+        );
+
+        $themeLink.attr('href', $metroLink.attr('href').replace('jscom.metro.css', 'jscom.metro-' + themeName + '.css'));
     };
 
     /*

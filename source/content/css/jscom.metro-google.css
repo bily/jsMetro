@@ -1,0 +1,243 @@
+﻿/* GREEN */
+[data-theme="green"] [data-role="button"],
+[data-role="button"][data-theme="green"] {
+    background-color: #339933; 
+    color: #fff;
+}
+
+[data-theme="green"] [data-role="button"]:hover,
+[data-role="button"][data-theme="green"]:hover {
+    color: #fff;
+    background-color: #4ab64a;
+}
+
+[data-theme="green"] [data-role="button"]:active,
+[data-role="button"][data-theme="green"]:active {
+    color: #fff;
+    background-color: #339933;
+}
+
+/* RED */
+[data-theme="red"] [data-role="button"],
+[data-role="button"][data-theme="red"] {
+    background-color: #e51400; 
+    color: #fff;
+}
+
+[data-theme="red"] [data-role="button"]:hover,
+[data-role="button"][data-theme="red"]:hover {
+    color: #fff;
+    background-color: #fe3623;
+}
+
+[data-theme="red"] [data-role="button"]:active,
+[data-role="button"][data-theme="red"]:active {
+    color: #fff;
+    background-color: #e51400;
+}
+
+/* ORANGE */
+[data-theme="orange"] [data-role="button"],
+[data-role="button"][data-theme="orange"] {
+    background-color: #f09609; 
+    color: #fff;
+}
+
+[data-theme="orange"] [data-role="button"]:hover,
+[data-role="button"][data-theme="orange"]:hover {
+    color: #fff;
+    background-color: #ffaf32;
+}
+
+[data-theme="orange"] [data-role="button"]:active,
+[data-role="button"][data-theme="orange"]:active {
+    color: #fff;
+    background-color: #f09609;
+}
+
+/* PINK */
+[data-theme="pink"] [data-role="button"],
+[data-role="button"][data-theme="pink"] {
+    background-color: #ff0097; 
+    color: #fff;
+}
+
+[data-theme="pink"] [data-role="button"]:hover,
+[data-role="button"][data-theme="pink"]:hover {
+    color: #fff;
+    background-color: #ff65c0;
+}
+
+[data-theme="pink"] [data-role="button"]:active,
+[data-role="button"][data-theme="pink"]:active {
+    color: #fff;
+    background-color: #ff0097;
+}
+
+/* BROWN */
+[data-theme="brown"] [data-role="button"],
+[data-role="button"][data-theme="brown"] {
+    background-color: #996600; 
+    color: #fff;
+}
+
+[data-theme="brown"] [data-role="button"]:hover,
+[data-role="button"][data-theme="brown"]:hover {
+    color: #fff;
+    background-color: #bf8000;
+}
+
+[data-theme="brown"] [data-role="button"]:active,
+[data-role="button"][data-theme="brown"]:active {
+    color: #fff;
+    background-color: #996600;
+}
+
+/* LIME */
+[data-theme="lime"] [data-role="button"],
+[data-role="button"][data-theme="lime"] {
+    background-color: #8cbf26; 
+    color: #fff;
+}
+
+[data-theme="lime"] [data-role="button"]:hover,
+[data-role="button"][data-theme="lime"]:hover {
+    color: #fff;
+    background-color: #8cd200;
+}
+
+[data-theme="lime"] [data-role="button"]:active,
+[data-role="button"][data-theme="lime"]:active {
+    color: #fff;
+    background-color: #8cbf26;
+}
+
+/* TEAL */
+[data-theme="teal"] [data-role="button"],
+[data-role="button"][data-theme="teal"] {
+    background-color: #00aba9; 
+    color: #fff;
+}
+
+[data-theme="teal"] [data-role="button"]:hover,
+[data-role="button"][data-theme="teal"]:hover {
+    color: #fff;
+    background-color: #00d9d5;
+}
+
+[data-theme="teal"] [data-role="button"]:active,
+[data-role="button"][data-theme="teal"]:active {
+    color: #fff;
+    background-color: #00aba9;
+}
+
+/* PURPLE */
+[data-theme="purple"] [data-role="button"],
+[data-role="button"][data-theme="purple"] {
+    background-color: #a200ff; 
+    color: #fff;
+}
+
+[data-theme="purple"] [data-role="button"]:hover,
+[data-role="button"][data-theme="purple"]:hover {
+    color: #fff;
+    background-color: #be4cff;
+}
+
+[data-theme="purple"] [data-role="button"]:active,
+[data-role="button"][data-theme="purple"]:active {
+    color: #fff;
+    background-color: #a200ff;
+}
+
+/* MAGENTA */
+[data-theme="magenta"] [data-role="button"],
+[data-role="button"][data-theme="magenta"] {
+    background-color: #ff0097; 
+    color: #fff;
+}
+
+[data-theme="magenta"] [data-role="button"]:hover,
+[data-role="button"][data-theme="magenta"]:hover {
+    color: #fff;
+    background-color: #ff4db6;
+}
+
+[data-theme="magenta"] [data-role="button"]:active,
+[data-role="button"][data-theme="magenta"]:active {
+    color: #fff;
+    background-color: #ff0097;
+}
+
+/* GOOGLE f1f1f1[primary:4787ed] */
+[data-theme="google"] [data-role="button"],
+[data-role="button"][data-theme="google"] {
+    background-color: #f1f1f1; 
+    color: #2d2d2d;
+}
+
+[data-theme="google"] [data-role="button"]:hover,
+[data-role="button"][data-theme="google"]:hover {
+    color: #2d2d2d;
+    background-color: #d9d9d9;
+}
+
+[data-theme="google"] [data-role="button"]:active,
+[data-role="button"][data-theme="google"]:active {
+    color: #2d2d2d;
+    background-color: #f1f1f1;
+}
+
+[data-theme="google"] [data-role="button"].primary,
+[data-role="button"][data-theme="google"].primary {
+    background-color: #4787ed; 
+    color: #fff;
+}
+
+[data-theme="google"] [data-role="button"].primary:hover,
+[data-role="button"][data-theme="google"].primary:hover {
+    color: #fff;
+    background-color: #4c91ff;
+}
+
+[data-theme="google"] [data-role="button"].primary:active,
+[data-role="button"][data-theme="google"].primary:active {
+    color: #fff;
+    background-color: #4787ed;
+}
+
+/* FACEBOOK: 3b5998 */
+[data-theme="facebook"] [data-role="button"],
+[data-role="button"][data-theme="facebook"] {
+    background-color: #3b5998; 
+    color: #fff;
+}
+
+[data-theme="facebook"] [data-role="button"]:hover,
+[data-role="button"][data-theme="facebook"]:hover {
+    color: #fff;
+    background-color: #4668b3;
+}
+
+[data-theme="facebook"] [data-role="button"]:active,
+[data-role="button"][data-theme="facebook"]:active {
+    color: #fff;
+    background-color: #3b5998;
+}
+
+[data-role="navigation"][data-horizontal] > ul > li > a {
+    border: solid 2px #188ec9;
+    border-collapse: collapse;
+    border-left-width: 0px;
+    border-right-width: 1px;
+}
+
+[data-role="navigation"][data-horizontal] > ul > li:first-child > a {
+    /*background: red;*/
+    border-left-width: 2px;
+}
+
+[data-role="navigation"][data-horizontal] > ul > li:last-child > a {
+    /*background: navy;*/
+    border-right-width: 2px;
+}

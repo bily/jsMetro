@@ -18,7 +18,9 @@
                     $('#LogOutput').append(msg + '\r\n');
                 });
 
-                //$.js.theme(THEMES.JSCOM);
+                $.js.theme(THEMES.GOOGLE);
+                $.js.theme(THEMES.FACEBOOK);
+                $.js.theme(THEMES.GOOGLE);
             });
         </script>
     </head>
@@ -29,11 +31,24 @@
                 <hgroup class="pull-left">
                     <h1>jsMetro</h1>
                 </hgroup>
-                <nav class="pull-right">
-                    <ul data-role="navigation" data-horizontal="true">
-                        <li><a href="#About" data-role="button">About</a></li>
-                        <li><a href="#JavaScript" data-role="button">JavaScript</a></li>
-                        <li><a href="#FormElements" data-role="button">Forms</a></li>
+                <nav class="pull-right" data-role="navigation" data-horizontal="true">
+                    <ul>
+                        <li><a href="#About">About</a></li>
+                        <li><a href="#JavaScript">JavaScript</a>
+                            <ul>
+                                <li><a href="#Dialog">Dialog</a></li>
+                                <li><a href="#ActionStack">ActionStack</a></li>
+                                <li><a href="#Events">Events</a></li>
+                            </ul>
+
+                        </li>
+                        <li><a href="#HtmlCss">Forms &amp; CSS</a>
+                            <ul>
+                                <li><a href="#Menus">Menus</a></li>
+                                <li><a href="#FormElements">Form Elements</a></li>
+                                <li><a href="#Icons">Icons</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
                 <div class="clear"><!--clear--></div>
@@ -232,58 +247,154 @@ ev.invoke();</pre>
 
             <hr />
 
+            <section id="Menus">
+                <h2>Menus</h2>
+
+                <p>Use <code>nav</code> elements with the <code>data-role="navigation"</code> attribute to specify a navigation.</p>
+                <nav data-role="navigation">
+                    <ul>
+                        <li><a href="#">Hello</a>
+                            <ul>
+                                <li><a href="#">World</a></li>
+                                <li><a href="#">This is longer.</a></li>
+                                <li><a href="#">This is even longer, you know?</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">World</a></li>
+                        <li><a href="#"><i data-icon="refresh"></i> Refresh</a></li>
+                    </ul>
+                </nav>
+
+                <pre>&lt;nav data-role="navigation"&gt;
+                    &lt;ul&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;Hello&lt;/a&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;a href="#"&gt;World&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href="#"&gt;This is longer.&lt;/a&gt;&lt;/li&gt;
+                                &lt;li&gt;&lt;a href="#"&gt;This is even longer, you know?&lt;/a&gt;&lt;/li&gt;
+                            &lt;/ul&gt;
+                        &lt;/li&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;World&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href="#"&gt;&lt;i data-icon="refresh"&gt;&lt;/i&gt; Refresh&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/nav&gt;</pre>
+
+                <p>You can apply <code>.full-width</code> to make the nav stretch to fit an element.</p>
+                <div style="width:300px;">
+                    <nav data-role="navigation" class="full-width">
+                        <ul>
+                            <li><a href="#">Hello</a>
+                                <ul>
+                                    <li><a href="#">World</a></li>
+                                    <li><a href="#">This is longer.</a></li>
+                                    <li><a href="#">This is even longer, you know?</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">World</a></li>
+                            <li><a href="#"><i data-icon="refresh"></i> Refresh</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <p>Use <code>data-horizontal="true"</code> to make the menu horizontal.</p>
+                <div class="clearfix">
+                    <nav class="pull-left" data-role="navigation" data-horizontal="true">
+                        <ul>
+                            <li><a href="#">Hello</a>
+                                <ul>
+                                    <li><a href="#">World</a></li>
+                                    <li><a href="#">This is longer.</a></li>
+                                    <li><a href="#">This is even longer, you know?</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">World</a></li>
+                            <li><a href="#"><i data-icon="refresh"></i> Refresh</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <pre>&lt;div class="clearfix"&gt;
+                    &lt;nav class="pull-left" data-role="navigation" data-horizontal="true"&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;&lt;a href="#"&gt;Hello&lt;/a&gt;
+                                &lt;ul&gt;
+                                    &lt;li&gt;&lt;a href="#"&gt;World&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href="#"&gt;This is longer.&lt;/a&gt;&lt;/li&gt;
+                                    &lt;li&gt;&lt;a href="#"&gt;This is even longer, you know?&lt;/a&gt;&lt;/li&gt;
+                                &lt;/ul&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#"&gt;World&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#"&gt;&lt;i data-icon="refresh"&gt;&lt;/i&gt; Refresh&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/nav&gt;
+                &lt;/div&gt;</pre>
+            </section>
+
+            <hr />
+
             <section id="FormElements">
                 <h2>Form Elements</h2>
 
                 <h3>Buttons</h3>
                 <p>You'll need one or two attributes: <code>data-role=&quot;button&quot;</code>, and <code>data-theme=&quot;&lt;theme&gt;&quot;</code></p>
                 <div>
-                    <a href="#" data-role="button" data-theme="green">Green Button</a>
-                    <a href="#" data-role="button" data-theme="red">Red Button</a>
-                    <a href="#" data-role="button" data-theme="orange">Orange Button</a>
-                    <a href="#" data-role="button" data-theme="pink">Pink Button</a>
-                    <a href="#" data-role="button" data-theme="brown">Brown Button</a>
-                    <a href="#" data-role="button" data-theme="lime">Lime Button</a>
-                    <a href="#" data-role="button" data-theme="teal">Teal Button</a>
-                    <a href="#" data-role="button" data-theme="purple">Purple Button</a>
-                    <a href="#" data-role="button" data-theme="magenta">Magenta Button</a>
-                    <a href="#" data-role="button" data-theme="google" class="primary">Google (Primary) Button</a>
-                    <a href="#" data-role="button" data-theme="google">Google Button</a>
-                    <a href="#" data-role="button" data-theme="facebook">Facebook Button</a>
-                    <a href="#" data-role="button" data-theme="jscom">JSCom Button</a>
+                    <a href="#" data-role="button" class="secondary">secondary</a>
+                    <a href="#" data-role="button" class="tertiary">tertiary</a>
+                    <a href="#" data-role="button" class="quaternary">.quaternary</a>
+                    <a href="#" data-role="button" class="quinary">.quinary</a>
                 </div>
 
                 <h3>Large Buttons</h3>
                 <p>Large buttons can be good for some big emphasis - useful for dialogs, big download buttons and more. Just add a little class, <code>class=&quot;large&quot;</code>, and your button will be big!</p>
                 <div>
-                    <a href="#" data-role="button" data-theme="green" class="large">Green Button</a> 
-                    <a href="#" data-role="button" data-theme="red" class="large">Red Button</a>
-                    <a href="#" data-role="button" data-theme="orange" class="large">Orange Button</a>
-                    <a href="#" data-role="button" data-theme="pink" class="large">Pink Button</a>
-                    <a href="#" data-role="button" data-theme="brown" class="large">Brown Button</a>
-                    <a href="#" data-role="button" data-theme="lime" class="large">Lime Button</a>
-                    <a href="#" data-role="button" data-theme="teal" class="large">Teal Button</a>
-                    <a href="#" data-role="button" data-theme="purple" class="large">Purple Button</a>
-                    <a href="#" data-role="button" data-theme="magenta" class="large">Magenta Button</a>
-                    <a href="#" data-role="button" data-theme="google" class="large primary">Google (Primary) Button</a>
-                    <a href="#" data-role="button" data-theme="google" class="large">Google Button</a>
-                    <a href="#" data-role="button" data-theme="facebook" class="large">Facebook Button</a>
-                    <a href="#" data-role="button" data-theme="jscom" class="large">JSCom Button</a>
+                    <a href="#" data-role="button" class="secondary large">.large.secondary</a> 
+                </div>
+                 
+                <h3>Combining</h3>
+                <p>Without merging the elements, you'll get the following:</p>
+                <p class="clearfix">
+                    <input type="text" class="pull-left" placeholder="[type=text]" />
+                    <a data-role="button">Click Me!</a>
+                </p>
+
+                <p class="clearfix">
+                    <input type="text" class="pull-left" placeholder="[type=text]" />
+                    <a  data-role="button"><i data-icon="refresh"></i> Refresh</a>
+                </p>
+
+                <p>Use <code>data-contain="true"</code> to bump two elements together.</p>
+
+                <div class="clearfix">
+                    <div data-contain="true">
+                        <input type="text" placeholder="[type=text]" />
+                        <a data-role="button">Click Me!</a>
+                    </div>
                 </div>
 
-                <h3>Icons</h3>
+                <div class="clearfix">
+                    <div data-contain="true">
+                        <input type="text" placeholder="[type=text]" />
+                        <a data-role="button"><i data-icon="refresh"></i> Refresh</a>
+                    </div>
+                </div>
+            </section>
+
+            <hr />
+
+            <section id="Icons">
+                <h2>Icons</h2>
                 <p>Use the attribute, <code>data-icon</code> to add an icon.</p>
                 <pre>&lt;i data-icon="next"&gt;&lt;/i&gt;</pre>
                 <div>
-                    <a href="#" data-role="button" data-theme="green"><i data-icon="next"></i>Next Icon / Button</a>
+                    <a href="#" data-role="button"><i data-icon="next"></i>Next Icon / Button</a>
                 </div>
 
                 <p>You can also apply them to big buttons</p>
                 <div>
-                    <a href="#" data-role="button" data-theme="google" class="primary large"><i data-icon="download"></i>Download!</a>
+                    <a href="#" data-role="button" class="large"><i data-icon="download"></i>Download!</a>
                 </div>
 
-                <h4>Available Icons</h4>
+                <h3>Available Icons</h3>
                 <div id="IconGrid">
                     <span><i data-icon="add"></i> add</span>
                     <span><i data-icon="add-to-favs"></i> add-to-favs</span>
@@ -322,34 +433,6 @@ ev.invoke();</pre>
                     <span><i data-icon="upload"></i> upload</span>
                     <span><i data-icon="video"></i> video</span>
                     <span><i data-icon="windows"></i> windows</span>
-                </div>
-                 
-                <h3>Combining</h3>
-                <p>Without merging the elements, you'll get the following:</p>
-                <p class="clearfix">
-                    <input type="text" class="pull-left" placeholder="[type=text]" />
-                    <a data-role="button">Click Me!</a>
-                </p>
-
-                <p class="clearfix">
-                    <input type="text" class="pull-left" placeholder="[type=text]" />
-                    <a  data-role="button"><i data-icon="refresh"></i> Refresh</a>
-                </p>
-
-                <p>Use <code>data-contain="true"</code> to bump two elements together.</p>
-
-                <div class="clearfix">
-                    <div data-contain="true">
-                        <input type="text" placeholder="[type=text]" />
-                        <a data-role="button">Click Me!</a>
-                    </div>
-                </div>
-
-                <div class="clearfix">
-                    <div data-contain="true">
-                        <input type="text" placeholder="[type=text]" />
-                        <a data-role="button"><i data-icon="refresh"></i> Refresh</a>
-                    </div>
                 </div>
             </section>
 
