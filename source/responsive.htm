@@ -48,7 +48,7 @@
         h1 {
             background: #fff;
         }
-
+        
     </style>
 
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -65,7 +65,7 @@
                     $page.css('top', (i * window.innerHeight) + 'px');
 
                     $page.find('[data-position="anchor"]').each(function () {
-                        $(this).respond();
+                        $(this).updateResponsive();
                     });
                 });
             });

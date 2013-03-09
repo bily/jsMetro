@@ -10,11 +10,24 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             author: 'John Sedlak (kriscsc@msn.com)',
             authorWebsite: 'http://johnsedlak.com',
             website: 'https://github.com/jsedlak/jsMetro',
-            $body: null
         };
     } else {
         $.js.version = '2.0';
     }
+
+    $(document).ready(function () {
+        log('[jscom.metro.js] Version: ' + $.js.version);
+
+        window.addEventListener(
+            'resize',
+            function (event) {
+                $.js.respondExecute(window.innerWidth, window.innerHeight);
+            },
+            false
+        );
+
+        $.js.respond(function () { log('respond!'); }, 400, 0);
+    });
 
     // Gets the general purpose stack
     $.js.getStack = function () {
@@ -148,7 +161,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
                 );
 
             // Setup the HTML of the dialog
-            var $section = $('<section class="clearfix" />');
+            var $section = $('<section class="clearfix"/>');
             if (typeof msg == 'string') {
                 $section.html(msg);
             } else {
@@ -156,6 +169,17 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             }
 
             $dialog.html('').append($section);
+
+            // Get the height of the dialog, adding in the padding for the section element
+            var heightOffset = parsePadding($section.css('padding-top')) + parsePadding($section.css('padding-bottom'));
+            var height = $section.measureHeight() + heightOffset + 15;
+            if (height > (0.5 * window.innerHeight)) {
+                log('[jscom.metro.js] calculated height is too big: ' + height + ' vs. ' + (0.5 * window.innerHeight).toString());
+                height = 0.5 * window.innerHeight;
+            }
+
+            log('[jscom.metro.js] height of dialog: ' + height);
+            log('[jscom.metro.js] height offset: ' + heightOffset);
 
             // Add our custom callback - we want to close off the event
             // and then call the user's callback.
@@ -171,7 +195,9 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             $.js.overlay(
                 true,
                 function (overlay) {
-                    $dialog.fadeIn(0).delay(100).removeClass('hidden');
+                    //$dialog.fadeIn(0).delay(100);
+                    //setTimeout(function () { $dialog.removeClass('hidden'); }, 100);
+                    $dialog.fadeIn(0).animate({ marginTop: height / -2, height: height });
                 }
             );
         });
@@ -184,42 +210,117 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         // Create the jquery element
         var $dialog = $('<div data-role="dialog" class="hidden" style="display:none;" />');
 
+        var closeCallback = function (event) {
+            var $this = $(this);
+
+            event.preventDefault();
+
+            var duration = parseDuration($dialog.css('transition-duration'));
+
+            //$dialog.addClass('hidden'); //.delay(duration).fadeOut(0);
+            //setTimeout(function () {
+            //    $dialog.fadeOut(0);
+            //}, duration);
+            $dialog.animate({ marginTop: 0, height: 0 });
+
+            setTimeout(
+                function () {
+                    // Unstack the overlay once
+                    $.js.overlay(false);
+
+                    // Call the callback if it exists
+                    var callback = $dialog.data('dcallback');
+                    if (callback) {
+                        callback($dialog, $this, event);
+                    }
+                },
+                duration
+            );
+        };
+
         // Bind the event model
         $(document).on(
             'click',
             '[data-role="dialog"] a',
+            closeCallback
+        ).on(
+            'keydown',
+            '',
             function (event) {
-                var $this = $(this);
-
-                event.preventDefault();
-
-                var duration = parseDuration($dialog.css('transition-duration'));
-
-                $dialog.addClass('hidden').delay(duration).fadeOut(0);
-
-                setTimeout(
-                    function () {
-                        // Unstack the overlay once
-                        $.js.overlay(false);
-
-                        // Call the callback if it exists
-                        var callback = $dialog.data('dcallback');
-                        if (callback) {
-                            callback($dialog, $this, event);
-                        }
-                    },
-                    duration
-                );
+                if (event.keyCode == 27) {
+                    closeCallback(event);
+                }
             }
         );
 
         return $dialog;
     };
 
+    $.js.respondExecute = function (width, height) {
+        var $that = $(this),
+            $body = $('body'),
+            callbackCarriers = $body.data('responsiveCallbacks');
+
+        if (callbackCarriers == null) {
+            return;
+        }
+
+        //log('[jscom.metro.js] width/height = ' + width + '/' + height);
+
+        for (var i = 0; i < callbackCarriers.length; i++) {
+            var carrier = callbackCarriers[i];
+
+            //log('[jscom.metro.js] checking carrier: ' + JSON.stringify(carrier));
+
+            if (width < carrier.width || height < carrier.height) {
+                carrier.callback(carrier.$target, width, height);
+            }
+        }
+    };
+
+    $.js.respond = function (callback, width, height) {
+        var $that = $(this),
+            $body = $('body'),
+            callbackCarriers = $body.data('responsiveCallbacks');
+
+        if (callbackCarriers == null) {
+            callbackCarriers = new Array();
+            $body.data('responsiveCallbacks', callbackCarriers);
+        }
+
+        callbackCarriers.push({
+            callback: callback,
+            width: width,
+            height: height,
+            $target: $that
+        });
+    };
+
+    $.fn.measure = function (propName) {
+        return function () {
+            var $offscreen = $('<div style="visibility:hidden;" />'),
+                $clone = this.clone();
+
+            $clone.appendTo($offscreen);
+            $offscreen.appendTo($('body'));
+
+            var measurement = $clone[propName]();
+
+            $offscreen.remove();
+
+            return measurement;
+        };
+    };
+
+    $.fn.measureHeight = $.fn.measure('height');
+    $.fn.measureWidth = $.fn.measure('width');
+
+    
+
     /*
      * Moves elements relative to background images / sizes
      */
-    $.fn.respond = function () {
+    $.fn.updateResponsive = function () {
         var $that = $(this);
 
         var original_width = $that.data('width'),
@@ -352,15 +453,23 @@ GlobalLog.remove = function (logHandler) {
 };
 
 function parseDuration(cssDuration) {
-    if (!cssDuration || cssDuration.length == 0) {
+    if (cssDuration == null || (typeof cssDuration === 'string' && cssDuration.length == 0)) {
         return 1000;
     }
 
     if (cssDuration.indexOf('ms') > 0) {
-        return parseFloat(cssDuration.replace('ms'), 10);
+        return parseFloat(cssDuration.replace('ms'));
     }
 
-    return parseFloat(cssDuration.replace('s'), 10) * 1000;
+    return parseFloat(cssDuration.replace('s')) * 1000;
+}
+
+function parsePadding(padding) {
+    if (padding == null || (typeof padding === 'string' && padding.length == 0)) {
+        return 0;
+    }
+
+    return parseFloat(padding.replace('px'));
 }
 
 // Theme constants for easy access
@@ -499,34 +608,38 @@ function EventArgs(data) {
 }
 
 /* ARRAY HELPERS */
-Array.prototype.first = function (comparer, start) {
-    if (start == null) {
-        start = 0;
-    }
-
-    for (var i = start; i < this.length; i++) {
-        if (comparer(this[i])) {
-            return i;
+if (!Array.prototype.first) {
+    Array.prototype.first = function (comparer, start) {
+        if (start == null) {
+            start = 0;
         }
-    }
 
-    return -1;
-};
+        for (var i = start; i < this.length; i++) {
+            if (comparer(this[i])) {
+                return i;
+            }
+        }
 
-Array.prototype.indexOf = function (obj, start) {
-    if (obj == null) {
         return -1;
-    }
+    };
+}
 
-    if (start == null) {
-        start = 0;
-    }
-
-    for (var i = start; i < this.length; i++) {
-        if (this[i] == obj) {
-            return i;
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (obj, start) {
+        if (obj == null) {
+            return -1;
         }
-    }
 
-    return -1;
-};
+        if (start == null) {
+            start = 0;
+        }
+
+        for (var i = start; i < this.length; i++) {
+            if (this[i] == obj) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
+}

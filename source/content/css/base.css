@@ -27,6 +27,7 @@ ol {
 
 pre {
     margin: 0.5em 0 1em;
+    overflow-x: auto;
 }
 
 pre, code {

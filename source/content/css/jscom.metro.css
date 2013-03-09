@@ -72,22 +72,30 @@ a img {
     DIALOG
     ###################################################################################################### */
 [data-role="dialog"] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     background: #fff;
     display: block;
-    height: 50%;
+    height: 0;
     margin: 0;
+    margin-top: 0px;
     overflow: hidden;
-    padding: 0;
+    padding: 0px;
     position: fixed;
     width:100%;
     top: 50%;
-    margin-top: -20%;
-    transition: all ease-in-out 1s;
-    -webkit-transition: all ease-in-out 1s;
+    
+    /*transition: all ease-in-out 1s;
+    -webkit-transition: all ease-in-out 1s;*/
+
     vertical-align:middle;
 }
 
 [data-role="dialog"] > section {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     height: 100%;
     margin: 0 auto;
     overflow: auto;
@@ -409,16 +417,18 @@ i[data-icon].white {
 /*  ######################################################################################################
     RESPONSIVENESS
     ###################################################################################################### */
-@media all and (max-height: 700px) {
+@media all and (max-height: 600px) {
     [data-role="dialog"] {
-        height: 60%;       
+        height: 50%;       
+        margin-top: 0px;
+        top: 0%;
     }
 }
 
-@media all and (max-height: 540px) {
+@media all and (max-height: 400px) {
     [data-role="dialog"] {
         height: 100%;       
-        margin-top: 0;
+        margin-top: 0px;
         top: 0%;
     }
 }
