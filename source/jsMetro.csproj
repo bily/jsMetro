@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="content\css\base-1.0.css" />
     <Content Include="content\css\base.css" />
+    <Content Include="content\css\jscom.metro-app.css" />
     <Content Include="content\css\jscom.metro-google.css" />
     <Content Include="content\css\images\metro-black.png" />
     <Content Include="content\css\images\metro-white.png" />
@@ -66,15 +67,24 @@
     <Content Include="content\css\jscom.metro.css" />
     <Content Include="content\images\wallpaper.jpg" />
     <Content Include="content\scripts\date-format.js" />
+    <Content Include="content\scripts\parts\jscom.ajax-queue.js" />
     <Content Include="content\scripts\jscom.mapper-1.0.js" />
     <Content Include="content\scripts\jscom.metro-1.0.js" />
     <Content Include="content\scripts\jscom.metro.js" />
     <Content Include="content\scripts\jscom.showcase-1.0.js" />
+    <Content Include="content\scripts\parts\jscom.action-stack.js" />
+    <Content Include="content\scripts\parts\jscom.apping.js" />
+    <Content Include="content\scripts\parts\jscom.dialog.js" />
+    <Content Include="content\scripts\parts\jscom.logging.js" />
+    <Content Include="content\scripts\parts\jscom.overlay.js" />
+    <Content Include="content\scripts\parts\jscom.utils.js" />
     <Content Include="content\scripts\showcase.js" />
+    <Content Include="app.htm" />
     <Content Include="index-v1.htm" />
     <Content Include="index.htm" />
+    <Content Include="javascript.html" />
     <Content Include="mapper-v1.htm" />
-    <Content Include="responsive.html" />
+    <Content Include="responsive.htm" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

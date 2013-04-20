@@ -43,31 +43,6 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     };
 
     /*
-    * Provides theme support for the entire DOM
-    * Use: $.js.theme([themeName:string])
-    */
-    $.js.theme = function (themeName) {
-        /*var theme = '',
-			elements = context ? context : $('html, body');
-
-        elements.attr('data-theme', themeName);*/
-
-        var $head = $('head'),
-            $metroLink = $head.find('link[href*="jscom.metro.css"]');
-        
-        var $themeLink = $.js.ensureElement(
-            'link[data-role="theme"]',
-            function () {
-                var $element = $('<link data-role="theme" rel="stylesheet" href="' + $metroLink.attr('href').replace('jscom.metro.css', 'jscom.metro-' + themeName + '.css') + '" />');
-                $head.append($element);
-                return $element;
-            }
-        );
-
-        $themeLink.attr('href', $metroLink.attr('href').replace('jscom.metro.css', 'jscom.metro-' + themeName + '.css'));
-    };
-
-    /*
      * Ensures that an element exists, is selectable and returns a length > 0. If it doesn't, the function provides the ability to create it on the fly.
      * Use: $.js.ensureElement([selector:string], [templateCallback:method])
      */
@@ -85,175 +60,6 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         }
 
         return $element;
-    };
-
-    /*
-     * Ensures that the overlay element exists, if not it is created and added to the DOM
-     * Use: $.js.ensureOverlay();
-     */
-    $.js.ensureOverlay = function () {
-        return $.js.ensureElement(
-            '[data-role="overlay"]',
-            function () {
-                var $overlay = $('<div data-role="overlay" class="hidden" style="display:none;" />');
-                $('body').append($overlay);
-
-                return $overlay;
-            }
-        );
-    };
-
-    /*
-     * Displays or Hides the overlay, calling a method after the transition has completed.
-     * Use: $.js.overlay([show:bool], [callback:method])
-     */
-    $.js.overlay = function (show, callback) {
-        var $overlay = $.js.ensureOverlay();
-
-        // Get the duration from CSS if we can... default to 1000ms.
-        var duration = parseDuration($overlay.css('transition-duration')),
-            stackCount = $overlay.data('stack');
-
-        if (stackCount == null) {
-            stackCount = 0;
-        }
-
-        log('[jscom.metro.js] overlay duration: ' + duration + 'ms');
-
-        if (show) {
-            $overlay
-                .fadeIn(0)
-                .delay(100)
-                .removeClass('hidden')
-                .data('stack', stackCount + 1);
-        } else {
-            stackCount--;
-
-            if (stackCount == 0) {
-                $overlay
-                    .addClass('hidden')
-                    .delay(duration)
-                    .fadeOut(0)
-                    .data('stack', 0);
-            }
-        }
-
-        setTimeout(function () {
-            if (callback) { callback($overlay); }
-        }, duration);
-    };
-
-    /*
-     * Displays a dialog with some HTML. Calls a method (param: callback) when an anchor element is clicked.
-     * Use: $.js.dialog([msg:string/jQuery Element], [callback:method])
-     */
-    $.js.dialog = function (msg, callback) {
-        // Get the stack, we'll have to use it here
-        var stack = $.js.getStack();
-
-        // Push an action onto the stack
-        stack.push(function (action) {
-            // Get the overlay and dialog elements
-            var $overlay = $.js.ensureOverlay(),
-                $dialog = $.js.ensureElement(
-                    '[data-role="overlay"] [data-role="dialog"]',
-                    function () { var $dlg = $.js.dialogCreate(); $overlay.append($dlg); return $dlg; }
-                );
-
-            // Setup the HTML of the dialog
-            var $section = $('<section class="clearfix"/>');
-            if (typeof msg == 'string') {
-                $section.html(msg);
-            } else {
-                $(msg).appendTo($section);
-            }
-
-            $dialog.html('').append($section);
-
-            // Get the height of the dialog, adding in the padding for the section element
-            var heightOffset = parsePadding($section.css('padding-top')) + parsePadding($section.css('padding-bottom'));
-            var height = $section.measureHeight() + heightOffset + 15;
-            if (height > (0.5 * window.innerHeight)) {
-                log('[jscom.metro.js] calculated height is too big: ' + height + ' vs. ' + (0.5 * window.innerHeight).toString());
-                height = 0.5 * window.innerHeight;
-            }
-
-            log('[jscom.metro.js] height of dialog: ' + height);
-            log('[jscom.metro.js] height offset: ' + heightOffset);
-
-            // Add our custom callback - we want to close off the event
-            // and then call the user's callback.
-            $dialog.data(
-                'dcallback',
-                function (dlg, element, event) {
-                    action.close();
-                    if (callback) { callback(dlg, element, event); }
-                }
-            );
-
-            // Start the overlay!
-            $.js.overlay(
-                true,
-                function (overlay) {
-                    //$dialog.fadeIn(0).delay(100);
-                    //setTimeout(function () { $dialog.removeClass('hidden'); }, 100);
-                    $dialog.fadeIn(0).animate({ marginTop: height / -2, height: height });
-                }
-            );
-        });
-    };
-
-    $.js.dialogCreate = function () {
-        // DEBUG LOG
-        log('[jscom.metro.js] creating dialog');
-
-        // Create the jquery element
-        var $dialog = $('<div data-role="dialog" class="hidden" style="display:none;" />');
-
-        var closeCallback = function (event) {
-            var $this = $(this);
-
-            event.preventDefault();
-
-            var duration = parseDuration($dialog.css('transition-duration'));
-
-            //$dialog.addClass('hidden'); //.delay(duration).fadeOut(0);
-            //setTimeout(function () {
-            //    $dialog.fadeOut(0);
-            //}, duration);
-            $dialog.animate({ marginTop: 0, height: 0 });
-
-            setTimeout(
-                function () {
-                    // Unstack the overlay once
-                    $.js.overlay(false);
-
-                    // Call the callback if it exists
-                    var callback = $dialog.data('dcallback');
-                    if (callback) {
-                        callback($dialog, $this, event);
-                    }
-                },
-                duration
-            );
-        };
-
-        // Bind the event model
-        $(document).on(
-            'click',
-            '[data-role="dialog"] a',
-            closeCallback
-        ).on(
-            'keydown',
-            '',
-            function (event) {
-                if (event.keyCode == 27) {
-                    closeCallback(event);
-                }
-            }
-        );
-
-        return $dialog;
     };
 
     $.js.respondExecute = function (width, height) {
@@ -296,6 +102,65 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         });
     };
 
+    $.fn.cloneTo = function (toSelector) {
+        var $this = $(this),
+            $to = $(toSelector);
+
+        $to.each(function () {
+            var $c = $this.clone(),
+                $toIndividual = $(this);
+
+            $c.appendTo($toIndividual);
+        });
+
+        return $this;
+    };
+
+    $.fn.isFullWidth = function () {
+        var $this = $(this);
+
+        var $parent = $this.parent();
+        var width = parseInt($this.css('width').replace('px', ''), 10) + 1;
+        var parentWidth = parseInt($parent.css('width').replace('px', ''), 10);
+        var percent = 100 * width / parentWidth;
+
+        return percent >= 100 || $this.css('width') == '100%' || (($this.css('width') == null || $this.css('width') == 'auto') && $this.css('display') == 'block');
+    };
+
+    function stickyTemplate($element) {
+        var original_offset = $element.offset();
+        var original_width = $element.isFullWidth() ? '100%' : $element.width();
+        var $parent = $element.parent();
+
+        return function () {
+            var scroll = $(window).scrollTop();
+
+            if (original_offset.top < scroll) {
+                $element.addClass('fixed').css('width', (original_width == '100%' ? $parent.width() : original_width) + 'px');
+            } else {
+                $element.removeClass('fixed').css('width', false);
+            }
+        };
+    };
+
+    $.fn.sticky = function () {
+        var $this = $(this);
+
+        $this.each(function () {
+            var $ele = $(this);
+            $ele.data('sticky-function', stickyTemplate($ele));
+        });
+
+        $(window).scroll(function (event) {
+            $this.each(function () {
+                var $ele = $(this);
+                $ele.data('sticky-function')();
+            });
+        });
+
+        return $this;
+    };
+
     $.fn.measure = function (propName) {
         return function () {
             var $offscreen = $('<div style="visibility:hidden;" />'),
@@ -314,8 +179,6 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 
     $.fn.measureHeight = $.fn.measure('height');
     $.fn.measureWidth = $.fn.measure('width');
-
-    
 
     /*
      * Moves elements relative to background images / sizes
@@ -414,143 +277,85 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     };
 }(jQuery));
 
-function StackedAction() {
-    this.closedEvent = new Event();
+
+(function (window, undefined) {
+    // The version of jsMetro
+    var version = new Version(2, 0, 0, 0);
+
+    // Defines the js object
+    var js = function (selector) {
+        return new js.fn.init(selector);
+    };
+
+    js.fn = js.prototype = {
+        init: function (selector) {
+            this.version = version;
+            this.$element = $(selector);
+
+            return this;
+        },
+
+        measureHeight: measureHelper('height'),
+        measureWidth: measureHelper('width')
+    };
+
+    js.fn.init.prototype = js.fn;
+    window.js = js;
+})(window);
+
+/* Measures a property off screen - eg: measureHelper('width') -> function(){...} */
+function measureHelper(propName) {
+    return function () {
+        var $offscreen = $('<div style="visibility:hidden;" />'),
+            $clone = this.$element.clone();
+
+        $clone.appendTo($offscreen);
+        $offscreen.appendTo($('body'));
+
+        var measurement = $clone[propName]();
+
+        $offscreen.remove();
+
+        return measurement;
+    };
 };
 
-function log(msg) {
-    if (console && console.log) {
-        console.log(msg);
-    }
+/* Parses an array into an object - eg: "1.2.3.4" -> { major: 1, minor: 2, build: 3, revision: 4 } */
+function parseArray(propertyLookup, isValidCallback, parseCallback, splitCharacter) {
+    return function (stringArray) {
+        var data = stringArray.split(splitCharacter);
+        for (var index = 0; index < propertyLookup.length; index++) {
+            if (index >= data.length || null == isValidCallback || !isValidCallback(data[index])) {
+                break;
+            }
 
-    GlobalLog.log(msg);
-};
-
-GlobalLog = {
-    callbacks: new Array()
-};
-
-GlobalLog.log = function (msg) {
-    for (var i = 0; i < GlobalLog.callbacks.length; i++) {
-        var cb = GlobalLog.callbacks[i];
-
-        if (cb) {
-            cb(msg);
+            this[propertyLookup[index]] = parseCallback ? parseCallback(data[index]) : data[index];
         }
     }
-};
-
-GlobalLog.add = function (logHandler) {
-    GlobalLog.callbacks.push(logHandler);
-};
-
-GlobalLog.remove = function (logHandler) {
-    var cbData = GlobalLog.callbacks;
-
-    cbData.splice(cbData.indexOf(logHandler), 1)
-
-    GlobalLog.callbacks = cbData;
-};
-
-function parseDuration(cssDuration) {
-    if (cssDuration == null || (typeof cssDuration === 'string' && cssDuration.length == 0)) {
-        return 1000;
-    }
-
-    if (cssDuration.indexOf('ms') > 0) {
-        return parseFloat(cssDuration.replace('ms'));
-    }
-
-    return parseFloat(cssDuration.replace('s')) * 1000;
 }
 
-function parsePadding(padding) {
-    if (padding == null || (typeof padding === 'string' && padding.length == 0)) {
-        return 0;
-    }
+/* VERSION CLASS */
+function Version(major, minor, build, revision) {
+    this.major = major;
+    this.minor = minor;
+    this.build = build;
+    this.revision = revision;
 
-    return parseFloat(padding.replace('px'));
-}
+    this.toString = function () {
+        return this.major.toString() + '.' + this.minor.toString() + '.' + this.build.toString() + '.' + this.revision.toString();
+    };
 
-// Theme constants for easy access
-var THEMES = {
-    MAGENTA: 'magenta',
-    PURPLE: 'purple',
-    TEAL: 'teal',
-    LIME: 'lime',
-    BROWN: 'brown',
-    PINK: 'pink',
-    ORANGE: 'orange',
-    BLUE: 'blue',
-    RED: 'red',
-    GREEN: 'green',
-    GOOGLE: 'google',
-    FACEBOOK: 'facebook',
-    JSCOM: 'jscom'
-};
+    this.fromString = this.parse = parseArray(
+        new Array("major", "minor", "build", "revision"),
+        function (obj) {
+            return !isNaN(obj);
+        },
+        function (obj) {
+            return parseInt(obj, 10);
+        },
+        '.'
+    );
 
-/* JS QUEUE CLASS */
-function ActionStack() {
-    this.internalStack = new Array();
-    this.activeItem = null;
-};
-
-ActionStack.prototype = {
-    push: function (openCallback) {
-        var that = this,
-            qe = new Action(openCallback);
-
-        // Add the event handler for qhen the event has been finished
-        qe.closed.addHandler(function (data) { that.onClosed(qe); });
-
-        // Put it on the stack
-        this.internalStack.push(qe);
-
-        // See if we can open it...
-        this.checkStack();
-    },
-
-    checkStack: function () {
-        var that = this;
-
-        if (that.activeItem != null) {
-            return;
-        }
-
-        that.activeItem = that.internalStack.pop();
-
-        // Let's see if there is an item to open...
-        if (that.activeItem) {
-            that.activeItem.open();
-        }
-    },
-
-    onClosed: function (stackedEvent) {
-        this.activeItem = null;
-        this.checkStack();
-    }
-};
-
-function Action(openCallback) {
-    this.openCallback = openCallback;
-    this.closed = new Event('Action-closed');
-}
-
-Action.prototype = {
-    open: function () {
-        var that = this,
-            cb = that.openCallback;
-
-        if (!cb) {
-            that.close();
-        } else {
-            cb(that);
-        }
-    },
-
-    close: function () {
-        this.closed.invoke(this);
-    }
 }
 
 /* EVENT CLASS */
@@ -605,41 +410,4 @@ Event.prototype = {
 function EventArgs(data) {
     this.isHandled = false;
     this.data = data;
-}
-
-/* ARRAY HELPERS */
-if (!Array.prototype.first) {
-    Array.prototype.first = function (comparer, start) {
-        if (start == null) {
-            start = 0;
-        }
-
-        for (var i = start; i < this.length; i++) {
-            if (comparer(this[i])) {
-                return i;
-            }
-        }
-
-        return -1;
-    };
-}
-
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (obj, start) {
-        if (obj == null) {
-            return -1;
-        }
-
-        if (start == null) {
-            start = 0;
-        }
-
-        for (var i = start; i < this.length; i++) {
-            if (this[i] == obj) {
-                return i;
-            }
-        }
-
-        return -1;
-    };
 }

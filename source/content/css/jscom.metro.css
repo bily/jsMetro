@@ -1,8 +1,11 @@
-﻿html,
-body {
+﻿* {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+html,
+body {
     color: #5d5d5d;
     font-family: 'Segoe UI', 'Segoe WP', Helvetica, Arial, Tahoma, sans-serif;
     margin: 0;
@@ -14,7 +17,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
     font-size: 2.75em;
     font-family: 'Segoe UI Light', 'Segoe WP Semilight', 'Segoe UI', 'Segoe WP', Helvetica, Arial, Tahoma, sans-serif;
-    margin: 0.5em 0 0.25em;
+    margin: 0 0 0.25em;
 }
 
 h2 {
@@ -72,9 +75,6 @@ a img {
     DIALOG
     ###################################################################################################### */
 [data-role="dialog"] {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     background: #fff;
     display: block;
     height: 0;
@@ -93,9 +93,6 @@ a img {
 }
 
 [data-role="dialog"] > section {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     height: 100%;
     margin: 0 auto;
     overflow: auto;
@@ -110,15 +107,14 @@ a img {
 /*  ######################################################################################################
     ELEMENTS
     ###################################################################################################### */
-[data-role="navigation"] * {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 [data-role="navigation"] {
     display: table;
     background: #1ba1e2;
+}
+
+[data-role="navigation"].light {
+    background: #fff;
+    border: solid 1px #1ba1e2;
 }
 
 [data-role="navigation"].full-width {
@@ -128,7 +124,6 @@ a img {
 [data-role="navigation"] ul,
 [data-role="navigation"] li {
     list-style: none;
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
     position: relative;
@@ -141,12 +136,24 @@ a img {
     white-space: nowrap;
 }
 
+[data-role="navigation"].light > ul > li a {
+    color: #1ba1e2;
+}
+
 [data-role="navigation"] > ul > li:hover > a,
 [data-role="navigation"] > ul > li.active > a,
 [data-role="navigation"] > ul > li > a:hover,
 [data-role="navigation"] > ul > li:hover ul {
     background: #1fb4ff;
     color: #fff;
+}
+
+[data-role="navigation"].light > ul > li:hover > a,
+[data-role="navigation"].light > ul > li.active > a,
+[data-role="navigation"].light > ul > li > a:hover,
+[data-role="navigation"].light > ul > li:hover ul {
+    color: #1fb4ff;
+    background: #fff;
 }
 
 [data-role="navigation"] ul ul {
@@ -246,7 +253,6 @@ input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type
     padding: 6px 10px 7px;
     font-size: 16px;
     line-height: 22px;
-    box-sizing: border-box;
     margin: 0 5px 5px 0;
     text-decoration: none;
     -webkit-transition: background-color ease-in-out 0.5s;
@@ -354,7 +360,6 @@ i[data-icon].white {
     border: solid 1px #666;
     padding: 0;
     margin: 5px 0;
-    box-sizing: border-box;
     display: inline-block;
 }
 
@@ -372,9 +377,43 @@ i[data-icon].white {
     columns: auto auto;
 }
 
+.fluid2,
+.fluid3,
+.fluid5,
+.fluid7,
+.fluid8 {
+    float: left;
+}
+
+.fluid2 {
+    width: 20%;
+}
+
+.fluid3 {
+    width: 30%;
+}
+
+.fluid5 {
+    width: 50%;
+}
+
+.fluid7 {
+    width: 70%;
+}
+
+.fluid8 {
+    width: 80%;
+}
+
 /*  ######################################################################################################
     HELPER CLASSES
     ###################################################################################################### */
+.fixed {
+    position: fixed;
+    top: 10px;
+    float: none;
+}
+
 .pull-right {
     float: right;
 }

@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>jsMetro</title>
+
+        <link rel="stylesheet" href="content/css/base.css" />
+        <link rel="stylesheet" href="content/css/jscom.metro.css" />
+        <link rel="stylesheet" href="content/css/jscom.metro-app.css" />
+
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+        <script src="content/scripts/date-format.js"></script>
+
+        <!-- The real stuff -->
+        <script src="content/scripts/jscom.metro.js"></script>
+
+        <!-- During Development, we'll break metro into it's parts -->
+        <script src="content/scripts/parts/jscom.utils.js"></script>
+        <script src="content/scripts/parts/jscom.logging.js"></script>
+        <script src="content/scripts/parts/jscom.event.js"></script>
+        <script src="content/scripts/parts/jscom.apping.js"></script>
+        <script src="content/scripts/parts/jscom.overlay.js"></script>
+        <script src="content/scripts/parts/jscom.action-stack.js"></script>
+        <script src="content/scripts/parts/jscom.dialog.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                GlobalLog.add(function (msg) {
+                    $('#LogOutput').append(msg + '\r\n');
+                });
+
+                log('Introducing, jsMetro');
+                log('Version: ' + js().version);
+
+                $('#Home header nav').cloneTo('#About header, #Reference header');
+
+                $('[data-role="page"]')
+                    .pageLoad(function () {
+                        var $this = $(this),
+                            href = '#' + $this.attr('id'),
+                            $anchors = $this.find('a[href="' + href + '"]');
+
+                        log(href + ' has been loaded.');
+                        $anchors.addClass('active');
+                        $anchors.parent('li').addClass('active');
+                    })
+                    .pageRun(function () {
+                        var $this = $(this),
+                            href = '#' + $this.attr('id');
+
+                        log(href + ' has been run.');
+                    });
+
+                $.js.app.callbacks.transitionToPage = function ($last, $next, defaultFunction) {
+                    log('transition callback');
+
+                    $last && $last.find('header').animate({ 'top': '-100%' }) && $last.delay(250);
+
+                    $next.delay(250);
+                    $next.find('header').css('top', '-100%').delay(500).animate({ 'top': '0px' });
+
+                    defaultFunction && defaultFunction($last, $next, null);
+                };
+
+                if (!$.js.app.changePageFromHash(window.location.hash)) {
+                    $.js.app.changePage('#Home');
+                }
+
+                $('[data-sticky="true"]').sticky();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div data-role="page" id="Home">
+            <header class="clearfix">
+                <h1 class="pull-left">My Application</h1>
+                <nav data-role="navigation" data-horizontal="true" class="pull-right">
+                    <ul>
+                        <li><a href="#Home">Home</a></li>
+                        <li><a href="#Reference">Reference</a></li>
+                        <li><a href="#About">About</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <article>
+                <section>
+                    <h2>Home</h2>
+                    
+                    <p><strong>What is JS Metro App?</strong> Much like the base library, JS Metro, it is two things: JavaScript &amp; CSS. The goal is to build off of JS Metro to build an application framework that is barebones/lightweight, but powerful enough to look good and run smoothly.</p>
+                    <p><strong>But it looks like jQuery Mobile?</strong> It is based loosely on my dealings with the 1.2 branch of jQuery Mobile, so the HTML structure will have somewhat of a similar feel. This is not meant as a drop in replacement though, it's meant to give a developer a much more open ended approach to designing a mobile application.</p>
+                    <p><strong>Open ended? Is that like Morrowind?</strong> Let's take the example of changing pages. JS Metro App provides a very basic way of moving each page on and off the screen. It finds the positions of the current and next pages and moves them accordingly. But the framework allows you to alter that. Provided below is the method used on this site - note that I'm animating the header and then calling the default behavior. The goal is to let you control everything quickly and painlessly.</p>
+<pre>$.js.app.callbacks.transitionToPage = function ($last, $next, defaultFunction) {
+    $last && $last.find('header').animate({ 'top': '-100%' }) && $last.delay(250);
+
+    $next.delay(250);
+    $next.find('header').css('top', '-100%').delay(500).animate({ 'top': '0px' });
+                    
+
+    defaultFunction && defaultFunction($last, $next, null);
+};
+$.js.app.changePage('#Home');</pre>
+                    
+                </section>
+            </article>
+            <footer>
+                <p>&copy;2013 John Sedlak. All Rights Reserved.</p>
+            </footer>
+        </div>
+
+        <div data-role="page" id="Reference">
+            <header class="clearfix">
+                <h1 class="pull-left">My Application</h1>
+            </header>
+            <article>
+                <section class="clearfix">
+                    <h2>Reference</h2>
+                    <div class="fluid2">
+                        <nav data-sticky="true" data-role="navigation" class="light full-width">
+                            <ul>
+                                <li><a href="#Navigating">Navigating</a></li>
+                                <li><a href="#Events">Events</a></li>
+                                <li><a href="#Customization">Customization</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="fluid7 pull-right">
+                        <h3 id="Navigating">Navigating</h3>
+                        <h4>Anchor Tags</h4>
+                        <p>By placing anchor tags with hashes, you can navigate to an internal page easily.</p>
+                        <pre>&lt;a href="#Home"&gt;Home&lt;/a&gt;</pre>
+
+                        <h4>Programmatically</h4>
+                        <p>Navigating all comes down to one method: changePage.</p>
+                        <pre>$.js.app.changePage('#Home');</pre>
+                        <pre>$.js.app.changePage($('#Home'));</pre>
+
+                        <h3 id="Events">Events</h3>
+                        <p>There are a bunch of events you can use to develop your application with.</p>
+                        <p>Vestibulum quis nibh ante. <code>Sed sit amet sem mi</code> Aliquam pellentesque lectus et justo facilisis accumsan <code>non id libero</code>. Nam risus lorem, eleifend vitae pulvinar sit amet, ultrices quis augue. Nam commodo porttitor vulputate. Praesent tortor turpis, vulputate at fringilla eget, rutrum quis nisl. Donec a gravida augue. Donec accumsan tincidunt sapien, pellentesque mollis lorem aliquam vulputate. Proin sed tellus at metus lacinia ultricies. Aliquam malesuada porta libero, quis varius tortor aliquet commodo. Cras sed laoreet nunc. In dignissim lacinia feugiat. Aenean quam tellus, pretium vel lacinia eu, commodo id sapien. Aenean eu arcu nunc. Aliquam ac elit lorem. Integer ligula nisl, ultricies vel auctor sed, eleifend quis orci. </p>
+                        <p>Vestibulum quis nibh ante. <code>Sed sit amet sem mi</code> Aliquam pellentesque lectus et justo facilisis accumsan <code>non id libero</code>. Nam risus lorem, eleifend vitae pulvinar sit amet, ultrices quis augue. Nam commodo porttitor vulputate. Praesent tortor turpis, vulputate at fringilla eget, rutrum quis nisl. Donec a gravida augue. Donec accumsan tincidunt sapien, pellentesque mollis lorem aliquam vulputate. Proin sed tellus at metus lacinia ultricies. Aliquam malesuada porta libero, quis varius tortor aliquet commodo. Cras sed laoreet nunc. In dignissim lacinia feugiat. Aenean quam tellus, pretium vel lacinia eu, commodo id sapien. Aenean eu arcu nunc. Aliquam ac elit lorem. Integer ligula nisl, ultricies vel auctor sed, eleifend quis orci. </p>
+                        <p>Vestibulum quis nibh ante. <code>Sed sit amet sem mi</code> Aliquam pellentesque lectus et justo facilisis accumsan <code>non id libero</code>. Nam risus lorem, eleifend vitae pulvinar sit amet, ultrices quis augue. Nam commodo porttitor vulputate. Praesent tortor turpis, vulputate at fringilla eget, rutrum quis nisl. Donec a gravida augue. Donec accumsan tincidunt sapien, pellentesque mollis lorem aliquam vulputate. Proin sed tellus at metus lacinia ultricies. Aliquam malesuada porta libero, quis varius tortor aliquet commodo. Cras sed laoreet nunc. In dignissim lacinia feugiat. Aenean quam tellus, pretium vel lacinia eu, commodo id sapien. Aenean eu arcu nunc. Aliquam ac elit lorem. Integer ligula nisl, ultricies vel auctor sed, eleifend quis orci. </p>
+                        <p>Vestibulum quis nibh ante. <code>Sed sit amet sem mi</code> Aliquam pellentesque lectus et justo facilisis accumsan <code>non id libero</code>. Nam risus lorem, eleifend vitae pulvinar sit amet, ultrices quis augue. Nam commodo porttitor vulputate. Praesent tortor turpis, vulputate at fringilla eget, rutrum quis nisl. Donec a gravida augue. Donec accumsan tincidunt sapien, pellentesque mollis lorem aliquam vulputate. Proin sed tellus at metus lacinia ultricies. Aliquam malesuada porta libero, quis varius tortor aliquet commodo. Cras sed laoreet nunc. In dignissim lacinia feugiat. Aenean quam tellus, pretium vel lacinia eu, commodo id sapien. Aenean eu arcu nunc. Aliquam ac elit lorem. Integer ligula nisl, ultricies vel auctor sed, eleifend quis orci. </p>
+                        <p>Vestibulum quis nibh ante. <code>Sed sit amet sem mi</code> Aliquam pellentesque lectus et justo facilisis accumsan <code>non id libero</code>. Nam risus lorem, eleifend vitae pulvinar sit amet, ultrices quis augue. Nam commodo porttitor vulputate. Praesent tortor turpis, vulputate at fringilla eget, rutrum quis nisl. Donec a gravida augue. Donec accumsan tincidunt sapien, pellentesque mollis lorem aliquam vulputate. Proin sed tellus at metus lacinia ultricies. Aliquam malesuada porta libero, quis varius tortor aliquet commodo. Cras sed laoreet nunc. In dignissim lacinia feugiat. Aenean quam tellus, pretium vel lacinia eu, commodo id sapien. Aenean eu arcu nunc. Aliquam ac elit lorem. Integer ligula nisl, ultricies vel auctor sed, eleifend quis orci. </p>
+
+                        <h3 id="Customization">Customization</h3>
+                        <p>Look for the <code>$.js.app.callbacks</code> object for methods you can rewrite to customize the experience.</p>
+                        <h4>Page Transitions</h4>
+                        <p>Rewrite the <code>$.js.app.callbacks.transitionToPage</code> function. The following animates the header:</p>
+                        <pre>$.js.app.callbacks.transitionToPage = function ($last, $next, defaultFunction) {
+    $last && $last.find('header').animate({ 'top': '-100%' }) && $last.delay(250);
+
+    $next.delay(250);
+    $next.find('header').css('top', '-100%').delay(500).animate({ 'top': '0px' });
+                    
+
+    defaultFunction && defaultFunction($last, $next, null);
+};
+$.js.app.changePage('#Home');</pre>
+                    </div>
+                </section>
+            </article>
+            <footer>
+                <p>&copy;2013 John Sedlak. All Rights Reserved.</p>
+            </footer>
+        </div>
+
+        <div data-role="page" id="About">
+            <header class="clearfix">
+                <h1 class="pull-left">My Application</h1>
+            </header>
+            <article>
+                <section>
+                    <h2>About</h2>
+                    <p>This is a test!</p>
+                </section>
+            </article>
+            <footer>
+                <p>&copy;2013 John Sedlak. All Rights Reserved.</p>
+            </footer>
+        </div>
+    </body>
+</html>

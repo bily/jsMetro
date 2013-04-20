@@ -1,0 +1,48 @@
+﻿html,
+body {
+    overflow-x: hidden;
+}
+
+[data-role="page"] {
+    display: none;
+    height: 100%;
+    left: 100%;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+}
+
+[data-role="page"].active {
+    display: block;
+}
+
+[data-role="page"] > header,
+[data-role="page"] > footer,
+[data-role="page"] > article {
+    background: #fff;
+    width: 90%;
+    margin: 0 auto;
+    padding: 25px;
+    position: relative;
+}
+
+[data-role="page"] > header h1,
+[data-role="page"] > header h2,
+[data-role="page"] > header h3,
+[data-role="page"] > header h4,
+[data-role="page"] > header h5,
+[data-role="page"] > header h6 {
+    margin: 0;
+    padding: 0;
+    line-height: 1em;
+}
+
+[data-role="page"] > article {
+    margin: 90px auto 0;
+}
+
+[data-role="page"] > header {
+    position: absolute;
+    top: 0px;
+    left: 5%;
+}
