@@ -144,19 +144,20 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     };
 
     $.fn.sticky = function () {
-        var $this = $(this);
+        var $this = $(this),
+            update = function () {
+                $this.each(function () {
+                    var $ele = $(this);
+                    $ele.data('sticky-function')();
+                });
+            };
 
         $this.each(function () {
             var $ele = $(this);
             $ele.data('sticky-function', stickyTemplate($ele));
         });
 
-        $(window).scroll(function (event) {
-            $this.each(function () {
-                var $ele = $(this);
-                $ele.data('sticky-function')();
-            });
-        });
+        $(window).scroll(update).resize(update);
 
         return $this;
     };
