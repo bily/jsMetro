@@ -2,14 +2,15 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Segoe WP', Helvetica, Arial, Tahoma, sans-serif;
+    font-size: 16px;
 }
 
 html,
 body {
     color: #5d5d5d;
-    font-family: 'Segoe UI', 'Segoe WP', Helvetica, Arial, Tahoma, sans-serif;
-    margin: 0;
-    padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -38,6 +39,7 @@ h5, h6 {
 }
 
 a {
+    color: #1ba1e2;
     text-decoration: none;
 }
 
@@ -221,15 +223,6 @@ table[data-role="data-table"] p {
 /*  ######################################################################################################
     FORM ELEMENTS
     ###################################################################################################### */
-input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
-    padding: 10px 5px 9px;
-    min-width: 200px;
-    margin: 0;
-}
-
-input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):hover {
-    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.15);
-}
 
 .editor-label,
 .display-label {
@@ -241,19 +234,40 @@ input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type
     margin: 5px 0 15px;
 }
 
-/*  ######################################################################################################
-    BUTTONS
-    ###################################################################################################### */
+[data-role="button"],
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+[data-icon] {
+    display: inline-block;
+}
+
+[data-role="button"],
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+    padding: 5px 10px;
+    font-size: 16px;
+    line-height: 23px;
+    max-height: 33px;
+}
+
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+    background: #fff;
+    border: solid 1px #ccc;
+}
+
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):hover,
+textarea:hover {
+    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+textarea {
+    width: 100%;
+    min-height: 50px;
+}
+
 [data-role="button"] {
     background: #1ba1e2;
-    border: 0;
+    border: solid 1px #1ba1e2;
     color: #fff;
     cursor: pointer;
-    display: inline-block;
-    padding: 6px 10px 7px;
-    font-size: 16px;
-    line-height: 22px;
-    margin: 0 5px 5px 0;
     text-decoration: none;
     -webkit-transition: background-color ease-in-out 0.5s;
     -moz-transition: background-color ease-in-out 0.5s;
@@ -270,34 +284,35 @@ input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type
 }
 
 /* SECONDARY */
-[data-role="button"].secondary { background: #339933; color: #fff; }
+[data-role="button"].secondary { background: #339933; border: solid 1px #339933; color: #fff; }
 [data-role="button"].secondary:hover { background: #4ab64a; color: #fff; }
 [data-role="button"].secondary:active { background: #339933; }
 
 /* TERTIARY */
-[data-role="button"].tertiary { background: #e51400; color: #fff; }
+[data-role="button"].tertiary { background: #e51400; border: solid 1px #e51400; color: #fff; }
 [data-role="button"].tertiary:hover { background: #fe3623; color: #fff; }
 [data-role="button"].tertiary:active { background: #e51400; }
 
 /* QUATERNARY */
-[data-role="button"].quaternary { background: #ff0097; color: #fff; }
+[data-role="button"].quaternary { background: #ff0097; border: solid 1px #ff0097; color: #fff; }
 [data-role="button"].quaternary:hover { background: #ff65c0; color: #fff; }
 [data-role="button"].quaternary:active { background: #ff0097; }
 
 /* TERTIARY */
-[data-role="button"].quinary { background: #a200ff; color: #fff; }
+[data-role="button"].quinary { background: #a200ff; border: solid 1px #a200ff; color: #fff; }
 [data-role="button"].quinary:hover { background: #be4cff; color: #fff; }
 [data-role="button"].quinary:active { background: #a200ff; }
 
 [data-role="button"].large {
     padding: 18px 30px 22px;
+    max-height: none;
 }
 
 i[data-icon] {
     background-image: url('images/metro-black.png');
     background-repeat: no-repeat;
     display: inline-block;
-    height: 22px;
+    height: 20px;
     width: 25px;
     padding: 0;
     margin: 0;
@@ -365,7 +380,7 @@ i[data-icon].white {
 
 [data-contain] > * {
     margin: 0;
-    border: 0;
+    border: 0 !important;
     display: block;
     float: left;
 }
@@ -403,6 +418,45 @@ i[data-icon].white {
 
 .fluid8 {
     width: 80%;
+}
+
+.span2,
+.span3,
+.span4,
+.span5 {
+    float: left;
+}
+
+.span2 {
+    width: 50%;
+}
+
+.span2:nth-child(2n+3) {
+    clear: left;
+}
+
+.span3 {
+    width: 33%;
+}
+
+.span3:nth-child(3n+4) {
+    clear: left;
+}
+
+.span4 {
+    width: 25%;
+}
+
+.span4:nth-child(4n + 5) {
+    clear: left;
+}
+
+.span5 {
+    width: 20%;
+}
+
+.span5:nth-child(5n + 6) {
+    clear: left;
 }
 
 /*  ######################################################################################################
@@ -451,6 +505,30 @@ i[data-icon].white {
     display: block;
 }
 /* End hide from IE-mac */
+
+.error-message {
+    background: #ffeeee;
+    border: solid 1px #f00;
+    
+    padding: 20px;
+    margin: 10px 0px;
+}
+
+.success-message {
+	background: #eeffee;
+	border: solid 1px #0f0;
+					
+	padding: 20px;
+	margin: 10px 0px;
+}
+
+.warning-message {
+	background: #ffffee;
+	border: solid 1px #ff0;
+	
+	padding: 20px;
+	margin: 10px 0px;
+}
 
 
 /*  ######################################################################################################
