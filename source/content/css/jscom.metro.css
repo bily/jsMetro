@@ -21,6 +21,17 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0 0 0.25em;
 }
 
+pre {
+    margin: 0.5em 0 1em;
+    overflow-x: auto;
+}
+
+pre, code,
+pre *, code * {
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 8pt;
+}
+
 h2 {
     font-size: 2em;
 }
@@ -515,6 +526,10 @@ i[data-icon].white {
     margin: 10px 0px;
 }
 
+.error {
+    color: #f00;
+}
+
 .success-message {
 	background: #eeffee;
 	border: solid 1px #0f0;
@@ -523,12 +538,20 @@ i[data-icon].white {
 	margin: 10px 0px;
 }
 
+.success {
+    color: #0f0;
+}
+
 .warning-message {
 	background: #ffffee;
 	border: solid 1px #ff0;
 	
 	padding: 20px;
 	margin: 10px 0px;
+}
+
+.warning {
+    color: #ff0;
 }
 
 

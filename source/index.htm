@@ -15,13 +15,13 @@
         <script src="content/scripts/showcase.js"></script>
 
         <!-- During Development, we'll break metro into it's parts -->
-        <script src="content/scripts/parts/jscom.utils.js"></script>
+        <!--<script src="content/scripts/parts/jscom.utils.js"></script>
         <script src="content/scripts/parts/jscom.logging.js"></script>
         <script src="content/scripts/parts/jscom.action-stack.js"></script>
         <script src="content/scripts/parts/jscom.overlay.js"></script>
-        <script src="content/scripts/parts/jscom.dialog.js"></script>
+        <script src="content/scripts/parts/jscom.dialog.js"></script>-->
 
-        <script>
+        <!--<script>
             $(document).ready(function () {
                 GlobalLog.add(function (msg) {
                     $('#LogOutput').append(msg + '\r\n');
@@ -30,7 +30,7 @@
                 log('Introducing, jsMetro');
                 log('Version: ' + js().version);
             });
-        </script>
+        </script>-->
     </head>
 
     <body>
@@ -287,5 +287,23 @@
         <footer data-role="content">
             <p>&copy;2013 <a href="http://johnsedlak.com">John Sedlak</a></p>
         </footer>
+
+        <script>
+            $(document).ready(function () {
+                $(window).on(
+                    'log',
+                    function (ev, msg, type) {
+                        if (type == 'error') {
+                            msg = '<span class="error">' + msg + '</span>';
+                        }
+                        $('#LogOutput').append(msg + '\r\n');
+                    }
+                );
+
+                var $simple = js();
+                $simple.utils.log('jsMetro, Version: ' + js().version.toString());
+                $simple.utils.error('This is just a sample error!');
+            });
+        </script>
     </body>
 </html>

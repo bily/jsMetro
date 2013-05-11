@@ -3,280 +3,262 @@ jscom.metro.js
 Copyright (C)2012 John Sedlak
 http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 */
-(function ($) {
-    if (!$.js) {
-        $.js = {
-            version: '2.0',
-            author: 'John Sedlak (kriscsc@msn.com)',
-            authorWebsite: 'http://johnsedlak.com',
-            website: 'https://github.com/jsedlak/jsMetro',
-        };
-    } else {
-        $.js.version = '2.0';
-    }
+//(function ($) {
+//    if (!$.js) {
+//        $.js = {
+//            version: '2.0',
+//            author: 'John Sedlak (kriscsc@msn.com)',
+//            authorWebsite: 'http://johnsedlak.com',
+//            website: 'https://github.com/jsedlak/jsMetro',
+//        };
+//    } else {
+//        $.js.version = '2.0';
+//    }
 
-    $(document).ready(function () {
-        log('[jscom.metro.js] Version: ' + $.js.version);
+//    $(document).ready(function () {
+//        log('[jscom.metro.js] Version: ' + $.js.version);
 
-        window.addEventListener(
-            'resize',
-            function (event) {
-                $.js.respondExecute(window.innerWidth, window.innerHeight);
-            },
-            false
-        );
+//        window.addEventListener(
+//            'resize',
+//            function (event) {
+//                $.js.respondExecute(window.innerWidth, window.innerHeight);
+//            },
+//            false
+//        );
 
-        $.js.respond(function () { log('respond!'); }, 400, 0);
-    });
+//        $.js.respond(function () { log('respond!'); }, 400, 0);
+//    });
 
-    // Gets the general purpose stack
-    $.js.getStack = function () {
-        var $body = $('body'),
-            stack = $body.data('actionstack');
+//    // Gets the general purpose stack
+//    $.js.getStack = function () {
+//        var $body = $('body'),
+//            stack = $body.data('actionstack');
 
-        if (!stack) {
-            stack = new ActionStack();
-            $body.data('actionstack', stack);
-        }
+//        if (!stack) {
+//            stack = new ActionStack();
+//            $body.data('actionstack', stack);
+//        }
 
-        return stack;
-    };
+//        return stack;
+//    };
 
-    /*
-     * Ensures that an element exists, is selectable and returns a length > 0. If it doesn't, the function provides the ability to create it on the fly.
-     * Use: $.js.ensureElement([selector:string], [templateCallback:method])
-     */
-    $.js.ensureElement = function (selector, templateCallback) {
-        var $element = $(selector);
+    
 
-        if ($element && $element.length > 0) {
-            return $element;
-        }
+//    $.js.respondExecute = function (width, height) {
+//        var $that = $(this),
+//            $body = $('body'),
+//            callbackCarriers = $body.data('responsiveCallbacks');
 
-        // Attempt to call the callback
-        var cb = templateCallback;
-        if (cb) {
-            $element = cb();
-        }
+//        if (callbackCarriers == null) {
+//            return;
+//        }
 
-        return $element;
-    };
+//        //log('[jscom.metro.js] width/height = ' + width + '/' + height);
 
-    $.js.respondExecute = function (width, height) {
-        var $that = $(this),
-            $body = $('body'),
-            callbackCarriers = $body.data('responsiveCallbacks');
+//        for (var i = 0; i < callbackCarriers.length; i++) {
+//            var carrier = callbackCarriers[i];
 
-        if (callbackCarriers == null) {
-            return;
-        }
+//            //log('[jscom.metro.js] checking carrier: ' + JSON.stringify(carrier));
 
-        //log('[jscom.metro.js] width/height = ' + width + '/' + height);
+//            if (width < carrier.width || height < carrier.height) {
+//                carrier.callback(carrier.$target, width, height);
+//            }
+//        }
+//    };
 
-        for (var i = 0; i < callbackCarriers.length; i++) {
-            var carrier = callbackCarriers[i];
+//    $.js.respond = function (callback, width, height) {
+//        var $that = $(this),
+//            $body = $('body'),
+//            callbackCarriers = $body.data('responsiveCallbacks');
 
-            //log('[jscom.metro.js] checking carrier: ' + JSON.stringify(carrier));
+//        if (callbackCarriers == null) {
+//            callbackCarriers = new Array();
+//            $body.data('responsiveCallbacks', callbackCarriers);
+//        }
 
-            if (width < carrier.width || height < carrier.height) {
-                carrier.callback(carrier.$target, width, height);
-            }
-        }
-    };
+//        callbackCarriers.push({
+//            callback: callback,
+//            width: width,
+//            height: height,
+//            $target: $that
+//        });
+//    };
 
-    $.js.respond = function (callback, width, height) {
-        var $that = $(this),
-            $body = $('body'),
-            callbackCarriers = $body.data('responsiveCallbacks');
+//    $.fn.cloneTo = function (toSelector) {
+//        var $this = $(this),
+//            $to = $(toSelector);
 
-        if (callbackCarriers == null) {
-            callbackCarriers = new Array();
-            $body.data('responsiveCallbacks', callbackCarriers);
-        }
+//        $to.each(function () {
+//            var $c = $this.clone(),
+//                $toIndividual = $(this);
 
-        callbackCarriers.push({
-            callback: callback,
-            width: width,
-            height: height,
-            $target: $that
-        });
-    };
+//            $c.appendTo($toIndividual);
+//        });
 
-    $.fn.cloneTo = function (toSelector) {
-        var $this = $(this),
-            $to = $(toSelector);
+//        return $this;
+//    };
 
-        $to.each(function () {
-            var $c = $this.clone(),
-                $toIndividual = $(this);
+//    $.fn.isFullWidth = function () {
+//        var $this = $(this);
 
-            $c.appendTo($toIndividual);
-        });
+//        var $parent = $this.parent();
+//        var width = parseInt($this.css('width').replace('px', ''), 10) + 1;
+//        var parentWidth = parseInt($parent.css('width').replace('px', ''), 10);
+//        var percent = 100 * width / parentWidth;
 
-        return $this;
-    };
+//        return percent >= 100 || $this.css('width') == '100%' || (($this.css('width') == null || $this.css('width') == 'auto') && $this.css('display') == 'block');
+//    };
 
-    $.fn.isFullWidth = function () {
-        var $this = $(this);
+//    function stickyTemplate($element) {
+//        var original_offset = $element.offset();
+//        var original_width = $element.isFullWidth() ? '100%' : $element.width();
+//        var $parent = $element.parent();
 
-        var $parent = $this.parent();
-        var width = parseInt($this.css('width').replace('px', ''), 10) + 1;
-        var parentWidth = parseInt($parent.css('width').replace('px', ''), 10);
-        var percent = 100 * width / parentWidth;
+//        return function () {
+//            var scroll = $(window).scrollTop();
 
-        return percent >= 100 || $this.css('width') == '100%' || (($this.css('width') == null || $this.css('width') == 'auto') && $this.css('display') == 'block');
-    };
+//            if (original_offset.top < scroll) {
+//                $element.addClass('fixed').css('width', (original_width == '100%' ? $parent.width() : original_width) + 'px');
+//            } else {
+//                $element.removeClass('fixed').css('width', false);
+//            }
+//        };
+//    };
 
-    function stickyTemplate($element) {
-        var original_offset = $element.offset();
-        var original_width = $element.isFullWidth() ? '100%' : $element.width();
-        var $parent = $element.parent();
+//    $.fn.sticky = function () {
+//        var $this = $(this),
+//            update = function () {
+//                $this.each(function () {
+//                    var $ele = $(this);
+//                    $ele.data('sticky-function')();
+//                });
+//            };
 
-        return function () {
-            var scroll = $(window).scrollTop();
+//        $this.each(function () {
+//            var $ele = $(this);
+//            $ele.data('sticky-function', stickyTemplate($ele));
+//        });
 
-            if (original_offset.top < scroll) {
-                $element.addClass('fixed').css('width', (original_width == '100%' ? $parent.width() : original_width) + 'px');
-            } else {
-                $element.removeClass('fixed').css('width', false);
-            }
-        };
-    };
+//        $(window).scroll(update).resize(update);
 
-    $.fn.sticky = function () {
-        var $this = $(this),
-            update = function () {
-                $this.each(function () {
-                    var $ele = $(this);
-                    $ele.data('sticky-function')();
-                });
-            };
+//        return $this;
+//    };
 
-        $this.each(function () {
-            var $ele = $(this);
-            $ele.data('sticky-function', stickyTemplate($ele));
-        });
+//    $.fn.measure = function (propName) {
+//        return function () {
+//            var $offscreen = $('<div style="visibility:hidden;" />'),
+//                $clone = this.clone();
 
-        $(window).scroll(update).resize(update);
+//            $clone.appendTo($offscreen);
+//            $offscreen.appendTo($('body'));
 
-        return $this;
-    };
+//            var measurement = $clone[propName]();
 
-    $.fn.measure = function (propName) {
-        return function () {
-            var $offscreen = $('<div style="visibility:hidden;" />'),
-                $clone = this.clone();
+//            $offscreen.remove();
 
-            $clone.appendTo($offscreen);
-            $offscreen.appendTo($('body'));
+//            return measurement;
+//        };
+//    };
 
-            var measurement = $clone[propName]();
+//    $.fn.measureHeight = $.fn.measure('height');
+//    $.fn.measureWidth = $.fn.measure('width');
 
-            $offscreen.remove();
+//    /*
+//     * Moves elements relative to background images / sizes
+//     */
+//    $.fn.updateResponsive = function () {
+//        var $that = $(this);
 
-            return measurement;
-        };
-    };
+//        var original_width = $that.data('width'),
+//            original_height = $that.data('height'),
+//            original_aspect = original_width / original_height;
 
-    $.fn.measureHeight = $.fn.measure('height');
-    $.fn.measureWidth = $.fn.measure('width');
+//        var page_width = $that.width(),
+//            page_height = $that.height(),
+//            page_aspect = page_width / page_height;
 
-    /*
-     * Moves elements relative to background images / sizes
-     */
-    $.fn.updateResponsive = function () {
-        var $that = $(this);
+//        var current_width = 0.0,
+//            current_height = 0.0;
 
-        var original_width = $that.data('width'),
-            original_height = $that.data('height'),
-            original_aspect = original_width / original_height;
+//        if (original_aspect >= 1) {
+//            if (page_aspect < original_aspect) {
+//                current_width = page_width;
+//                current_height = current_width * original_height / original_width;
+//            }
+//            else {
+//                current_height = page_height;
+//                current_width = current_height * original_width / original_height;
+//            }
+//        }
+//        else {
+//            if (page_aspect < original_aspect) {
+//                current_height = page_height;
+//                current_width = current_height * original_width / original_height;
+//            }
+//            else {
+//                current_width = page_width;
+//                current_height = current_width * original_height / original_width;
+//            }
+//        }
 
-        var page_width = $that.width(),
-            page_height = $that.height(),
-            page_aspect = page_width / page_height;
+//        var percent_width = current_width / original_width,
+//            percent_height = current_height / original_height;
 
-        var current_width = 0.0,
-            current_height = 0.0;
+//        $that.find('[data-position="responsive"]').each(function () {
+//            var $element = $(this),
+//                element_left = $element.data('left'),
+//                element_top = $element.data('top'),
+//                leftOffset = 0.0,
+//                topOffset = 0.0;
 
-        if (original_aspect >= 1) {
-            if (page_aspect < original_aspect) {
-                current_width = page_width;
-                current_height = current_width * original_height / original_width;
-            }
-            else {
-                current_height = page_height;
-                current_width = current_height * original_width / original_height;
-            }
-        }
-        else {
-            if (page_aspect < original_aspect) {
-                current_height = page_height;
-                current_width = current_height * original_width / original_height;
-            }
-            else {
-                current_width = page_width;
-                current_height = current_width * original_height / original_width;
-            }
-        }
+//            if (original_aspect > 1 && current_width < page_width) {
+//                leftOffset = (page_width - current_width) / 2.0;
+//            }
 
-        var percent_width = current_width / original_width,
-            percent_height = current_height / original_height;
+//            if (original_aspect < 1 && current_height < page_height) {
+//                topOffset = (page_height - current_height) / 2.0;
+//            }
 
-        $that.find('[data-position="responsive"]').each(function () {
-            var $element = $(this),
-                element_left = $element.data('left'),
-                element_top = $element.data('top'),
-                leftOffset = 0.0,
-                topOffset = 0.0;
-
-            if (original_aspect > 1 && current_width < page_width) {
-                leftOffset = (page_width - current_width) / 2.0;
-            }
-
-            if (original_aspect < 1 && current_height < page_height) {
-                topOffset = (page_height - current_height) / 2.0;
-            }
-
-            $element
-                .css('top', ((percent_height * element_top) + topOffset) + 'px')
-                .css('left', ((percent_width * element_left) + leftOffset) + 'px');
-        });
+//            $element
+//                .css('top', ((percent_height * element_top) + topOffset) + 'px')
+//                .css('left', ((percent_width * element_left) + leftOffset) + 'px');
+//        });
 
 
-        return $that;
-    };
+//        return $that;
+//    };
 
-    $.fn.resetForm = function () {
-        var $this = $(this);
+//    $.fn.resetForm = function () {
+//        var $this = $(this);
 
-        $this.find('input:not([type="submit"]):not([type="button"])').val('');
+//        $this.find('input:not([type="submit"]):not([type="button"])').val('');
 
-        return $this;
-    };
+//        return $this;
+//    };
 
-    $.fn.bindFormToHtml = function ($parent) {
-        var $form = $(this),
-            $dataProps = $parent.find('[data-prop]'),
-            id = $parent.data('uid');
+//    $.fn.bindFormToHtml = function ($parent) {
+//        var $form = $(this),
+//            $dataProps = $parent.find('[data-prop]'),
+//            id = $parent.data('uid');
 
-        if (id) {
-            $form.append('<input type="hidden" name="Id" value="' + id + '" />');
-        }
+//        if (id) {
+//            $form.append('<input type="hidden" name="Id" value="' + id + '" />');
+//        }
 
-        $dataProps.each(function () {
-            var $prop = $(this),
-                name = $prop.data('prop'),
-                value = $prop.is('input') ? $prop.val() : $prop.html();
+//        $dataProps.each(function () {
+//            var $prop = $(this),
+//                name = $prop.data('prop'),
+//                value = $prop.is('input') ? $prop.val() : $prop.html();
 
-            var $element = $form.find('input[name="' + name + '"]');
+//            var $element = $form.find('input[name="' + name + '"]');
 
-            if ($element.is('input')) { $element.val(value); }
-            else { $element.html(value); }
-        });
+//            if ($element.is('input')) { $element.val(value); }
+//            else { $element.html(value); }
+//        });
 
-        return $form;
-    };
-}(jQuery));
+//        return $form;
+//    };
+//}(jQuery));
 
 
 (function (window, undefined) {
@@ -291,6 +273,9 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     js.fn = js.prototype = {
         init: function (selector) {
             this.version = version;
+            this.author = "John Sedlak (JS)";
+            this.authorWebsite = "http://johnsedlak.com";
+            this.website = "https://github.com/jsedlak/jsMetro";
             this.$element = $(selector);
 
             return this;
@@ -298,45 +283,126 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 
         measureHeight: measureHelper('height'),
         measureWidth: measureHelper('width')
+    };  
+
+    js.fn.utils = {
+        log: function (msg) {
+            console && console.log(msg);
+
+            $(window).trigger('log', [msg, 'info']);
+
+            return this;
+        },
+
+        error: function(error) {
+            console && console.log(error);
+
+            $(window).trigger('log', [error, 'error']);
+
+            return this;
+        },
+
+        /*
+         * Ensures that an element exists, is selectable and returns a length > 0. If it doesn't, the function provides the ability to create it on the fly.
+         * Use: $.js.ensureElement([selector:string], [templateCallback:method])
+         */
+        ensureElement: function (selector, callback) {
+            // Create the jQuery element
+            var $element = $(selector);
+
+            // Does it exist? If so, return it!
+            if ($element && $element.length > 0) {
+                return $element;
+            }
+
+            // Attempt to call the callback
+            var cb = templateCallback;
+            if (cb) {
+                $element = cb();
+            }
+
+            return $element;
+        },
+        parsePadding: numberParserHelper(new Array('px', 'em', '%')),
+        parseDuration: numberParserHelper(new Array({ input: 's', output: '', modifier: 1000 }, 'ms'))
+    };
+
+    /* Measures a property off screen - eg: measureHelper('width') -> function(){...} */
+    function measureHelper(propName) {
+        return function () {
+            var $offscreen = $('<div style="visibility:hidden;" />'),
+                $clone = this.$element.clone();
+
+            $clone.appendTo($offscreen);
+            $offscreen.appendTo($('body'));
+
+            var measurement = $clone[propName]();
+
+            $offscreen.remove();
+
+            return measurement;
+        };
+    };
+
+    /* Parses a number from a string, swapping out units (replacements: array) */
+    function numberParserHelper(replacements) {
+        return function (input) {
+            var modifier = 1;
+            var output = input;
+            for (var i = 0; i < replacements.length; i++) {
+                var replacement = replacements[i];
+
+                if (null != replacement.input) {
+                    output = output.replace(replacement.input, replacement.output);
+                    if (null != replacement.modifier) modifier *= replacement.modifier;
+                }
+                else output = output.replace(replacement, '');
+            }
+
+            return parseFloat(output) * modifier;
+        }
     };
 
     js.fn.init.prototype = js.fn;
     window.js = js;
+
+    /* jQuery Functions */
+
+    $.fn.measureHeight = measureHelper('height');
+    $.fn.measureWidth = measureHelper('width');
+    $.fn.cloneTo = function (toSelector) {
+        var $this = $(this),
+            $to = $(toSelector);
+
+        $to.each(function () {
+            var $c = $this.clone(),
+                $toIndividual = $(this);
+
+            $c.appendTo($toIndividual);
+        });
+
+        return $this;
+    };
 })(window);
 
-/* Measures a property off screen - eg: measureHelper('width') -> function(){...} */
-function measureHelper(propName) {
-    return function () {
-        var $offscreen = $('<div style="visibility:hidden;" />'),
-            $clone = this.$element.clone();
 
-        $clone.appendTo($offscreen);
-        $offscreen.appendTo($('body'));
-
-        var measurement = $clone[propName]();
-
-        $offscreen.remove();
-
-        return measurement;
-    };
-};
-
-/* Parses an array into an object - eg: "1.2.3.4" -> { major: 1, minor: 2, build: 3, revision: 4 } */
-function parseArray(propertyLookup, isValidCallback, parseCallback, splitCharacter) {
-    return function (stringArray) {
-        var data = stringArray.split(splitCharacter);
-        for (var index = 0; index < propertyLookup.length; index++) {
-            if (index >= data.length || null == isValidCallback || !isValidCallback(data[index])) {
-                break;
-            }
-
-            this[propertyLookup[index]] = parseCallback ? parseCallback(data[index]) : data[index];
-        }
-    }
-}
 
 /* VERSION CLASS */
 function Version(major, minor, build, revision) {
+    /* Parses an array into an object - eg: "1.2.3.4" -> { major: 1, minor: 2, build: 3, revision: 4 } */
+    var parseArray = function(propertyLookup, isValidCallback, parseCallback, splitCharacter) {
+        return function (stringArray) {
+            var data = stringArray.split(splitCharacter);
+            for (var index = 0; index < propertyLookup.length; index++) {
+                if (index >= data.length || null == isValidCallback || !isValidCallback(data[index])) {
+                    break;
+                }
+
+                this[propertyLookup[index]] = parseCallback ? parseCallback(data[index]) : data[index];
+            }
+        }
+    }
+
     this.major = major;
     this.minor = minor;
     this.build = build;
@@ -356,59 +422,4 @@ function Version(major, minor, build, revision) {
         },
         '.'
     );
-
-}
-
-/* EVENT CLASS */
-function Event(name) {
-    this.name = name;
-    this.handlers = new Array();
-}
-
-Event.prototype = {
-    /* Adds a callback to the event
-        Use: myevent.addHandler(foo);
-    */
-    addHandler: function (handler) {
-        this.handlers.push(handler);
-    },
-
-    /* Removes a callback from the event
-        Use: myevent.removeHandler(foo);
-    */
-    removeHandler: function (handler) {
-        var data = this.handlers;
-
-        data.splice(data.indexOf(handler), 1);
-
-        this.handlers = data;
-    },
-
-    /* Invokes the event
-        Use: myevent.invoke(event);
-    */
-    invoke: function (data) {
-        var eventArgs = new EventArgs(data);
-
-        log('' + this.name + '.invoke -> Found ' + this.handlers.length + ' handlers.');
-
-        for (var i = 0; i < this.handlers.length; i++) {
-            var handler = this.handlers[i];
-
-            if (handler == null) {
-                continue;
-            }
-
-            handler(data, eventArgs);
-
-            if (eventArgs.isHandled) {
-                break;
-            }
-        }
-    }
-}
-
-function EventArgs(data) {
-    this.isHandled = false;
-    this.data = data;
 }
