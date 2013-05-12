@@ -276,9 +276,46 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
             this.author = "John Sedlak (JS)";
             this.authorWebsite = "http://johnsedlak.com";
             this.website = "https://github.com/jsedlak/jsMetro";
-            this.$element = $(selector);
+            try{
+                this.$element = $(selector);
+            } catch (ex) {
+                this.$element = null;
+            }
+            this.target = selector;
 
             return this;
+        },
+
+        notify: function () {
+            var msg = this.target;
+            if (null != this.$element && this.$element.length == 0) {
+                msg = this.$element.html();
+            }
+
+            this.$element = $('<div data-role="toast" />');
+            this.$element.html(msg);
+            this.$element.appendTo($('body'));
+            
+
+            var that = this;
+            setTimeout(
+                function () {
+                    that.$element.addClass('active');
+                    setTimeout(
+                        function () {
+                            that.$element.removeClass('active');
+                            setTimeout(
+                                function () {
+                                    //that.$element.remove();
+                                },
+                                1000
+                            );
+                        },
+                        2500
+                    );
+                },
+                100
+            );
         },
 
         measureHeight: measureHelper('height'),
@@ -385,8 +422,6 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
     };
 })(window);
 
-
-
 /* VERSION CLASS */
 function Version(major, minor, build, revision) {
     /* Parses an array into an object - eg: "1.2.3.4" -> { major: 1, minor: 2, build: 3, revision: 4 } */
@@ -423,3 +458,64 @@ function Version(major, minor, build, revision) {
         '.'
     );
 }
+
+/* TASKLIST CLASS */
+function TaskList() {
+    this.internalQueue = new Array();
+    this.activeTask = null;
+};
+
+TaskList.prototype = {
+    push: function (openCallback) {
+        var that = this,
+            task = new Task(
+                openCallback,  
+                function (data) { that.onClosed(task, data); }
+            );
+
+        that.internalQueue.push(task);
+        that.checkQueue();
+    },
+
+    checkQueue: function () {
+        var that = this;
+
+        if (that.activeTask != null) return;
+
+        that.activeTask = that.internalQueue.pop();
+
+        // Open the task
+        if (that.activeTask) that.activeTask.open();
+        else that.checkQueue();
+    },
+
+    onClosed: function (task) {
+        var that = this;
+
+        that.activeTask = null;
+        that.checkQueue();
+    }
+};
+
+function Task(openCallback, closeCallback) {
+    this.openCallback = openCallback;
+    this.closeCallback = closeCallback;
+};
+
+Task.prototype = {
+    open: function () {
+        var that = this,
+            cb = that.openCallback;
+
+        if (null == cb) that.close();
+        else cb(that);
+    },
+
+    close: function () {
+        var that = this,
+            cb = that.closeCallback;
+
+        if (null != cb)
+            cb(that);
+    }
+};

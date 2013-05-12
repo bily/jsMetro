@@ -288,6 +288,25 @@
             <p>&copy;2013 <a href="http://johnsedlak.com">John Sedlak</a></p>
         </footer>
 
+        <style>
+            [data-role="toast"] {
+                display: block;
+                position: fixed;
+                top: 25px;
+                right: -100%;
+                padding: 25px;
+                -webkit-transition: all linear 1s;
+                transition: all linear 1s;
+                min-height: 50px;
+                min-width: 250px;
+                background: #0094ff;
+                color: #fff;
+            }
+
+            [data-role="toast"].active {
+                right: 25px;
+            }
+        </style>
         <script>
             $(document).ready(function () {
                 $(window).on(
@@ -303,6 +322,9 @@
                 var $simple = js();
                 $simple.utils.log('jsMetro, Version: ' + js().version.toString());
                 $simple.utils.error('This is just a sample error!');
+
+                js('Hello, world!').notify();
+                js('Hello, world 2!').notify();
             });
         </script>
     </body>
