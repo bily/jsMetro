@@ -287,34 +287,44 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         },
 
         notify: function () {
-            var msg = this.target;
+            var that = this,
+                msg = this.target,
+                $body = $('body'),
+                taskList = $body.dataEx('notify-task-list', function() { return new TaskList(); });
+
             if (null != this.$element && this.$element.length == 0) {
                 msg = this.$element.html();
             }
 
-            this.$element = $('<div data-role="toast" />');
-            this.$element.html(msg);
-            this.$element.appendTo($('body'));
-            
+            taskList.push(
+                function (t) {
+                    js().utils.log('notify open');
 
-            var that = this;
-            setTimeout(
-                function () {
-                    that.$element.addClass('active');
+                    this.$element = $('<div data-role="toast" />');
+                    this.$element.html(msg);
+                    this.$element.appendTo($('body'));
+
+                    var that = this;
                     setTimeout(
                         function () {
-                            that.$element.removeClass('active');
+                            that.$element.addClass('active');
                             setTimeout(
                                 function () {
-                                    //that.$element.remove();
+                                    that.$element.removeClass('active');
+                                    setTimeout(
+                                        function () {
+                                            that.$element.remove();
+                                            t.close();
+                                        }, 
+                                        1000
+                                    );
                                 },
-                                1000
+                                2500
                             );
                         },
-                        2500
+                        100
                     );
-                },
-                100
+                }
             );
         },
 
@@ -407,6 +417,7 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
 
     $.fn.measureHeight = measureHelper('height');
     $.fn.measureWidth = measureHelper('width');
+
     $.fn.cloneTo = function (toSelector) {
         var $this = $(this),
             $to = $(toSelector);
@@ -419,6 +430,17 @@ http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
         });
 
         return $this;
+    };
+
+    $.fn.dataEx = function(key, callback){
+        var o = this.data(key);
+
+        if(null == o) {
+            o = callback();
+            this.data(key, o);
+        }
+
+        return o;
     };
 })(window);
 
@@ -481,6 +503,7 @@ TaskList.prototype = {
         var that = this;
 
         if (that.activeTask != null) return;
+        if (that.internalQueue.length == 0) return;
 
         that.activeTask = that.internalQueue.pop();
 
