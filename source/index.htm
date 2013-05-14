@@ -323,8 +323,28 @@
                 $simple.utils.log('jsMetro, Version: ' + js().version.toString());
                 $simple.utils.error('This is just a sample error!');
 
-                js('Hello, world!').notify();
-                js('Hello, world 2!').notify();
+                //js('Hello, world!').notify();
+                //js('Hello, world 2!').notify();
+
+                var tl = new TaskList();
+                tl.automatic = false;
+                tl.isReady = false;
+                tl.fifo = true;
+                
+                tl.push(function (t) {
+                    js('Hello, world!').notify();
+                    t.close();
+                });
+
+                tl.push(function (t) {
+                    js('Hello, world #2!').notify();
+                    t.close();
+                });
+
+                tl.checkQueue();
+                setTimeout(function () {
+                    tl.checkQueue();
+                }, 10000);
             });
         </script>
     </body>

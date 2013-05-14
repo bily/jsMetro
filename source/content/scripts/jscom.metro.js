@@ -485,6 +485,9 @@ function Version(major, minor, build, revision) {
 function TaskList() {
     this.internalQueue = new Array();
     this.activeTask = null;
+    this.fifo = true;
+    this.automatic = true;
+    this.isReady = true;
 };
 
 TaskList.prototype = {
@@ -496,20 +499,38 @@ TaskList.prototype = {
             );
 
         that.internalQueue.push(task);
-        that.checkQueue();
+
+        // Do we check the list and process automatically?
+        if (that.automatic || that.isReady) {
+            that.checkQueue();
+        }
     },
 
     checkQueue: function () {
         var that = this;
 
         if (that.activeTask != null) return;
-        if (that.internalQueue.length == 0) return;
+        if (that.internalQueue.length == 0) {
+            that.isReady = true;
+            return;
+        }
 
-        that.activeTask = that.internalQueue.pop();
+        // We're going to start a task, so let's set the ready flag to false
+        that.isReady = false;
+
+        if (!that.fifo) {
+            that.activeTask = that.internalQueue.pop();
+        } else {
+            that.activeTask = that.internalQueue[0];
+            that.internalQueue.splice(0, 1);
+        }
 
         // Open the task
         if (that.activeTask) that.activeTask.open();
-        else that.checkQueue();
+        else {
+            // Do we check the list and process automatically?
+            if (that.automatic || that.isReady) that.checkQueue();
+        }
     },
 
     onClosed: function (task) {
