@@ -1,0 +1,567 @@
+/*
+	jscom.metro.css
+	Copyright (C)2012 John Sedlak
+	http://github.com/jsedlak/jsMetro (Source, Readme & Licensing)
+*/
+
+/* DEFAULT WP7 Swatches */
+/*
+	magenta ff0097
+	purple	a200ff
+	teal	00aba9
+	lime	8cbf26
+	brown	996600
+	pink	ff0097
+	orange	f09609
+	blue	1ba1e2
+	red		e51400
+	green	339933
+ */
+	
+/* 
+ * JSDialog
+ */
+#JSDialog { 
+	position: fixed;
+	left: 0px; top: -100%;
+	width: 100%; height: 100%;
+	z-index: 1000;
+	
+	background: #2d2d2d;
+	background: rgba(0, 0, 0, 0);
+	
+	-webkit-transition: all 0.5s ease-in-out;
+	-o-transition: 		all 0.5s ease-in-out;
+	-moz-transition: 	all 0.5s ease-in-out;
+	transition: 		all 0.5s ease-in-out;
+}
+
+#JSDialog.visible { top: 0%; background: rgba(0, 0, 0, 0.75); }
+
+#JSDialog>.dialog-panel {
+	width: 500px; height: auto;
+	
+	margin: 0 0 0 -250px;
+	padding: 20px;
+	
+	position: absolute;
+	left: 50%; top: -100%;
+	
+	background: #1d1d1d;
+	color: #fff;
+	
+	-webkit-transition: top 1s ease-in-out;
+	-o-transition: 		top 1s ease-in-out;
+	-moz-transition: 	top 1s ease-in-out;
+	transition: 		top 1s ease-in-out;
+}
+
+body.light #JSDialog>.dialog-panel { background: #fff; color: inherit; }
+
+#JSDialog.visible>.dialog-panel {
+	top: 100px; 
+}
+
+#JSDialog>.dialog-panel>.dialog-content {
+	text-align: justify;
+}
+
+#JSDialog>.dialog-panel>.dialog-buttons {
+	text-align: right;
+}
+
+/* 
+ * JSNotification
+ */
+#JSNotification { 
+	z-index: 999;
+	
+	background-color: #1ba1e2; 
+	color: #fff !important; 
+	
+	position: fixed;
+	left: 0; top: -40px; 
+	
+	padding: 0;
+	margin: 0;
+	
+	width: 100%; 
+	height: 40px; 
+	
+	-webkit-transition: top 0.25s ease-in-out;
+	-moz-transition: top 0.25s ease-in-out;
+	-o-transition: top 0.25s ease-in-out;
+	transition: top 0.25s ease-in-out;
+
+	font: 14px/1em 'Segoe WP', 'Segoe UI', Tahoma, Arial, Sans-Serif;
+}
+
+/* THEMING */
+body.magenta #JSNotification { background-color: #ff0097; }
+body.purple #JSNotification { background-color: #a200ff; }
+body.teal #JSNotification { background-color: #00aba9; }
+body.lime #JSNotification { background-color: #8cbf26; }
+body.brown #JSNotification { background-color: #996600; }
+body.pink #JSNotification { background-color: #ff0097; }
+body.orange #JSNotification { background-color: #f09609; }
+body.blue #JSNotification { background-color: #1ba1e2; }
+body.red #JSNotification { background-color: #e51400; }
+body.green #JSNotification { background-color: #339933; }
+
+#JSNotification.active { top: 0px; }
+
+#JSNotification p { position: absolute; left: 50px; top: 10px; padding: 0; margin: 0; }
+#JSNotification .datestamp { margin: 0px 10px 0 0; padding: 0;  }
+#JSNotification .message { margin: 0px 0 0 0; padding: 0; }
+
+#JSNotification .progress { 
+	background: black;
+	height: 2px; width: 100%; 
+	
+	position: absolute; 
+	bottom: 0px; left: 0px; 
+}
+
+#JSNotification a { color: #fff; text-decoration: underline; }
+
+/*
+.collapsible { 
+	height: auto; 
+	
+	-webkit-transition: all 0.25s ease-in-out;
+	-moz-transition: all 0.25s ease-in-out;
+	-o-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
+}
+.collapsible.collapsed { height: 0px; overflow: hidden; }*/
+
+
+/* FORM ELEMENTS */
+input[type="text"],
+input[type="search"],
+input[type="password"],
+input[type="email"],
+select,
+textarea {
+    padding: 5px 10px;
+	
+	border: solid 1px #b8b8b8;
+	border-top: solid 1px #a1a1a1;
+	background: #fff;
+	
+	font-size: 15px;
+	box-sizing: border-box;
+	border-radius: 1px;
+	
+	font-family: 'Segoe UI', Arial, Sans-Serif;
+}
+
+input[type="text"]:hover,
+input[type="search"]:hover,
+input[type="password"]:hover,
+input[type="email"],
+select,
+textarea:hover {
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.error-message {
+    background: #ffeeee;
+    border: solid 1px #f00;
+    
+    padding: 20px;
+    margin: 10px 0px;
+}
+
+.success-message {
+	background: #eeffee;
+	border: solid 1px #0f0;
+					
+	padding: 20px;
+	margin: 10px 0px;
+}
+
+.warning-message {
+	background: #ffffee;
+	border: solid 1px #ff0;
+	
+	padding: 20px;
+	margin: 10px 0px;
+}
+
+.button {
+	display: inline-block;
+	cursor: pointer;
+	line-height:normal !important;
+	
+	border: 0;
+	
+	padding: 7px 15px 8px !important;
+	margin: 0 5px 5px 0;
+	
+	background-color: #1ba1e2;
+	color: #fff !important;
+	
+	text-decoration: none !important;
+	
+	-webkit-transition: all 0.25s ease-in-out !important;
+	-moz-transition: 	all 0.25s ease-in-out !important;
+	-o-transition: 		all 0.25s ease-in-out !important;
+	transition: 		all 0.25s ease-in-out !important;
+}
+
+input.button,
+button.button { 
+	padding: 9px 15px 9px !important;
+	
+	/* IE 8 Hack */
+	//padding: 9px 15px 8px !important; 
+	
+	vertical-align: top; 
+}
+
+@-moz-document url-prefix() {
+  input.button { padding: 9px 15px 9px !important; }
+}
+
+.button:hover { 
+	color: #fff;  
+	background-color: #4cc3ff; 
+}
+
+.button:active { 
+	color: #fff; 
+	background-color: #1ba1e2; 
+}
+
+.button.disabled,
+.button[disabled="disabled"] { cursor: default; background-color: #2d2d2d !important; color: #ededed !important; }
+
+/* THEMING SUPPORT */
+	/* GREEN */
+	body.green .button,
+    .button.green { background-color: #339933; color: #fff; }
+
+	body.green .button:hover,
+    .button.green:hover { color: #fff; background-color: #4ab64a; }
+
+	body.green .button:active,
+    .button.green:active { color: #fff; background-color: #339933; }
+	
+	/* RED */
+	body.red .button { background-color: #e51400; color: #fff; }
+	body.red .button:hover { color: #fff; background-color: #fe3623; }
+	body.red .button:active { color: #fff; background-color: #e51400; }
+	
+	/* ORANGE */
+	body.orange .button { background-color: #f09609; color: #fff; }
+	body.orange .button:hover { color: #fff; background-color: #ffaf32; }
+	body.orange .button:active { color: #fff; background-color: #f09609; }
+	
+	/* PINK */
+	body.pink .button { background-color: #ff0097; color: #fff; }
+	body.pink .button:hover { color: #fff; background-color: #ff65c0; }
+	body.pink .button:active { color: #fff; background-color: #ff0097; }
+	
+	/* BROWN */
+	body.brown .button { background-color: #996600; color: #fff; }
+	body.brown .button:hover { color: #fff; background-color: #bf8000; }
+	body.brown .button:active { color: #fff; background-color: #996600; }
+	
+	/* LIME */
+	body.lime .button { background-color: #8cbf26; color: #fff; }
+	body.lime .button:hover { color: #fff; background-color: #8cd200; }
+	body.lime .button:active { color: #fff; background-color: #8cbf26; }
+	
+	/* TEAL */
+	body.teal .button { background-color: #00aba9; color: #fff; }
+	body.teal .button:hover { color: #fff; background-color: #00d9d5; }
+	body.teal .button:active { color: #fff; background-color: #00aba9; }
+	
+	/* PURPLE */
+	body.purple .button { background-color: #a200ff; color: #fff; }
+	body.purple .button:hover { color: #fff; background-color: #be4cff; }
+	body.purple .button:active { color: #fff; background-color: #a200ff; }
+
+	/* MAGENTA */
+	body.magenta .button { background-color: #ff0097; color: #fff; }
+	body.magenta .button:hover { color: #fff; background-color: #ff4db6; }
+	body.magenta .button:active { color: #fff; background-color: #ff0097; }
+	
+/* ICON SUPPORT */
+.icon { 
+	padding-right: 12px;
+    padding-left: 38px;
+	background-image: url('images/metro-black.png');
+	background-repeat: no-repeat; 
+	
+}
+
+a.icon {
+    padding: 9px 0px 9px 25px;
+    display: inline-block;
+}
+
+.icon.button,
+.icon.white { 
+	padding-left: 35px !important;
+	padding-right: 12px !important;	
+	background-image: url('images/metro-white.png');
+	background-repeat: no-repeat; 
+	background-position: 11px center; 
+}
+
+.icon.lonely {
+    display: inline-block;
+    height: 32px; 
+    margin: 0 !important;
+    padding: 0 !important;
+    text-indent: -99999px;
+    width: 22px;
+}
+
+
+    
+
+.base.icon {			background-position: 0px -3px; }
+.overflow.icon { 		background-position: 0px -33px; }
+.parent.icon { 			background-position: 0px -63px; }
+.next.icon { 			background-position: 0px -93px; }
+.previous.icon,
+.back.icon { 			background-position: 0px -123px; }
+.up.icon { 				background-position: 0px -153px; }
+.down.icon {			background-position: 0px -183px; }
+.download.icon { 		background-position: 0px -213px; }
+.upload.icon { 			background-position: 0px -243px; }
+.cancel.icon { 			background-position: 0px -273px; }
+.check.icon,	
+.checkmark.icon { 		background-position: 0px -303px; }
+.save.icon { 			background-position: 0px -333px; }
+.edit.icon { 			background-position: 0px -363px; }
+.delete.icon { 			background-position: 0px -393px; }
+.folder.icon { 			background-position: 0px -423px; }
+.info.icon { 			background-position: 0px -453px; }
+.question.icon,
+.question-mark.icon { 	background-position: 0px -483px; }
+.minus.icon { 			background-position: 0px -513px; }
+.add.icon { 			background-position: 0px -543px; }
+.refresh.icon { 		background-position: 0px -573px; }
+.favs.icon { 			background-position: 0px -603px; }
+.add-to-favs.icon { 	background-position: 0px -633px; }
+.heart.icon { 			background-position: 0px -663px; }
+.search.icon { 			background-position: 0px -693px; }
+.share.icon { 			background-position: 0px -723px; }
+.play.icon { 			background-position: 0px -753px; }
+.pause.icon { 			background-position: 0px -783px; }
+.ff.icon,
+.fast-forward.icon { 	background-position: 0px -813px; }
+.rew.icon,
+.rewind.icon { 			background-position: 0px -843px; }
+.settings.icon { 		background-position: 0px -873px; }
+.phone.icon { 			background-position: 0px -903px; }
+.mail.icon { 			background-position: 0px -933px; }
+.video.icon { 			background-position: 0px -963px; }
+.camera.icon { 			background-position: 0px -993px; }
+.flag.icon { 			background-position: 0px -1023px; }
+.archive.icon {		    background-position: 0px -1053px; }
+.unarchive.icon {		background-position: 0px -1083px; }
+.user.icon {            background-position: 0px -1113px; }
+
+.base.icon.button {				background-position: 10px -3px; }
+.overflow.icon.button { 		background-position: 10px -33px; }
+.parent.icon.button { 			background-position: 10px -63px; }
+.next.icon.button { 			background-position: 10px -93px; }
+.previous.icon.button,
+.back.icon.button { 			background-position: 10px -123px; }
+.up.icon.button { 				background-position: 10px -153px; }
+.down.icon.button {				background-position: 10px -183px; }
+.download.icon.button { 		background-position: 10px -213px; }
+.upload.icon.button { 			background-position: 10px -243px; }
+.cancel.icon.button { 			background-position: 10px -273px; }
+.check.icon.button,	
+.checkmark.icon.button { 		background-position: 10px -303px; }
+.save.icon.button { 			background-position: 10px -333px; }
+.edit.icon.button { 			background-position: 10px -363px; }
+.delete.icon.button { 			background-position: 10px -393px; }
+.folder.icon.button { 			background-position: 10px -423px; }
+.info.icon.button { 			background-position: 10px -453px; }
+.question.icon.button,
+.question-mark.icon.button { 	background-position: 10px -483px; }
+.minus.icon.button { 			background-position: 10px -513px; }
+.add.icon.button { 				background-position: 10px -543px; }
+.refresh.icon.button { 			background-position: 10px -573px; }
+.favs.icon.button { 			background-position: 10px -603px; }
+.add-to-favs.icon.button { 		background-position: 10px -633px; }
+.heart.icon.button { 			background-position: 10px -663px; }
+.search.icon.button { 			background-position: 10px -693px; }
+.share.icon.button { 			background-position: 10px -723px; }
+.play.icon.button { 			background-position: 10px -753px; }
+.pause.icon.button { 			background-position: 10px -783px; }
+.ff.icon.button,
+.fast-forward.icon.button { 	background-position: 10px -813px; }
+.rew.icon.button,
+.rewind.icon.button { 			background-position: 10px -843px; }
+.settings.icon.button { 		background-position: 10px -873px; }
+.phone.icon.button { 			background-position: 10px -903px; }
+.mail.icon.button { 			background-position: 10px -933px; }
+.video.icon.button { 			background-position: 10px -963px; }
+.camera.icon.button { 			background-position: 10px -993px; }
+.flag.icon.button { 			background-position: 10px -1023px; }
+
+/* SCROLLBAR THEMING SUPPORT */
+*::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+	
+	border-left: solid 1 #000;
+}
+
+*::-webkit-scrollbar-button:start:decrement {
+	display: block;
+	height: 0px;
+	width: 0px;
+}
+
+*::-webkit-scrollbar-button:end:increment {
+	display: block;
+	height: 0px;
+	width: 0px;
+}
+
+*::-webkit-scrollbar-button:vertical:increment {
+	background-color: transparent;
+}
+
+*::-webkit-scrollbar-track:enabled {
+	background-color: #1d1d1d; /*rgba(113,112,107,0.1);*/
+	-webkit-border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb:vertical {
+	height: 50px;
+	background-color: #1ba1e2; /*rgba(0,0,0,.2);*/
+	-webkit-border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb:horizontal {
+	width: 50px;
+	background-color: #1ba1e2; /*rgba(0,0,0,.2);*/
+	-webkit-border-radius: 5px;
+}
+
+	/* THEMING */
+	.magenta ::-webkit-scrollbar-thumb:vertical { background-color: #ff0097; }
+	.magenta ::-webkit-scrollbar-thumb:horizontal { background-color: #ff0097; }
+	
+	.purple ::-webkit-scrollbar-thumb:vertical { background-color: #a200ff; }
+	.purple ::-webkit-scrollbar-thumb:horizontal { background-color: #a200ff; }
+	
+	.teal ::-webkit-scrollbar-thumb:vertical { background-color: #00aba9; }
+	.teal ::-webkit-scrollbar-thumb:horizontal { background-color: #00aba9; }
+	
+	.lime ::-webkit-scrollbar-thumb:vertical { background-color: #8cbf26; }
+	.lime ::-webkit-scrollbar-thumb:horizontal { background-color: #8cbf26; }
+	
+	.brown ::-webkit-scrollbar-thumb:vertical { background-color: #996600; }
+	.brown ::-webkit-scrollbar-thumb:horizontal { background-color: #996600; }
+	
+	.pink ::-webkit-scrollbar-thumb:vertical { background-color: #ff0097; }
+	.pink ::-webkit-scrollbar-thumb:horizontal { background-color: #ff0097; }
+	
+	.orange ::-webkit-scrollbar-thumb:vertical { background-color: #f09609; }
+	.orange ::-webkit-scrollbar-thumb:horizontal { background-color: #f09609; }
+	
+	.blue ::-webkit-scrollbar-thumb:vertical { background-color: #1ba1e2; }
+	.blue ::-webkit-scrollbar-thumb:horizontal { background-color: #1ba1e2; }
+	
+	.red ::-webkit-scrollbar-thumb:vertical { background-color: #e51400; }
+	.red ::-webkit-scrollbar-thumb:horizontal { background-color: #e51400; }
+	
+	.green ::-webkit-scrollbar-thumb:vertical { background-color: #339933; }
+	.green ::-webkit-scrollbar-thumb:horizontal { background-color: #339933; }
+	
+	
+	
+.notification {
+    background-color: #1ba1e2;
+    color: #fff !important;
+    height: 100px;
+    overflow: hidden;
+    padding: 10px;
+    position: fixed;
+    right: -320px;
+    top: 10px;
+    transition:         all ease-in 0.5s;
+    -webkit-transition: all ease-in 0.5s;
+    -o-transition:      all ease-in 0.5s;
+    -moz-transition:    all ease-in 0.5s;
+    width: 300px;    
+}
+
+.notification.active {
+    right: 20px;
+}
+
+.notification p {
+    font-size: 14px;
+    line-height: 1.5em;
+    margin: 0;
+}
+
+.notification > .close {
+    position: absolute;
+    right: 0px;
+    top: -5px;
+}
+
+/* THEME SUPPORT FOR popNotify */
+.magenta .notification,
+.notification.purple {
+    background: #ff0097;
+}
+
+.purple .notification,
+.notification.purple {
+    background: #a200ff;
+}
+
+.teal .notification,
+.notification.teal {
+    background: #00aba9;
+}
+
+.lime .notification,
+.notification.lime {
+    background: #8cbf26;
+}
+
+.brown .notification,
+.notification.brown {
+    background: #996600;
+}
+
+.pink .notification,
+.notification.pink {
+    background: #ff0097;
+}
+
+
+.orange .notification,
+.notification.orange{
+    background: #f09609;
+}
+
+.blue .notification,
+.notification.blue {
+    background: #1ba1e2;
+}
+
+.red .notification,
+.notification.red {
+    background: #e51400;
+}
+
+.green .notification,
+.notification.green {
+    color: #339933;
+}

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>jsMetro Demos</title>
+        <meta name="author" content="John Sedlak" />
+        <meta name="keywords" content="javascript,jquery,metro,wp7" /> 
+        <meta name="description" content="A set of samples that demonstrate Metro type functionality and elements on a website." />
+        
+        <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.js"></script>
+        
+        <script src="content/scripts/date-format.js"></script>
+        <script src="content/scripts/jscom.metro.js"></script>
+        
+        <!-- JavaScript for this file -->
+        <script src="content/scripts/jscom.showcase.js"></script>
+        
+        <link href="content/css/base.css" rel="stylesheet" media="all" />
+        <link href="content/css/jscom.metro.css" rel="stylesheet" media="all" />
+        
+        <!--[if gte IE 9]>
+          <style type="text/css">
+            .gradient {
+               filter: none;
+            }
+          </style>
+        <![endif]-->
+        
+        <style>       
+            body, html { height: 200%; }
+            #JSNotification.red { background: red !important; }
+        </style>
+    </head>
+    
+    <body class="light">
+        <div id="Page">
+            <header>
+                <ul>
+                    <li><a href="#popNotify">Pop Notify</a></li>
+                    <li><a href="#notify">Notify</a></li>
+                    <li><a href="#dialog">Dialog</a></li>
+                    <li><a href="#collapsible">Collapsible</a></li>
+                    <li><a href="#scrollto">ScrollTo</a></li>
+                    <li><a href="#forms">Forms</a></li>
+					<li><a href="#themes">Theming</a></li>
+					<li><a href="#columnize">Columnize</a></li>
+					<li><a href="mapper.htm">Mapper</a></li>
+                </ul>
+            </header>
+            <article>
+                <h1>jsMetro v<span id="MetroVersion">...</span> Demos</h1>
+
+                <h2><a role="anchor" name="popNotify">Pop Notifications</a></h2>
+<pre>$.js.popNotify('Hello, world.');</pre>
+                <p><a href="#" id="PopNotifySample" class="button">Notify Me!</a></p>
+                
+                <h2><a role="anchor" name="notify">Notifications</a></h2>
+                <p>The Notify API displays a notification akin to the Windows Phone 7 (WP7) notification bar (displayed after recieving a text message). It requires a direct call and makes use of an element automatically added to the DOM (<code>#JSNotification</code>).</p>
+                <ul class="examples">
+                    <li>
+                        <span role="title">PreInitialization of the DOM</span>
+                        <p>To ensure that the CSS animation works correctly the first time you supply a notification, you can simply pass in zero arguments into the <code>$.js.notify</code> function. This will add the appropriate elements to the DOM, letting the browser apply the CSS.</p>
+                        <div class="collapsible-wrapper">
+                            <a href="#" class="toggle" data-hidden-text="[+] View Source" data-visible-text="[-] Hide Source">[+] View Source</a>
+                            <div class="collapsible"><pre>$.js.notify();</pre></div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="TestNotify" href="#">Create a Notification</a>
+                        <div class="collapsible-wrapper">
+                            <a href="#" class="toggle" data-hidden-text="[+] View Source" data-visible-text="[-] Hide Source">[+] View Source</a>
+                            <div class="collapsible"><pre>$.js.notify('hello, world!');</pre></div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="TestNotifyTimeout" href="#">Create a 1 Second Notification</a>
+                        <div class="collapsible-wrapper">
+                            <a href="#" class="toggle" data-hidden-text="[+] View Source" data-visible-text="[-] Hide Source">[+] View Source</a>
+                            <pre class="collapsible">$.js.notify(
+    'hello, world',
+    { timeout: 1000 }                        
+);</pre>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="TestNotifyTimeoutColor" href="#">Create a 1 Second, Red Notification</a>
+                        <div class="collapsible-wrapper">
+                            <a href="#" class="toggle" data-hidden-text="[+] View Source" data-visible-text="[-] Hide Source">[+] View Source</a>
+                            <pre class="collapsible">$.js.notify(
+    'hello, world',
+    { timeout: 1000, cssClass: 'red' }                        
+);</pre>
+                        </div>
+                    </li>
+                </ul>
+                
+                <h2><a role="anchor" name="dialog">Dialog</a></h2>
+				
+				<h3>Signature</h3>
+				<pre>$.js.dialog(message, options)</pre>
+				
+				<h3>Basic Dialog</h3>
+				<p>The simplest way to use Dialog is to call it with just an HTML string containing your message.</p>
+				<p><a href="#" class="next icon button" id="HelloWorldDialog">Hello, world!</a></p>
+				<h4>jQuery</h4>
+				<pre>$.js.dialog('&lt;h3&gt;The Dialog Title&lt;/h3&gt;&lt;p&gt;Hello, world!&lt;/p&gt;');</pre>
+				
+				<h3>Queueing</h3>
+				<p>The Dialog function can also queue up multiple messages. It works in a fire-and-forget fashion as demonstrated below.</p>
+				<p><a href="#" class="next icon button" id="QueueDialog">Queue 2 Messages</a></p>
+				<h4>jQuery</h4>
+<pre>$.js.dialog('&lt;h3&gt;The Dialog Title&lt;/h3&gt;&lt;p&gt;Hello, world!&lt;/p&gt;');
+$.js.dialog('&lt;h3&gt;The Dialog Title&lt;/h3&gt;&lt;p&gt;Hello, world! The sequel!&lt;/p&gt;');</pre>
+				
+				<h3>Dialog w/ Callbacks</h3>
+				<p>To display a Dialog, just call <code>$.js.dialog</code> with a few settings. The DOM manipulation is taken care of by the plugin, so there is work to do outside of the Javascript call. <strong>Note</strong>: The order of all the options (<code>buttons</code>, <code>buttonClasses</code>, <code>callbacks</code>) matters - the function relies on these being in the same order.</p>
+				<p><a href="#" class="next icon button" id="BasicDialog">Basic Dialog</a></p>
+				
+				<h4>jQuery</h4>
+<pre>var cancelCallback = function(controller, button, event) {
+	$.js.dialog('Cancel was clicked!');
+};
+
+var continueCallback = function(c, b, e) {
+	$.js.dialog('Continue was clicked!');
+};
+
+
+$('#BasicDialog').click(function(event) {
+	event.preventDefault();
+	
+	$.js.dialog(
+		'&lt;h3&gt;Callbacks Sample&lt;/h3&gt;&lt;p&gt;Would you like to continue?&lt;/p&gt;',
+		{
+			buttons: [ 'Cancel', 'Continue' ],
+			buttonClasses: [ 'previous icon', 'next icon' ],
+			callbacks: [ cancelCallback, continueCallback ]
+		}
+	);
+});</pre>
+                
+                <h2><a role="anchor" name="collapsible">Collapsible</a></h2>
+                <p>Collapsible takes each element and looks for two things: a child configurable element that triggers the collapsing, and the element to collapse.</p>
+				
+				<h3>Options</h3>
+				<ul>
+					<li><code>collapsibleSelector</code> - The jQuery selector for choosing the element that collapses. (default: <code>.collapse</code>)</li>
+					<li><code>toggleSelector</code> - The jQuery selector for choosing the element that toggles the collapse. The selector works off the parent wrapper element. (default: <code>&gt;a</code>)</li>
+					<li><code>hidden</code> - Callback function for when a collapsible is hidden. <code>parent</code> is set to the parent wrapper element; <code>toggle</code> is the element that triggered the event.</li>
+					<li><code>visible(parent, toggle)</code> - Callback function for when a collapsible is made visible. <code>parent</code> is set to the parent wrapper element; <code>toggle</code> is the element that triggered the event.</li>
+					<li><code>time</code> - The time (in milliseconds) for the slide animation. (default: <code>250</code>)</li>
+					<li><code>easing</code> - Easing function used for jQuery animations. (default: <code>linear</code>)</li>
+					<li><code>autoCollapse</code> - Boolean that will automatically collapse (or not) all collapsibles. (default: <code>true</code>)</li>
+				</ul>
+                
+                <h3>Demo</h3>
+                <div class="collapsible-wrapper">
+                    <p><a href="#" class="toggle button">[+] View Demo</a></p>
+                    <pre class="collapsible">sample block
+                    </pre>
+                </div>
+                
+                <h4>HTML/CSS</h4>
+                <p>The basic HTML setup has a wrapper element that contains two child elements - the trigger and the collapsible element.</p>
+<pre>&lt;div class="collapsible-wrapper"&gt;
+    &lt;p&gt;&lt;a href="#" class="toggle button"&gt;[+] Expand&lt;/a&gt;&lt;/p&gt;
+    &lt;pre class="collapsible"&gt;sample block
+    &lt;/pre&gt;
+&lt;/div&gt;</pre>
+
+                <h4>jQuery</h4>
+                <p>The collapsible function can take a few options. Demoed here are <code>toggleSelector</code>, <code>hidden</code>, and <code>visible</code>.</p>
+<pre>$('.collapsible-wrapper').collapsible({
+    toggleSelector: 'a.toggle',
+    hidden: function(parent, toggle) {
+        if (toggle.data('hidden-text')) {
+            toggle.html(toggle.data('hidden-text'));
+        } else {
+            toggle.html('[+] View Demo');
+        }
+    },
+    visible: function(parent, toggle) { 
+        if (toggle.data('visible-text')) {
+            toggle.html(toggle.data('visible-text'));
+        } else {
+            toggle.html('[-] Hide Demo');
+        }
+    }
+});
+</pre>
+                
+                
+                <h2><a role="anchor" name="scrollto">ScrollTo</a></h2>
+                <p>The ScrollTo function allows for easy smooth scrolling to an element. The following demonstrates how the top navigation works on this site. It simultaneously pushes a history state while initiating the smooth scroll.</p>
+<pre>$('#Page&gt;header ul a').click(function(event) {
+	event.preventDefault();
+	
+	var that = $(this);
+	var scrollDestination = $('a[name="' + that.attr('href').substr(1) + '"]');
+	
+	if (window.history && window.history.pushState) {
+		window.history.pushState('', scrollDestination.html() + ' - jsMetro Demos', that.attr('href'))
+	}
+	
+	scrollDestination.scrollTo();
+});</pre>
+                
+                <h2><a role="anchor" name="forms">Forms</a></h2>
+                <p>As part of the jsMetro package, a few form styles have been included.</p>
+				
+				<h3>Form Elements</h3>
+				
+				<p><input type="text" value="input[type=text]" /></p>
+				<p><input type="password" value="input[type=password]" /></p>
+				<p><textarea rows="4" cols="75">textarea</textarea></p>
+				<p>
+					<select>
+						<option>option 1</option>
+						<option>option 2</option>
+						<option>option 3</option>
+					</select>
+				</p>
+				<p><input type="checkbox" name="checkbox1" /><label for="checkbox1">label for checkbox1</label></p>
+				
+				<p><input type="radio" name="radio1" /> Radio 1</p>
+				<p><input type="radio" name="radio1" /> Radio 2</p>
+				
+				<h3>Message Sections</h3>
+				<p>Message sections are a great way to tell a user about both problems (errors & warnings) as well as successful completions. The jsMetro CSS includes a few styles to help this.</p>
+				
+				<h4>Error (<code>.error-message</code>)</h4>
+				<div class="error-message">
+					<p>Useful for validation summary messages.</p>
+					<ul>
+						<li>Can house HTML</li>
+						<li>Red color tells user there is a problem.</li>
+					</ul>
+				</div>
+				
+				<h4>Warning (<code>.warning-message</code>)</h4>
+				<div class="warning-message">
+					<p>Useful for validation summary messages.</p>
+					<ul>
+						<li>Can house HTML</li>
+						<li>Red color tells user there is a slight problem.</li>
+					</ul>
+				</div>
+				
+				<h4>Success (<code>.success-message</code>)</h4>
+				<div class="success-message">
+					<p>Useful for validation summary messages.</p>
+					<ul>
+						<li>Can house HTML</li>
+						<li>Green color tells user there is was a success / completion.</li>
+					</ul>
+				</div>
+				
+                <h3>Buttons</h3>
+                <p>
+                    <input type="button" class="button" value="input.button" />
+                    <a class="button" href="#">a.button</a>
+                    <a class="edit icon button" href="#">a.button.edit.icon</a>
+					<a class="edit icon button disabled" href="#">a.button.edit.icon.disabled</a>
+					<a class="button" href="#" disabled="disabled">a[disabled="disabled"]</a>
+					<input class="button" type="button" disabled="disabled" value="input[disabled='disabled']" />
+                </p>
+<pre>&lt;p&gt;
+    &lt;input type="button" class="button" value="input.button" /&gt;
+    &lt;a class="button" href="#"&gt;a.button&lt;/a&gt;
+    &lt;a class="edit icon button" href="#"&gt;a.button.edit.icon&lt;/a&gt;
+&lt;/p&gt;</pre>
+                <div class="collapsible-wrapper">
+                    <p><a href="#" class="toggle button">[+] View Demo</a></p>
+                    <p class="collapsible">
+						<a class="base icon button" href="#">base</a>
+                        <a class="add icon button" href="#">add</a>
+                        <a class="back icon button" href="#">back</a>
+                        <a class="camera icon button" href="#">camera</a>
+                        <a class="cancel icon button" href="#">cancel</a>
+                        <a class="check icon button" href="#">check</a>
+                        <a class="delete icon button" href="#">delete</a>
+                        <a class="download icon button" href="#">download</a>
+                        <a class="edit icon button" href="#">edit</a>
+                        <a class="add-to-favs icon button" href="#">add-to-favs</a>
+                        <a class="favs icon button" href="#">favs</a>
+                        <a class="ff icon button" href="#">ff</a>
+                        <a class="flag icon button" href="#">flag</a>
+                        <a class="folder icon button" href="#">folder</a>
+                        <a class="heart icon button" href="#">heart</a>
+                        <a class="info icon button" href="#">info</a>
+                        <a class="mail icon button" href="#">mail</a>
+                        <a class="minus icon button" href="#">minus</a>
+                        <a class="next icon button" href="#">next</a>
+                        <a class="previous icon button" href="#">previous</a>
+						<a class="up icon button" href="#">up</a>
+						<a class="down icon button" href="#">down</a>
+                        <a class="overflow icon button" href="#">overflow</a>
+                        <a class="parent icon button" href="#">parent</a>
+                        <a class="pause icon button" href="#">pause</a>
+                        <a class="phone icon button" href="#">phone</a>
+                        <a class="play icon button" href="#">play</a>
+                        <a class="question icon button" href="#">question</a>
+                        <a class="refresh icon button" href="#">refresh</a>
+                        <a class="rew icon button" href="#">rew</a>
+                        <a class="save icon button" href="#">save</a>
+                        <a class="search icon button" href="#">search</a>
+                        <a class="settings icon button" href="#">settings</a>
+                        <a class="share icon button" href="#">share</a>
+                        <a class="upload icon button" href="#">upload</a>
+                        <a class="video icon button" href="#">video</a>
+                    </p>
+					
+					<h2><a role="anchor" name="themes">Theming</a></h2>
+					<p>The stylesheets that give jsMetro its style include support for the built-in style swatches for Windows Phone 7. You can switch the theme of this page by using the buttons below. Give it a try!</p>
+					<p id="ThemeButtons">
+						<a href="#" class="button" data-theme="blue">Default (Blue) Theme</a>
+						<a href="#" class="button" data-theme="magenta">Magenta Theme</a>
+						<a href="#" class="button" data-theme="purple">Purple Theme</a>
+						<a href="#" class="button" data-theme="teal">Teal Theme</a>
+						<a href="#" class="button" data-theme="lime">Lime Theme</a>
+						<a href="#" class="button" data-theme="brown">Brown Theme</a>
+						
+						<a href="#" class="button" data-theme="pink">Pink Theme</a>
+						<a href="#" class="button" data-theme="orange">Orange Theme</a>
+						<a href="#" class="button" data-theme="red">Red Theme</a>
+						<a href="#" class="button" data-theme="green">Green Theme</a>
+					</p>
+					
+					<h3>How To</h3>
+					<p>To set the theme, simply add the theme name (in lowercase) to the body element!</p>
+					<pre>&lt;body class="pink"&gt;</pre>
+					
+					<p>To change the theme easily, use the <code>theme</code> function of the framework.</p>
+					<pre>$.js.theme('pink');</pre>
+					
+					<h3>Scroll Bar Theming</h3>
+					<p>Scroll bar theming is currently only available for WebKit browsers. If you have WebKit, the scroll bars should be themed according to the current WP7 swatch.</p>
+					
+<pre class="prettyprint" style="width: 250px; height: 250px; overflow: auto;">
+$('.collapsible-wrapper').collapsible({
+    toggleSelector: 'a.toggle',
+    hidden: function(parent, toggle) {
+        if (toggle.data('hidden-text')) {
+            toggle.html(toggle.data('hidden-text'));
+        } else {
+            toggle.html('[+] View Demo');
+        }
+    },
+    visible: function(parent, toggle) { 
+        if (toggle.data('visible-text')) {
+            toggle.html(toggle.data('visible-text'));
+        } else {
+            toggle.html('[-] Hide Demo');
+        }
+    }
+});
+
+$('.collapsible-wrapper').collapsible({
+    toggleSelector: 'a.toggle',
+    hidden: function(parent, toggle) {
+        if (toggle.data('hidden-text')) {
+            toggle.html(toggle.data('hidden-text'));
+        } else {
+            toggle.html('[+] View Demo');
+        }
+    },
+    visible: function(parent, toggle) { 
+        if (toggle.data('visible-text')) {
+            toggle.html(toggle.data('visible-text'));
+        } else {
+            toggle.html('[-] Hide Demo');
+        }
+    }
+});
+
+$('.collapsible-wrapper').collapsible({
+    toggleSelector: 'a.toggle',
+    hidden: function(parent, toggle) {
+        if (toggle.data('hidden-text')) {
+            toggle.html(toggle.data('hidden-text'));
+        } else {
+            toggle.html('[+] View Demo');
+        }
+    },
+    visible: function(parent, toggle) { 
+        if (toggle.data('visible-text')) {
+            toggle.html(toggle.data('visible-text'));
+        } else {
+            toggle.html('[-] Hide Demo');
+        }
+    }
+});
+</pre>
+                </div>
+				
+				<h2><a role="anchor" name="columnize">Columnize</a></h2>
+				<h3>Code</h3>
+<pre>$('.columns').columnize({ gap: 20, separator: 'h1, h2, h3, h4, h5, h6, .header' });</pre>
+				<h3>Sample</h3>
+				<div class="columns" style="margin:0;">
+					<h1>Lorem ipsum dolor sit amet</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rutrum consequat felis, non lobortis augue dignissim vel. Phasellus placerat libero et augue adipiscing non laoreet sem suscipit. Proin rutrum placerat massa ac posuere. Ut at felis at urna luctus laoreet. Phasellus augue sapien, tempor tristique pharetra nec, molestie id lorem. Nullam fermentum tempus gravida.</p>
+					<p>Nunc scelerisque, est vitae vulputate porttitor, dolor risus consectetur tortor, fringilla sagittis neque orci a neque. Donec non turpis non dui varius vehicula. Proin massa urna, ornare at blandit ut, pharetra in dolor. Nam vehicula ultrices metus vel pellentesque.</p>
+
+					<h1>Phasellus vestibulum ipsum</h1>
+					<p>Phasellus vestibulum ipsum id arcu laoreet tempor. Nam urna velit, tempor vel dictum quis, adipiscing non justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus ac urna nec lorem facilisis commodo. Maecenas aliquet, augue imperdiet vestibulum accumsan, diam purus consectetur ante, ut ornare lectus erat ac dui. Mauris tristique enim vel quam malesuada id rhoncus urna aliquam. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque mauris ligula, pretium non aliquam ac, dictum at libero. Donec fringilla, eros ut scelerisque aliquet, lorem diam facilisis felis, at fermentum odio nisi eget mauris. Fusce viverra, orci et tempor cursus, augue metus posuere leo, et porta erat est quis tellus. Sed mi libero, placerat non ultrices ultricies, rhoncus eu sapien. Nam mollis, purus at dapibus feugiat, nunc lectus blandit risus, sed bibendum lacus ligula non nunc. Phasellus nulla mi, eleifend nec tempus sed, gravida vitae sem. Cras tincidunt lacinia massa et varius.</p>
+
+					<h1>Phasellus porttitor interdum orci</h1>
+					<p>Morbi felis arcu, mollis eu lobortis id, fringilla vel sem. Donec at dolor est, id porttitor lectus. Donec magna tortor, tristique vitae hendrerit eu, molestie sit amet orci. Aenean congue risus ultricies tellus vulputate adipiscing. Sed ac arcu ante, at imperdiet nisl. Nulla hendrerit vehicula nunc a varius. Phasellus porttitor interdum orci, et consequat dui euismod id. Aenean porta, erat et sodales pretium, justo massa lacinia metus, ut malesuada neque purus quis quam. Donec id ante lacus, bibendum tincidunt purus. Suspendisse potenti. Morbi quis purus augue, vitae bibendum orci. Fusce imperdiet lacus sit amet magna malesuada blandit. Nulla scelerisque volutpat lectus nec adipiscing. Aenean ut lacus libero, vel malesuada mi.</p>
+				</div>
+            </article>
+            <footer>
+                <p>&copy;2012 <a href="http://johnsedlak.com">John Sedlak</a>.</p>
+            </footer>
+        </div>
+    </body>
+</html>

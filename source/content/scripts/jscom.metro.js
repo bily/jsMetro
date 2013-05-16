@@ -487,36 +487,32 @@ function TaskList() {
     this.activeTask = null;
     this.fifo = true;
     this.automatic = true;
-    this.isReady = true;
+    this.checkOnNextPush = true;
 };
 
 TaskList.prototype = {
     push: function (openCallback) {
         var that = this,
-            task = new Task(
-                openCallback,  
-                function (data) { that.onClosed(task, data); }
-            );
+            isTask = (typeof (openCallback).toString().toLowerCase() == 'task' || null != openCallback.openCallback),
+            task = isTask ? openCallback : new Task(openCallback,  function (data) { that.onClosed(task, data); });
 
         that.internalQueue.push(task);
 
         // Do we check the list and process automatically?
-        if (that.automatic || that.isReady) {
+        if (that.automatic || that.checkOnNextPush) {
             that.checkQueue();
         }
+    },
+
+    clear: function () {
+        this.internalQueue = new Array();
     },
 
     checkQueue: function () {
         var that = this;
 
         if (that.activeTask != null) return;
-        if (that.internalQueue.length == 0) {
-            that.isReady = true;
-            return;
-        }
-
-        // We're going to start a task, so let's set the ready flag to false
-        that.isReady = false;
+        if (that.internalQueue.length == 0) return;
 
         if (!that.fifo) {
             that.activeTask = that.internalQueue.pop();
@@ -529,7 +525,7 @@ TaskList.prototype = {
         if (that.activeTask) that.activeTask.open();
         else {
             // Do we check the list and process automatically?
-            if (that.automatic || that.isReady) that.checkQueue();
+            if (that.automatic) that.checkQueue();
         }
     },
 

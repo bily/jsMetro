@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>History Sample - jsMetro</title>
+
+        <link rel="stylesheet" href="content/css/base.css" />
+        <link rel="stylesheet" href="content/css/jscom.metro.css" />
+
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+        <script src="content/scripts/date-format.js"></script>
+
+        <!-- The real stuff -->
+        <script src="content/scripts/jscom.metro.js"></script>
+    </head>
+
+    <body>
+        <header data-role="content" >
+            <section>
+                <hgroup class="pull-left">
+                    <h1>jsMetro</h1>
+                </hgroup>
+                <nav class="pull-right" data-role="navigation" data-horizontal="true">
+                    <ul>
+                        <li><a href="index.htm#About">About</a></li>
+                        <li><a href="index.htm#JavaScript">JavaScript</a>
+                            <ul>
+                                <li><a href="history-sample.htm">History (Undo/Redo)</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="index.htm#HtmlCss">Forms &amp; CSS</a>
+                            <ul>
+                                <li><a href="index.htm#Menus">Menus</a></li>
+                                <li><a href="index.htm#FormElements">Form Elements</a></li>
+                                <li><a href="index.htm#Icons">Icons</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="app.htm">JS App</a></li>
+                    </ul>
+                </nav>
+                <div class="clear"><!--clear--></div>
+            </section>
+        </header>
+
+        <article data-role="content">
+            <section>
+                <h2>Providing an Undo/Redo History</h2>
+
+                <p>By using the <code>TaskList</code> object, providing some basic object state management is possible. The following example walks you through setting this up.</p>
+
+                <h3>The Object's Initial State</h3>
+                <p>Here we have the object's (<code>testObject</code>) initial state.</p>
+                <pre id="ObjectInitialJson"></pre>
+
+                <h3>The Object's Current State</h3>
+                <p>This <code>pre</code> will track the current state as we make changes.</p>
+                <pre id="ObjectCurrentJson"></pre>
+
+                <h3>Edit Form</h3>
+                <p>To change the object's state, a simple form is provided with a "commit changes" sort of button.</p>
+                <div class="clearfix">
+                    <div class="editor-label"><label for="IdBox">Id</label></div>
+                    <div class="editor-field"><input type="text" name="IdBox" id="IdBox" /></div>
+
+                    <div class="editor-label"><label for="title">Title</label></div>
+                    <div class="editor-field"><input type="text" name="TitleBox" id="TitleBox" /></div>
+
+                    <p>
+                        <a data-role="button" href="#submit">Submit</a>
+                        <a data-role="button" href="#undo"><i data-icon="previous"></i>Undo</a>
+                        <a data-role="button" href="#redo"><i data-icon="next"></i>Redo</a>
+                    </p>
+                </div>
+            </section>
+        </article>
+
+        <footer data-role="content">
+            <p>&copy;2013 <a href="http://johnsedlak.com">John Sedlak</a></p>
+        </footer>
+
+        <script>
+            var testObject = {
+                title: "Hello, world.",
+                id: 1
+            };
+
+            $(document).ready(function () {
+                $('#ObjectInitialJson, #ObjectCurrentJson').html(JSON.stringify(testObject));
+                $('#TitleBox').val(testObject.title);
+                $('#IdBox').val(testObject.id);
+
+                var undoList = new TaskList(),
+                    redoList = new TaskList();
+
+                undoList.automatic = false;
+                undoList.fifo = false;
+                undoList.checkOnNextPush = false;
+
+                redoList.automatic = false;
+                redoList.fifo = false;
+                redoList.checkOnNextPush = false;
+
+                update = function () {
+                    $('#ObjectCurrentJson').html(JSON.stringify(testObject));
+                };
+
+                $(document).on(
+                    'click',
+                    'a[href="#submit"]',
+                    function (event) {
+                        event.preventDefault();
+                        redoList.clear();
+
+                        var currentTitle = testObject.title,
+                            currentId = testObject.id;
+
+                        undoList.push(function (task) {
+                            var redoTitle = testObject.title,
+                                redoId = testObject.id;
+
+                            redoList.push(function (redoTask) {
+                                testObject.title = redoTitle;
+                                testObject.id = redoId;
+
+                                undoList.push(task);
+
+                                update();
+
+                                redoTask.close();
+                            });
+
+                            testObject.title = currentTitle;
+                            testObject.id = currentId;
+
+                            update();
+
+                            task.close();
+                        });
+
+                        testObject.id = $('#IdBox').val();
+                        testObject.title = $('#TitleBox').val();
+                        update();
+                    }
+                ).on(
+                    'click',
+                    'a[href="#undo"]',
+                    function (event) {
+                        event.preventDefault();
+
+                        undoList.checkQueue();
+                    }
+                ).on(
+                    'click',
+                    'a[href="#redo"]',
+                    function (event) {
+                        event.preventDefault();
+
+                        redoList.checkQueue();
+                    }
+                );
+            });
+        </script>
+    </body>
+</html>
